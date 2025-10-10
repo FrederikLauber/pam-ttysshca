@@ -1,0 +1,143 @@
+name: Coverage
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build Workspace on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+      fail-fast: false
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      #- name: Cache cargo registry and binaries
+      #  uses: actions/cache@v3
+      #  with:
+      #    path: |
+      #      ~/.cargo/registry
+      #      ~/.cargo/git
+      #      ~/.cargo/bin
+      #    keys: cargo-tarpaulin-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
+      #    restore-keys: |
+      #      cargo-tarpaulin-${{ runner.os }}-
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          target: ${{ matrix.os == 'ubuntu-latest' && format('x86_64-unknown-linux-musl') || '' }}
+
+      - name: Set Rust linker for Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          echo "RUSTFLAGS=-C linker=gcc" >> $GITHUB_ENV
+
+      - name: Install cargo-tarpaulin
+        run: cargo install cargo-tarpaulin --force
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Linux-specific build tools
+      - name: Install build essentials (Ubuntu)
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo apt-get update && sudo apt-get install -y build-essential pkg-config libssl-dev python3-dev libpam0g-dev libffi-dev libc6-dev llvm clang lld python3.12 python3.12-dev
+
+      - name: Prepare PyO3 env
+        run: |
+          echo "PYO3_CONFIG_FILE=$(pwd)/pyo3.cfg" >> $GITHUB_ENV
+          echo "version=3.12" > pyo3.cfg
+
+      - name: Fix Linker on Ubuntu
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          export LD_LIBRARY_PATH=$(python3.12-config --prefix)/lib:$LD_LIBRARY_PATH
+          export PYTHON_SYS_EXECUTABLE=$(which python3.12)
+
+      - name: Run tests with coverage Windows
+        if: matrix.os != 'ubuntu-latest'
+        run: cargo tarpaulin --out Lcov -p pypam_ttysshca -p Authenticator -p Authenticator_cli
+
+      - name: Run tests with coverage Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: cargo tarpaulin --engine llvm --out Lcov -p Authenticator -p Authenticator_cli
+        # cannot get -p pypam_ttysshca working yet :/
+
+      - name: Upload lcov coverage
+        if: ${{ !env.ACT }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ matrix.os }}
+          path: tarpaulin-report/
+
+      - name: Save coverage (act local)
+        if: ${{ env.ACT }}
+        run: |
+          mkdir -p /tmp/artifacts/coverage1
+          cp -r coverage/* /tmp/artifacts/coverage1/
+
+  merge_coverage:
+    name: Merge Coverage Reports
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install LCOV
+        run: sudo apt-get update && sudo apt-get install -y lcov
+
+      - name: Download all coverage artifacts
+        if: ${{ !env.ACT }}
+        uses: actions/download-artifact@v5
+        with:
+          pattern: "coverage-*"
+          merge-multiple: true
+
+      - name: Copy mock coverage artifacts (act)
+        if: ${{ env.ACT }}
+        run: |
+          mkdir -p artifacts-merged
+          cp -r /tmp/artifacts/coverage-* artifacts-merged/ || true
+
+      - name: Merge lcov files
+        run: |
+          mkdir merged-coverage
+          lcov -z -o merged-coverage/merged.lcov
+          for f in coverage/**/*.lcov; do
+            lcov -a merged-coverage/merged.lcov -a "$f" -o merged-coverage/merged.lcov
+          done
+          genhtml merged-coverage/merged.lcov -o merged-coverage/html
+
+      - name: Generate coverage badge
+        run: |
+          coverage_percent=$(lcov --summary merged-coverage/merged.lcov | grep lines | awk '{print int($2)}')
+          coverage-badge -o merged-coverage/coverage.svg -r $coverage_percent
+
+      - name: Deploy coverage to GitHub Pages
+        if: ${{ !env.ACT }}
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./merged-coverage/html
+
+      - name: Save coverage (act)
+        if: ${{ env.ACT }}
+        run: |
+          mkdir -p /tmp/artifacts/coverage
+          cp -r coverage/* /tmp/artifacts/coverage/

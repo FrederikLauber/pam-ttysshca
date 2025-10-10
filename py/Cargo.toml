@@ -1,0 +1,16 @@
+[package]
+name = "pypam_ttysshca"
+version = "0.1.0"
+edition = "2024"
+license = "GPL-3.0-or-later"
+
+[lib]
+name = "pypam_ttysshca"
+crate-type = ["cdylib"]
+
+[dependencies]
+shared = { path = "../shared" }
+pyo3 = { version = "0.27.1", features = ["extension-module", "abi3-py312"] }
+
+[dev-dependencies]
+pyo3 = { version = "0.27", features = ["auto-initialize"] }

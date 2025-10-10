@@ -1,0 +1,54 @@
+name: Release version
+
+on:
+  workflow_dispatch:  # manual testing
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build Workspace on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+      fail-fast: false
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Cache cargo registry and git
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: cargo-registry-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            cargo-registry-${{ runner.os }}-
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          target: ${{ matrix.os == 'ubuntu-latest' && format('x86_64-unknown-linux-musl') || '' }}
+
+      - name: Build workspace member
+        run: |
+          echo "Building on ${{ matrix.os }}"
+          cd py
+          maturin build --release
+          cd ..
+          cargo build --manifest-path Cargo.toml --release -p pypam_ttysshca -p Authenticator -p Authenticator_cli
+
+      - name: Upload artifact
+        uses: softprops/action-gh-release@v1
+        with:
+          files: target/release/Authenticator*{{ matrix.os == 'windows-latest' && '.exe' || '' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
