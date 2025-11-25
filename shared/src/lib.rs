@@ -76,17 +76,17 @@ mod tests {
 
     static_path!(ECDSA_NISTP256_PRIV, "../tests/keys/ecdsa_nistp256");
     static_path!(ECDSA_NISTP384_PRIV, "../tests/keys/ecdsa_nistp384");
-    //static_path!(ECDSA_NISTP521_PRIV, "../tests/keys/ecdsa_nistp521"); // p521 is apparently broken in ssh_key 0.6.7
+    static_path!(ECDSA_NISTP521_PRIV, "../tests/keys/ecdsa_nistp521");
     static_path!(ED25519_PRIV, "../tests/keys/ed25519");
-    static_path!(_RSA_SHA256_PRIV, "../tests/keys/rsa_sha256");
-    static_path!(_RSA_SHA512_PRIV, "../tests/keys/rsa_sha512");
+    static_path!(RSA_SHA256_PRIV, "../tests/keys/rsa_sha256");
+    static_path!(RSA_SHA512_PRIV, "../tests/keys/rsa_sha512");
     
     static_path_test_ok!(ECDSA_NISTP256_PRIV, load_private_key);
     static_path_test_ok!(ECDSA_NISTP384_PRIV, load_private_key);
-    //static_path_test_ok!(ECDSA_NISTP521_PRIV, load_private_key);  //broken in ssh_key in 0.6.7 but preleases are broken
+    static_path_test_ok!(ECDSA_NISTP521_PRIV, load_private_key);
     static_path_test_ok!(ED25519_PRIV, load_private_key);
-    //static_path_test_ok!(RSA_SHA256_PRIV, load_private_key);  //broken in ssh_key in 0.6.7 but preleases are broken
-    //static_path_test_ok!(RSA_SHA512_PRIV, load_private_key);  //broken in ssh_key in 0.6.7 but preleases are broken
+    static_path_test_ok!(RSA_SHA256_PRIV, load_private_key);
+    static_path_test_ok!(RSA_SHA512_PRIV, load_private_key);
 
     static_path!(ECDSA_NISTP256_PUB, "../tests/keys/ecdsa_nistp256.pub");
     static_path!(ECDSA_NISTP384_PUB, "../tests/keys/ecdsa_nistp384.pub");
