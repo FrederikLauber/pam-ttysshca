@@ -62,8 +62,6 @@ This software mostly uses the functionality provided by the ssh_key crate, curre
 Due to this, there are some limitations in key algorithms that can be used most notable 
 
 - rsa256 and rsa512 does not work
-- nistp512 does not work
-- keys without an expiry date do not work yet
 
 Most of these should be fixed as of release 0.7.0 in the near future.
 
