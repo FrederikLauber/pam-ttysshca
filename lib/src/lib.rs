@@ -118,9 +118,9 @@ mod tests {
     fn test_correct_response(){
         let challenge = Challenge::new();
         let user = "tesuser";
-        let entropy: [u8; 32] = rand::random();
 
-        let answer = CString::new(entropy).unwrap();
+        // just some random bytes for testing
+        let answer = CString::new([86, 235, 98, 201, 205, 180, 24, 232, 218, 79, 226, 20, 185, 128, 148, 207, 38, 62, 13, 177, 30, 250, 1, 28, 157, 132, 109, 190, 185, 161, 63, 180]).unwrap();
         let mut args = Vec::new();
 
         let ca1 = CString::from_str("ca=Ca1.pub").unwrap();
