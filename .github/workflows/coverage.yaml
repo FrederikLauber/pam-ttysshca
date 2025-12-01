@@ -58,7 +58,7 @@ jobs:
           cargo tarpaulin --out Lcov -p Authenticator --output-dir tarpaulin-report
           mv tarpaulin-report/lcov.info tarpaulin-report/Authenticator.info
           cargo tarpaulin --out Lcov -p Authenticator_cli --output-dir tarpaulin-report
-          mv tarpaulin-report/lcov.info tarpaulin-report/Authenticator.info
+          mv tarpaulin-report/lcov.info tarpaulin-report/Authenticator_cli.info
           cargo tarpaulin --out Lcov -p pypam_ttysshca --output-dir tarpaulin-report
           mv tarpaulin-report/lcov.info tarpaulin-report/pypam-ttysshca.info
 
