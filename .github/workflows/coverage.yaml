@@ -16,29 +16,12 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest]
+        # os: [ubuntu-latest]
       fail-fast: false
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-
-      #- name: Cache cargo registry and binaries
-      #  uses: actions/cache@v3
-      #  with:
-      #    path: |
-      #      ~/.cargo/registry
-      #      ~/.cargo/git
-      #      ~/.cargo/bin
-      #    keys: cargo-tarpaulin-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
-      #    restore-keys: |
-      #      cargo-tarpaulin-${{ runner.os }}-
-
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          override: true
-          target: ${{ matrix.os == 'ubuntu-latest' && format('x86_64-unknown-linux-musl') || '' }}
 
       - name: Set Rust linker for Linux
         if: matrix.os == 'ubuntu-latest'
@@ -71,25 +54,32 @@ jobs:
 
       - name: Run tests with coverage Windows
         if: matrix.os != 'ubuntu-latest'
-        run: cargo tarpaulin --out Lcov -p pypam_ttysshca -p Authenticator -p Authenticator_cli
+        run: |
+          cargo tarpaulin --out Lcov -p Authenticator --output-dir tarpaulin-report
+          mv tarpaulin-report/lcov.info tarpaulin-report/Authenticator.info
+          cargo tarpaulin --out Lcov -p Authenticator_cli --output-dir tarpaulin-report
+          mv tarpaulin-report/lcov.info tarpaulin-report/Authenticator.info
+          cargo tarpaulin --out Lcov -p pypam_ttysshca --output-dir tarpaulin-report
+          mv tarpaulin-report/lcov.info tarpaulin-report/pypam-ttysshca.info
 
       - name: Run tests with coverage Linux
         if: matrix.os == 'ubuntu-latest'
-        run: cargo tarpaulin --engine llvm --out Lcov -p Authenticator -p Authenticator_cli
-        # cannot get -p pypam_ttysshca working yet :/
+        run: |
+          cargo tarpaulin --engine llvm --out Lcov -p Authenticator --output-dir tarpaulin-report
+          mv tarpaulin-report/lcov.info tarpaulin-report/Authenticator.info
+          cargo tarpaulin --engine llvm --out Lcov -p Authenticator_cli --output-dir tarpaulin-report
+          mv tarpaulin-report/lcov.info tarpaulin-report/Authenticator_cli.info
+          cargo tarpaulin --engine llvm --out Lcov -p pam-ttysshca --output-dir tarpaulin-report
+          mv tarpaulin-report/lcov.info tarpaulin-report/pam-ttysshca.info
+
+        # cargo tarpaulin --out Lcov -p pypam_ttysshca --output-dir tarpaulin-report --engine llvm # broken on linux atm  --engine llvm
 
       - name: Upload lcov coverage
-        if: ${{ !env.ACT }}
         uses: actions/upload-artifact@v4
         with:
           name: coverage-${{ matrix.os }}
           path: tarpaulin-report/
 
-      - name: Save coverage (act local)
-        if: ${{ env.ACT }}
-        run: |
-          mkdir -p /tmp/artifacts/coverage1
-          cp -r coverage/* /tmp/artifacts/coverage1/
 
   merge_coverage:
     name: Merge Coverage Reports
@@ -103,41 +93,52 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y lcov
 
       - name: Download all coverage artifacts
-        if: ${{ !env.ACT }}
+        if: ${{! env.ACT }}
         uses: actions/download-artifact@v5
         with:
           pattern: "coverage-*"
           merge-multiple: true
 
-      - name: Copy mock coverage artifacts (act)
+      - name: Download all coverage artifacts (act)
         if: ${{ env.ACT }}
         run: |
-          mkdir -p artifacts-merged
-          cp -r /tmp/artifacts/coverage-* artifacts-merged/ || true
+          find ./artifacts -name "*.zip" -exec sh -c '
+            for zip; do
+            folder="./coverage/$(basename "$zip" .zip)"
+            mkdir -p "$folder"
+            unzip -o "$zip" -d "$folder"
+            done
+          ' sh  {} +
 
       - name: Merge lcov files
         run: |
-          mkdir merged-coverage
-          lcov -z -o merged-coverage/merged.lcov
-          for f in coverage/**/*.lcov; do
-            lcov -a merged-coverage/merged.lcov -a "$f" -o merged-coverage/merged.lcov
-          done
-          genhtml merged-coverage/merged.lcov -o merged-coverage/html
+          find coverage -name "*.info" -exec cat "{}" + > cat_merged.lcov
+          lcov -a cat_merged.lcov -o merged.lcov
+          mkdir -p merged-coverage
+          genhtml merged.lcov -o merged-coverage/html
+          zip -r coverage-html.zip merged-coverage/html
 
-      - name: Generate coverage badge
-        run: |
-          coverage_percent=$(lcov --summary merged-coverage/merged.lcov | grep lines | awk '{print int($2)}')
-          coverage-badge -o merged-coverage/coverage.svg -r $coverage_percent
+      - uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: coverage-html.zip
+
+      - name: Upload to codecov.io
+        if: ${{! env.ACT }}
+        uses: codecov/codecov-action@v2
+        with:
+          # token: ${{secrets.CODECOV_TOKEN}} # not required for public repos
+          fail_ci_if_error: true
 
       - name: Deploy coverage to GitHub Pages
-        if: ${{ !env.ACT }}
+        if: ${{! env.ACT }}
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./merged-coverage/html
 
-      - name: Save coverage (act)
-        if: ${{ env.ACT }}
-        run: |
-          mkdir -p /tmp/artifacts/coverage
-          cp -r coverage/* /tmp/artifacts/coverage/
+      #- name: Save coverage (act)
+      #  if: ${{ env.ACT }}
+      #  run: |
+      #    mkdir -p /tmp/artifacts/coverage
+      #    cp -r coverage/* /tmp/artifacts/coverage/
