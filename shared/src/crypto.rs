@@ -411,7 +411,7 @@ mod tests {
                 $(
                     #[test]
                     fn [<$signee _ $signed>]() {
-                        let key_folder = PathBuf::from_str("../tests/keys/").unwrap();
+                        let key_folder = PathBuf::from_str("../tests/keys_unlimited/").unwrap();
                         let signed_private_path = key_folder.clone().join(stringify!($signed));
                         let _signee_public_path = key_folder.clone().join(format!("{}.pub", stringify!($signee)));
                         let cert_path = key_folder.clone().join(format!("{}-{}.cert", stringify!($signee), stringify!($signed)));
