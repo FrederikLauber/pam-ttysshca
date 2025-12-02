@@ -98,6 +98,7 @@ jobs:
         with:
           pattern: "coverage-*"
           merge-multiple: false
+          path: coverage
 
       - name: Download all coverage artifacts (act)
         if: ${{ env.ACT }}
