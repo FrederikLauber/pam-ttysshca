@@ -116,7 +116,7 @@ jobs:
           find coverage -name "*.info" -exec cat "{}" + > cat_merged.lcov
           lcov -a cat_merged.lcov -o merged.lcov
           mkdir -p merged-coverage
-          genhtml merged.lcov -o merged-coverage/html --substitute "D:\a\=/home/runner/work/"
+          genhtml merged.lcov -o merged-coverage/html --substitute "D:\\\\a\\\\=/home/runner/work/"
           zip -r coverage-html.zip merged-coverage/html
 
       - uses: actions/upload-artifact@v4
