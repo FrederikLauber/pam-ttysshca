@@ -130,7 +130,7 @@ jobs:
         if: ${{! env.ACT }}
         uses: codecov/codecov-action@v2
         with:
-          # token: ${{secrets.CODECOV_TOKEN}} # not required for public repos
+          token: ${{secrets.CODECOV_TOKEN}}
           fail_ci_if_error: true
 
       - name: Deploy coverage to GitHub Pages
