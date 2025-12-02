@@ -97,7 +97,7 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           pattern: "coverage-*"
-          merge-multiple: true
+          merge-multiple: false
 
       - name: Download all coverage artifacts (act)
         if: ${{ env.ACT }}
