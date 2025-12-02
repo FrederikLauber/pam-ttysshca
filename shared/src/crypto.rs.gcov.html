@@ -1,0 +1,563 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - merged.lcov - shared/src/crypto.rs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">shared/src</a> - crypto.rs<span style="font-size: 80%;"> (source / <a href="crypto.rs.func-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">merged.lcov</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryLo">41.4&nbsp;%</td>
+            <td class="headerCovTableEntry">87</td>
+            <td class="headerCovTableEntry">36</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2025-12-02 16:42:11</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">53.3&nbsp;%</td>
+            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntry">8</td>
+          </tr>
+                  <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : use std::ffi::CStr;</span>
+<span id="L2"><span class="lineNum">       2</span>              : use std::fmt;</span>
+<span id="L3"><span class="lineNum">       3</span>              : pub use ssh_key::{Certificate, Fingerprint, HashAlg, PrivateKey, Signature};</span>
+<span id="L4"><span class="lineNum">       4</span>              : use ssh_key::{PublicKey, SshSig};</span>
+<span id="L5"><span class="lineNum">       5</span>              : use crate::binary::{Binary, DisplayBinary, IntoBinary};</span>
+<span id="L6"><span class="lineNum">       6</span>              : use crate::supportedalgorithm::SupportedAlgorithm;</span>
+<span id="L7"><span class="lineNum">       7</span>              : </span>
+<span id="L8"><span class="lineNum">       8</span>              : const NAMESPACE: &amp;str = &quot;Pamttysshca&quot;;</span>
+<span id="L9"><span class="lineNum">       9</span>              : </span>
+<span id="L10"><span class="lineNum">      10</span>              : </span>
+<span id="L11"><span class="lineNum">      11</span>              : </span>
+<span id="L12"><span class="lineNum">      12</span>              : pub trait AnswerEngine {</span>
+<span id="L13"><span class="lineNum">      13</span>              :     fn generate_answer(&amp;self, challenge: &amp;Challenge) -&gt; Result&lt;Answer, String&gt;;</span>
+<span id="L14"><span class="lineNum">      14</span>              : }</span>
+<span id="L15"><span class="lineNum">      15</span>              : </span>
+<span id="L16"><span class="lineNum">      16</span>              : /**</span>
+<span id="L17"><span class="lineNum">      17</span>              :  * Usecase: you want to generate an answer from the raw files, not a yubikey etc.</span>
+<span id="L18"><span class="lineNum">      18</span>              :  */</span>
+<span id="L19"><span class="lineNum">      19</span>              : pub struct PrivateKeyAndCertificate {</span>
+<span id="L20"><span class="lineNum">      20</span>              :     private: PrivateKey,</span>
+<span id="L21"><span class="lineNum">      21</span>              :     intermediate: Certificate</span>
+<span id="L22"><span class="lineNum">      22</span>              : </span>
+<span id="L23"><span class="lineNum">      23</span>              : }</span>
+<span id="L24"><span class="lineNum">      24</span>              : </span>
+<span id="L25"><span class="lineNum">      25</span>              : pub trait CertificateMatches{</span>
+<span id="L26"><span class="lineNum">      26</span>              :     fn matches(&amp;self, certificate: &amp;Certificate) -&gt; Result&lt;(), &amp;'static str&gt;;</span>
+<span id="L27"><span class="lineNum">      27</span>              : }</span>
+<span id="L28"><span class="lineNum">      28</span>              : </span>
+<span id="L29"><span class="lineNum">      29</span>              : impl CertificateMatches for PrivateKey{</span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC tlaBgGNC"> >6485*10^14 :     fn matches(&amp;self, certificate: &amp;Certificate) -&gt; Result&lt;(), &amp;'static str&gt; {</span></span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC"> >1945*10^15 :         let pub_from_private = self.public_key();</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC"> >1945*10^15 :         pub_from_private.matches(certificate)</span></span>
+<span id="L33"><span class="lineNum">      33</span>              :     }</span>
+<span id="L34"><span class="lineNum">      34</span>              : }</span>
+<span id="L35"><span class="lineNum">      35</span>              : </span>
+<span id="L36"><span class="lineNum">      36</span>              : impl CertificateMatches for PublicKey{</span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC"> >6485*10^14 :     fn matches(&amp;self, certificate: &amp;Certificate) -&gt; Result&lt;(), &amp;'static str&gt; {</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC"> >1945*10^15 :         let pub_from_private = self.key_data();</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC"> >1945*10^15 :         let pub_from_intermediate = certificate.public_key();</span></span>
+<span id="L40"><span class="lineNum">      40</span>              : </span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC"> >6485*10^14 :         if pub_from_private != pub_from_intermediate {</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaUNC tlaBgUNC">           0 :             Err(&quot;Certificate does not match the provided  keys&quot;)</span></span>
+<span id="L43"><span class="lineNum">      43</span>              :         } else {</span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC tlaBgGNC"> >6485*10^14 :             Ok(())</span></span>
+<span id="L45"><span class="lineNum">      45</span>              :         }</span>
+<span id="L46"><span class="lineNum">      46</span>              :     }</span>
+<span id="L47"><span class="lineNum">      47</span>              : }</span>
+<span id="L48"><span class="lineNum">      48</span>              : </span>
+<span id="L49"><span class="lineNum">      49</span>              : </span>
+<span id="L50"><span class="lineNum">      50</span>              : </span>
+<span id="L51"><span class="lineNum">      51</span>              : impl PrivateKeyAndCertificate {</span>
+<span id="L52"><span class="lineNum">      52</span>              :     /**</span>
+<span id="L53"><span class="lineNum">      53</span>              :     * Do some basic checks (does the private keys belong to the certificate? etc.)</span>
+<span id="L54"><span class="lineNum">      54</span>              :     */</span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC"> >3602*10^14 :     pub fn new(private: PrivateKey, intermediate: Certificate) -&gt; Result&lt;Self, &amp;'static str&gt; {</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC"> >1080*10^15 :         private.matches(&amp;intermediate)?;</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC"> >3602*10^14 :         Ok(Self { private, intermediate })</span></span>
+<span id="L58"><span class="lineNum">      58</span>              :     }</span>
+<span id="L59"><span class="lineNum">      59</span>              : }</span>
+<span id="L60"><span class="lineNum">      60</span>              : </span>
+<span id="L61"><span class="lineNum">      61</span>              : impl AnswerEngine for PrivateKeyAndCertificate {</span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC"> >2161*10^14 :     fn generate_answer(&amp;self, challenge: &amp;Challenge) -&gt; Result&lt;Answer, String&gt; {</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC"> >6485*10^14 :         let data: &amp;[u8] = challenge.0.as_ref();</span></span>
+<span id="L64"><span class="lineNum">      64</span>              : </span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC"> >1513*10^15 :         let sshsig = self.private.sign(NAMESPACE, HashAlg::default(), data).map_err(|e| format!(&quot;Could not sign challenge: {}&quot;, e))?;</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC"> >6485*10^14 :         let signature = sshsig.signature();</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC"> >6485*10^14 :         Ok(Answer{signature: signature.clone(), intermediate: self.intermediate.clone()})</span></span>
+<span id="L68"><span class="lineNum">      68</span>              :     }</span>
+<span id="L69"><span class="lineNum">      69</span>              : }</span>
+<span id="L70"><span class="lineNum">      70</span>              : </span>
+<span id="L71"><span class="lineNum">      71</span>              : #[derive(Debug, PartialEq, Eq, Clone, Copy)]</span>
+<span id="L72"><span class="lineNum">      72</span>              : pub struct Challenge([u8; 32]);</span>
+<span id="L73"><span class="lineNum">      73</span>              : pub struct Answer{</span>
+<span id="L74"><span class="lineNum">      74</span>              :     pub signature: Signature,</span>
+<span id="L75"><span class="lineNum">      75</span>              :     pub intermediate: Certificate</span>
+<span id="L76"><span class="lineNum">      76</span>              : }</span>
+<span id="L77"><span class="lineNum">      77</span>              : </span>
+<span id="L78"><span class="lineNum">      78</span>              : impl PartialEq for Answer {</span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaUNC tlaBgUNC">           0 :     fn eq(&amp;self, other: &amp;Answer) -&gt; bool{</span></span>
+<span id="L80"><span class="lineNum">      80</span>              :         // we do not care about comments so exclude them from comparison</span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaUNC">           0 :         self.signature.algorithm() == other.signature.algorithm() &amp;&amp;</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaUNC">           0 :         self.signature.as_bytes() == other.signature.as_bytes() &amp;&amp;</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaUNC">           0 :         self.intermediate.algorithm() == other.intermediate.algorithm() &amp;&amp;</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaUNC">           0 :         self.intermediate.signature() == other.intermediate.signature()</span></span>
+<span id="L85"><span class="lineNum">      85</span>              :     }</span>
+<span id="L86"><span class="lineNum">      86</span>              : </span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaUNC">           0 :     fn ne(&amp;self, other: &amp;Answer) -&gt; bool {</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaUNC">           0 :         ! self.eq(other)</span></span>
+<span id="L89"><span class="lineNum">      89</span>              :     }</span>
+<span id="L90"><span class="lineNum">      90</span>              : </span>
+<span id="L91"><span class="lineNum">      91</span>              : }</span>
+<span id="L92"><span class="lineNum">      92</span>              : </span>
+<span id="L93"><span class="lineNum">      93</span>              : impl Answer {</span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaUNC">           0 :     pub fn verify_signature(&amp;self, challenge: &amp;Challenge) -&gt; Result&lt;(), &amp;'static str&gt; {</span></span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaUNC">           0 :         let keydata = self.intermediate.public_key().clone();</span></span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaUNC">           0 :         let pubkey = PublicKey::new(keydata.clone(), String::new());</span></span>
+<span id="L97"><span class="lineNum">      97</span>              : </span>
+<span id="L98"><span class="lineNum">      98</span>              :         let sig = SshSig::new(</span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaUNC">           0 :             keydata,</span></span>
+<span id="L100"><span class="lineNum">     100</span>              :             NAMESPACE,</span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaUNC">           0 :             HashAlg::default(),</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaUNC">           0 :             self.signature.clone()</span></span>
+<span id="L103"><span class="lineNum">     103</span>              :         ).map_err(|_| &quot;invalid signature format&quot;)?;</span>
+<span id="L104"><span class="lineNum">     104</span>              : </span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaUNC">           0 :         pubkey</span></span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaUNC">           0 :             .verify(NAMESPACE, &amp;challenge.0, &amp;sig)</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaUNC">           0 :             .map_err(|_| &quot;signature mismatch&quot;)</span></span>
+<span id="L108"><span class="lineNum">     108</span>              :     }</span>
+<span id="L109"><span class="lineNum">     109</span>              : </span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaUNC">           0 :     pub fn verify_intermediate(&amp;self, ca_fingerprints: &amp;[Fingerprint], expected_principal: &amp;str) -&gt; Result&lt;(), &amp;'static str&gt; {</span></span>
+<span id="L111"><span class="lineNum">     111</span>              :         // follow https://docs.rs/ssh-key/latest/ssh_key/certificate/struct.Certificate.html</span>
+<span id="L112"><span class="lineNum">     112</span> <span class="tlaUNC">           0 :         self.intermediate.validate(ca_fingerprints).map_err(|_| &quot;Intermediate was not signed by CA&quot;)?;</span></span>
+<span id="L113"><span class="lineNum">     113</span>              : </span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaUNC">           0 :         if !self.intermediate.valid_principals().iter().any(|p| p == expected_principal) {</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaUNC">           0 :             return Err(&quot;Not valid for user&quot;);</span></span>
+<span id="L116"><span class="lineNum">     116</span>              :         }</span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaUNC">           0 :         Ok(())</span></span>
+<span id="L118"><span class="lineNum">     118</span>              :     }</span>
+<span id="L119"><span class="lineNum">     119</span>              : }</span>
+<span id="L120"><span class="lineNum">     120</span>              : </span>
+<span id="L121"><span class="lineNum">     121</span>              : impl fmt::Display for Challenge {</span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC tlaBgGNC"> >7205*10^13 :     fn fmt(&amp;self, f: &amp;mut fmt::Formatter&lt;'_&gt;) -&gt; fmt::Result {</span></span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC"> >2161*10^14 :         let slice: &amp;[u8] = self.0.as_ref();</span></span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC"> >2161*10^14 :         let wrapped_slice: &amp;[&amp;[u8]] = &amp;[slice];</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC"> >2882*10^14 :         write!(f, &quot;{}&quot;, DisplayBinary(wrapped_slice))</span></span>
+<span id="L126"><span class="lineNum">     126</span>              :     }</span>
+<span id="L127"><span class="lineNum">     127</span>              : }</span>
+<span id="L128"><span class="lineNum">     128</span>              : </span>
+<span id="L129"><span class="lineNum">     129</span>              : impl From&lt;Challenge&gt; for Binary {</span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaUNC tlaBgUNC">           0 :     fn from(s: Challenge) -&gt; Self {</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaUNC">           0 :         Binary(vec![s.0.to_vec()])</span></span>
+<span id="L132"><span class="lineNum">     132</span>              :     }</span>
+<span id="L133"><span class="lineNum">     133</span>              : }</span>
+<span id="L134"><span class="lineNum">     134</span>              : </span>
+<span id="L135"><span class="lineNum">     135</span>              : impl fmt::Display for Answer {</span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC tlaBgGNC"> >2161*10^14 :     fn fmt(&amp;self, f: &amp;mut fmt::Formatter&lt;'_&gt;) -&gt; fmt::Result {</span></span>
+<span id="L137"><span class="lineNum">     137</span>              : </span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC"> >1080*10^15 :         let algo = SupportedAlgorithm::from_ssh_algorithm(&amp;self.intermediate.algorithm()).ok_or_else(|| std::fmt::Error)?.to_byte();</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC"> >6485*10^14 :         let algo_byte = vec![algo];</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC"> >6485*10^14 :         let raw_bytes = self.signature.as_bytes();</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC"> >8646*10^14 :         let certificate_bytes = self.intermediate.to_bytes().map_err(|_| std::fmt::Error)?;</span></span>
+<span id="L142"><span class="lineNum">     142</span>              : </span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC"> >1297*10^15 :         write!(f, &quot;{}&quot;, DisplayBinary{ 0: &amp;*vec![&amp;algo_byte, raw_bytes, &amp;certificate_bytes] })</span></span>
+<span id="L144"><span class="lineNum">     144</span>              :     }</span>
+<span id="L145"><span class="lineNum">     145</span>              : }</span>
+<span id="L146"><span class="lineNum">     146</span>              : </span>
+<span id="L147"><span class="lineNum">     147</span>              : </span>
+<span id="L148"><span class="lineNum">     148</span>              : impl TryFrom&lt;Binary&gt; for Answer {</span>
+<span id="L149"><span class="lineNum">     149</span>              :     type Error = &amp;'static str;</span>
+<span id="L150"><span class="lineNum">     150</span>              : </span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaUNC tlaBgUNC">           0 :     fn try_from(s: Binary) -&gt; Result&lt;Self, Self::Error&gt; {</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaUNC">           0 :         if s.len() != 3 {</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaUNC">           0 :             return Err(&quot;Expected 3 binary blobs&quot;);</span></span>
+<span id="L154"><span class="lineNum">     154</span>              :         }</span>
+<span id="L155"><span class="lineNum">     155</span>              : </span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaUNC">           0 :         let algo = SupportedAlgorithm::from_byte(&amp;s.0[0][0]).ok_or_else(|| &quot;Unsupported algorithm&quot;)?;</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaUNC">           0 :         let raw_bytes = s.0[1].clone();</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaUNC">           0 :         let cert = Certificate::from_bytes(&amp;*s.0[2].clone()).map_err(|_| &quot;Invalid Certificate&quot;)?;</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaUNC">           0 :         let tmp1 = Signature::new(algo.to_ssh_algorithm().ok_or_else(|| &quot;Invalid Certificate&quot;)?, raw_bytes).map_err(|_| &quot;Invalid signature&quot;)?;</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaUNC">           0 :         Ok(Answer{signature: tmp1, intermediate: cert})</span></span>
+<span id="L161"><span class="lineNum">     161</span>              :     }</span>
+<span id="L162"><span class="lineNum">     162</span>              : }</span>
+<span id="L163"><span class="lineNum">     163</span>              : </span>
+<span id="L164"><span class="lineNum">     164</span>              : impl TryFrom&lt;String&gt; for Answer {</span>
+<span id="L165"><span class="lineNum">     165</span>              :     type Error = &amp;'static str;</span>
+<span id="L166"><span class="lineNum">     166</span>              : </span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaUNC">           0 :     fn try_from(s: String) -&gt; Result&lt;Self, Self::Error&gt; {</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaUNC">           0 :         Answer::try_from(s.into_binary()?)</span></span>
+<span id="L169"><span class="lineNum">     169</span>              :     }</span>
+<span id="L170"><span class="lineNum">     170</span>              : }</span>
+<span id="L171"><span class="lineNum">     171</span>              : </span>
+<span id="L172"><span class="lineNum">     172</span>              : impl TryFrom&lt;&amp;String&gt; for Answer {</span>
+<span id="L173"><span class="lineNum">     173</span>              :     type Error = &amp;'static str;</span>
+<span id="L174"><span class="lineNum">     174</span>              : </span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaUNC">           0 :     fn try_from(s: &amp;String) -&gt; Result&lt;Self, Self::Error&gt; {</span></span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaUNC">           0 :         Answer::try_from(s.into_binary()?)</span></span>
+<span id="L177"><span class="lineNum">     177</span>              :     }</span>
+<span id="L178"><span class="lineNum">     178</span>              : }</span>
+<span id="L179"><span class="lineNum">     179</span>              : </span>
+<span id="L180"><span class="lineNum">     180</span>              : </span>
+<span id="L181"><span class="lineNum">     181</span>              : impl TryFrom&lt;&amp;str&gt; for Answer {</span>
+<span id="L182"><span class="lineNum">     182</span>              :     type Error = &amp;'static str;</span>
+<span id="L183"><span class="lineNum">     183</span>              : </span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaUNC">           0 :     fn try_from(s: &amp;str) -&gt; Result&lt;Self, Self::Error&gt; {</span></span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaUNC">           0 :         Answer::try_from(s.into_binary()?)</span></span>
+<span id="L186"><span class="lineNum">     186</span>              :     }</span>
+<span id="L187"><span class="lineNum">     187</span>              : }</span>
+<span id="L188"><span class="lineNum">     188</span>              : </span>
+<span id="L189"><span class="lineNum">     189</span>              : impl TryFrom&lt;&amp;CStr&gt; for Answer {</span>
+<span id="L190"><span class="lineNum">     190</span>              :     type Error = &amp;'static str;</span>
+<span id="L191"><span class="lineNum">     191</span>              : </span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC tlaBgGNC">           1 :     fn try_from(s: &amp;CStr) -&gt; Result&lt;Self, Self::Error&gt; {</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">           3 :         Answer::try_from(s.into_binary()?)</span></span>
+<span id="L194"><span class="lineNum">     194</span>              :     }</span>
+<span id="L195"><span class="lineNum">     195</span>              : }</span>
+<span id="L196"><span class="lineNum">     196</span>              : </span>
+<span id="L197"><span class="lineNum">     197</span>              : impl TryFrom&lt;Answer&gt; for Binary {</span>
+<span id="L198"><span class="lineNum">     198</span>              :     type Error = &amp;'static str;</span>
+<span id="L199"><span class="lineNum">     199</span>              : </span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaUNC tlaBgUNC">           0 :     fn try_from(s: Answer) -&gt; Result&lt;Self, Self::Error&gt; {</span></span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaUNC">           0 :         let raw_bytes = s.signature.as_bytes().to_vec();</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaUNC">           0 :         let algo = SupportedAlgorithm::from_ssh_algorithm(&amp;s.signature.algorithm()).ok_or_else(|| &quot;Unsupported algorithm&quot;)?.to_byte();</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaUNC">           0 :         let algo_byte = vec![algo];</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaUNC">           0 :         let certificate_bytes = s.intermediate.to_bytes().map_err(|_| &quot;Unsupported intermediate&quot;)?;</span></span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaUNC">           0 :         let tmp = vec![algo_byte, raw_bytes, certificate_bytes];</span></span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaUNC">           0 :         Ok(Binary{0: tmp})</span></span>
+<span id="L207"><span class="lineNum">     207</span>              :     }</span>
+<span id="L208"><span class="lineNum">     208</span>              : }</span>
+<span id="L209"><span class="lineNum">     209</span>              : </span>
+<span id="L210"><span class="lineNum">     210</span>              : impl Challenge {</span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC tlaBgGNC"> >7205*10^13 :     pub fn new() -&gt;Challenge{</span></span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC"> >2161*10^14 :         let entropy: [u8; 32] = rand::random();</span></span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC"> >7205*10^13 :         Challenge(entropy)</span></span>
+<span id="L214"><span class="lineNum">     214</span>              :     }</span>
+<span id="L215"><span class="lineNum">     215</span>              : }</span>
+<span id="L216"><span class="lineNum">     216</span>              : </span>
+<span id="L217"><span class="lineNum">     217</span>              : impl TryFrom&lt;Binary&gt; for Challenge {</span>
+<span id="L218"><span class="lineNum">     218</span>              :     type Error = &amp;'static str;</span>
+<span id="L219"><span class="lineNum">     219</span>              : </span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC"> >2161*10^14 :     fn try_from(s: Binary) -&gt; Result&lt;Self, Self::Error&gt; {</span></span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC"> >1297*10^15 :         let tmp: [u8; 32] = s.0[0].clone().try_into().map_err(|_| &quot;Too much data&quot;)?;</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC"> >2161*10^14 :         Ok(Challenge(tmp))</span></span>
+<span id="L223"><span class="lineNum">     223</span>              :     }</span>
+<span id="L224"><span class="lineNum">     224</span>              : }</span>
+<span id="L225"><span class="lineNum">     225</span>              : </span>
+<span id="L226"><span class="lineNum">     226</span>              : </span>
+<span id="L227"><span class="lineNum">     227</span>              : impl TryFrom&lt;String&gt; for Challenge {</span>
+<span id="L228"><span class="lineNum">     228</span>              :     type Error = &amp;'static str;</span>
+<span id="L229"><span class="lineNum">     229</span>              : </span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC"> >7205*10^13 :     fn try_from(s: String) -&gt; Result&lt;Self, Self::Error&gt; {</span></span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC"> >2161*10^14 :         Challenge::try_from(s.into_binary()?)</span></span>
+<span id="L232"><span class="lineNum">     232</span>              :     }</span>
+<span id="L233"><span class="lineNum">     233</span>              : }</span>
+<span id="L234"><span class="lineNum">     234</span>              : </span>
+<span id="L235"><span class="lineNum">     235</span>              : impl TryFrom&lt;&amp;String&gt; for Challenge {</span>
+<span id="L236"><span class="lineNum">     236</span>              :     type Error = &amp;'static str;</span>
+<span id="L237"><span class="lineNum">     237</span>              : </span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaUNC tlaBgUNC">           0 :     fn try_from(s: &amp;String) -&gt; Result&lt;Self, Self::Error&gt; {</span></span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaUNC">           0 :         Challenge::try_from(s.into_binary()?)</span></span>
+<span id="L240"><span class="lineNum">     240</span>              :     }</span>
+<span id="L241"><span class="lineNum">     241</span>              : }</span>
+<span id="L242"><span class="lineNum">     242</span>              : </span>
+<span id="L243"><span class="lineNum">     243</span>              : </span>
+<span id="L244"><span class="lineNum">     244</span>              : impl TryFrom&lt;&amp;str&gt; for Challenge {</span>
+<span id="L245"><span class="lineNum">     245</span>              :     type Error = &amp;'static str;</span>
+<span id="L246"><span class="lineNum">     246</span>              : </span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaUNC">           0 :     fn try_from(s: &amp;str) -&gt; Result&lt;Self, Self::Error&gt; {</span></span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaUNC">           0 :         Challenge::try_from(s.into_binary()?)</span></span>
+<span id="L249"><span class="lineNum">     249</span>              :     }</span>
+<span id="L250"><span class="lineNum">     250</span>              : }</span>
+<span id="L251"><span class="lineNum">     251</span>              : </span>
+<span id="L252"><span class="lineNum">     252</span>              : impl TryFrom&lt;&amp;CStr&gt; for Challenge {</span>
+<span id="L253"><span class="lineNum">     253</span>              :     type Error = &amp;'static str;</span>
+<span id="L254"><span class="lineNum">     254</span>              : </span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaUNC">           0 :     fn try_from(s: &amp;CStr) -&gt; Result&lt;Self, Self::Error&gt; {</span></span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaUNC">           0 :         Challenge::try_from(s.into_binary()?)</span></span>
+<span id="L257"><span class="lineNum">     257</span>              :     }</span>
+<span id="L258"><span class="lineNum">     258</span>              : }</span>
+<span id="L259"><span class="lineNum">     259</span>              : </span>
+<span id="L260"><span class="lineNum">     260</span>              : </span>
+<span id="L261"><span class="lineNum">     261</span>              : #[cfg(test)]</span>
+<span id="L262"><span class="lineNum">     262</span>              : mod tests {</span>
+<span id="L263"><span class="lineNum">     263</span>              :     use std::ffi::CString;</span>
+<span id="L264"><span class="lineNum">     264</span>              :     use std::path::PathBuf;</span>
+<span id="L265"><span class="lineNum">     265</span>              :     use std::{slice};</span>
+<span id="L266"><span class="lineNum">     266</span>              :     use std::str::FromStr;</span>
+<span id="L267"><span class="lineNum">     267</span>              :     use ssh_key::Algorithm;</span>
+<span id="L268"><span class="lineNum">     268</span>              :     use crate::crypto::Signature;</span>
+<span id="L269"><span class="lineNum">     269</span>              :     use crate::{load_ca, load_certificate, load_private_key};</span>
+<span id="L270"><span class="lineNum">     270</span>              :     use super::*;</span>
+<span id="L271"><span class="lineNum">     271</span>              :     use paste::paste;</span>
+<span id="L272"><span class="lineNum">     272</span>              :     use std::fs;</span>
+<span id="L273"><span class="lineNum">     273</span>              : </span>
+<span id="L274"><span class="lineNum">     274</span>              :     #[test]</span>
+<span id="L275"><span class="lineNum">     275</span>              :     fn test_challengebackandforth() {</span>
+<span id="L276"><span class="lineNum">     276</span>              :         let challenge = Challenge::new();</span>
+<span id="L277"><span class="lineNum">     277</span>              :         let serialized = challenge.to_string();</span>
+<span id="L278"><span class="lineNum">     278</span>              :         let read_challenge = Challenge::try_from(&amp;serialized).unwrap();</span>
+<span id="L279"><span class="lineNum">     279</span>              :         assert!(challenge == read_challenge);</span>
+<span id="L280"><span class="lineNum">     280</span>              :     }</span>
+<span id="L281"><span class="lineNum">     281</span>              : </span>
+<span id="L282"><span class="lineNum">     282</span>              :     #[test]</span>
+<span id="L283"><span class="lineNum">     283</span>              :     fn test_answerbackandforth() {</span>
+<span id="L284"><span class="lineNum">     284</span>              :         let bytes: [u8; 64] = rand::random();</span>
+<span id="L285"><span class="lineNum">     285</span>              :         let sig = Signature::new(Algorithm::Ed25519, bytes).unwrap();</span>
+<span id="L286"><span class="lineNum">     286</span>              :         let path = PathBuf::from_str(&quot;../tests/signed-cert.pub&quot;).unwrap();</span>
+<span id="L287"><span class="lineNum">     287</span>              :         let cert = load_certificate(&amp;path).unwrap();</span>
+<span id="L288"><span class="lineNum">     288</span>              :         let answer = Answer { signature: sig, intermediate: cert };</span>
+<span id="L289"><span class="lineNum">     289</span>              :         let serialized = answer.to_string();</span>
+<span id="L290"><span class="lineNum">     290</span>              :         let read_answer = Answer::try_from(&amp;serialized).unwrap();</span>
+<span id="L291"><span class="lineNum">     291</span>              :         // I am not copying the comments to save bytes but that means I have to manually compare</span>
+<span id="L292"><span class="lineNum">     292</span>              :         assert!(answer == read_answer);</span>
+<span id="L293"><span class="lineNum">     293</span>              :         assert!(! (answer != read_answer))  // just so we hit the ne as well</span>
+<span id="L294"><span class="lineNum">     294</span>              :     }</span>
+<span id="L295"><span class="lineNum">     295</span>              : </span>
+<span id="L296"><span class="lineNum">     296</span>              :     #[test]</span>
+<span id="L297"><span class="lineNum">     297</span>              :     fn test_signing_proper() {</span>
+<span id="L298"><span class="lineNum">     298</span>              :         let challenge = Challenge::new();</span>
+<span id="L299"><span class="lineNum">     299</span>              :         let ca_path = PathBuf::from_str(&quot;../tests/CAs/ca1.pub&quot;).unwrap();</span>
+<span id="L300"><span class="lineNum">     300</span>              :         let private_path = PathBuf::from_str(&quot;../tests/signed&quot;).unwrap();</span>
+<span id="L301"><span class="lineNum">     301</span>              :         let cert_path = PathBuf::from_str(&quot;../tests/signed-cert.pub&quot;).unwrap();</span>
+<span id="L302"><span class="lineNum">     302</span>              : </span>
+<span id="L303"><span class="lineNum">     303</span>              :         let ca = load_ca(&amp;ca_path).unwrap();</span>
+<span id="L304"><span class="lineNum">     304</span>              :         let fingerprint = ca.fingerprint(Default::default());</span>
+<span id="L305"><span class="lineNum">     305</span>              :         let private = load_private_key(&amp;private_path).unwrap();</span>
+<span id="L306"><span class="lineNum">     306</span>              :         let certificate = load_certificate(&amp;cert_path).unwrap();</span>
+<span id="L307"><span class="lineNum">     307</span>              :         </span>
+<span id="L308"><span class="lineNum">     308</span>              :         let engine = PrivateKeyAndCertificate::new(private, certificate).unwrap();</span>
+<span id="L309"><span class="lineNum">     309</span>              :         let answer = engine.generate_answer(&amp;challenge).unwrap();</span>
+<span id="L310"><span class="lineNum">     310</span>              :         answer.verify_signature(&amp;challenge).unwrap();</span>
+<span id="L311"><span class="lineNum">     311</span>              :         answer.verify_intermediate(slice::from_ref(&amp;fingerprint), &quot;testuser&quot;).unwrap();</span>
+<span id="L312"><span class="lineNum">     312</span>              :         assert_eq!(answer.verify_intermediate(slice::from_ref(&amp;fingerprint), &quot;testuser_false&quot;), Err(&quot;Not valid for user&quot;));</span>
+<span id="L313"><span class="lineNum">     313</span>              :     }</span>
+<span id="L314"><span class="lineNum">     314</span>              : </span>
+<span id="L315"><span class="lineNum">     315</span>              :     #[test]</span>
+<span id="L316"><span class="lineNum">     316</span>              :     fn test_signing_random_ca_fails() {</span>
+<span id="L317"><span class="lineNum">     317</span>              :         let challenge = Challenge::new();</span>
+<span id="L318"><span class="lineNum">     318</span>              : </span>
+<span id="L319"><span class="lineNum">     319</span>              :         let ca_path = PathBuf::from_str(&quot;../tests/CAs/ca1.pub&quot;).unwrap();</span>
+<span id="L320"><span class="lineNum">     320</span>              :         let private_path_false = PathBuf::from_str(&quot;../tests/signed_false&quot;).unwrap();</span>
+<span id="L321"><span class="lineNum">     321</span>              :         let cert_path_false = PathBuf::from_str(&quot;../tests/signed_false-cert.pub&quot;).unwrap();</span>
+<span id="L322"><span class="lineNum">     322</span>              : </span>
+<span id="L323"><span class="lineNum">     323</span>              :         let ca = load_ca(&amp;ca_path).unwrap();</span>
+<span id="L324"><span class="lineNum">     324</span>              :         let fingerprint = ca.fingerprint(Default::default());</span>
+<span id="L325"><span class="lineNum">     325</span>              : </span>
+<span id="L326"><span class="lineNum">     326</span>              :         let private_false = load_private_key(&amp;private_path_false).unwrap();</span>
+<span id="L327"><span class="lineNum">     327</span>              :         let certificate_false = load_certificate(&amp;cert_path_false).unwrap();</span>
+<span id="L328"><span class="lineNum">     328</span>              : </span>
+<span id="L329"><span class="lineNum">     329</span>              :         let engine_false = PrivateKeyAndCertificate::new(private_false, certificate_false).unwrap();</span>
+<span id="L330"><span class="lineNum">     330</span>              :         let answer_false = engine_false.generate_answer(&amp;challenge).unwrap();</span>
+<span id="L331"><span class="lineNum">     331</span>              :         answer_false.verify_signature(&amp;challenge).unwrap();</span>
+<span id="L332"><span class="lineNum">     332</span>              :         assert!(answer_false.verify_intermediate(slice::from_ref(&amp;fingerprint), &quot;testuser&quot;).is_err());</span>
+<span id="L333"><span class="lineNum">     333</span>              :     }</span>
+<span id="L334"><span class="lineNum">     334</span>              : </span>
+<span id="L335"><span class="lineNum">     335</span>              :     #[test]</span>
+<span id="L336"><span class="lineNum">     336</span>              :     fn test_signing_faked_signature() {</span>
+<span id="L337"><span class="lineNum">     337</span>              :         let challenge = Challenge::new();</span>
+<span id="L338"><span class="lineNum">     338</span>              :         let ca_path = PathBuf::from_str(&quot;../tests/CAs/ca1.pub&quot;).unwrap();</span>
+<span id="L339"><span class="lineNum">     339</span>              : </span>
+<span id="L340"><span class="lineNum">     340</span>              :         let private_path_false = PathBuf::from_str(&quot;../tests/signed_false&quot;).unwrap();</span>
+<span id="L341"><span class="lineNum">     341</span>              :         let cert_path = PathBuf::from_str(&quot;../tests/signed-cert.pub&quot;).unwrap();</span>
+<span id="L342"><span class="lineNum">     342</span>              :         let cert_path_false = PathBuf::from_str(&quot;../tests/signed_false-cert.pub&quot;).unwrap();</span>
+<span id="L343"><span class="lineNum">     343</span>              : </span>
+<span id="L344"><span class="lineNum">     344</span>              :         let ca = load_ca(&amp;ca_path).unwrap();</span>
+<span id="L345"><span class="lineNum">     345</span>              :         let fingerprint = ca.fingerprint(Default::default());</span>
+<span id="L346"><span class="lineNum">     346</span>              : </span>
+<span id="L347"><span class="lineNum">     347</span>              :         let private_false = load_private_key(&amp;private_path_false).unwrap();</span>
+<span id="L348"><span class="lineNum">     348</span>              :         let certificate = load_certificate(&amp;cert_path).unwrap();</span>
+<span id="L349"><span class="lineNum">     349</span>              :         let certificate_false = load_certificate(&amp;cert_path_false).unwrap();</span>
+<span id="L350"><span class="lineNum">     350</span>              : </span>
+<span id="L351"><span class="lineNum">     351</span>              :         let engine_false = PrivateKeyAndCertificate::new(private_false, certificate_false).unwrap();</span>
+<span id="L352"><span class="lineNum">     352</span>              :         let answer_false = engine_false.generate_answer(&amp;challenge).unwrap();</span>
+<span id="L353"><span class="lineNum">     353</span>              : </span>
+<span id="L354"><span class="lineNum">     354</span>              :         let modified_answer = Answer{signature: answer_false.signature, intermediate: certificate};</span>
+<span id="L355"><span class="lineNum">     355</span>              : </span>
+<span id="L356"><span class="lineNum">     356</span>              :         //intermediate matches</span>
+<span id="L357"><span class="lineNum">     357</span>              :         modified_answer.verify_intermediate(slice::from_ref(&amp;fingerprint), &quot;testuser&quot;).unwrap();</span>
+<span id="L358"><span class="lineNum">     358</span>              :         // the signature matches the challenge but not the intermediate</span>
+<span id="L359"><span class="lineNum">     359</span>              :         assert!(modified_answer.verify_signature(&amp;challenge).is_err());</span>
+<span id="L360"><span class="lineNum">     360</span>              :     }</span>
+<span id="L361"><span class="lineNum">     361</span>              : </span>
+<span id="L362"><span class="lineNum">     362</span>              :     #[test]</span>
+<span id="L363"><span class="lineNum">     363</span>              :     fn test_binary2answer_but_not_3_blobs(){</span>
+<span id="L364"><span class="lineNum">     364</span>              :         let binary = Binary{0: Vec::new()};</span>
+<span id="L365"><span class="lineNum">     365</span>              :         assert!(Answer::try_from(binary).is_err())</span>
+<span id="L366"><span class="lineNum">     366</span>              :     }</span>
+<span id="L367"><span class="lineNum">     367</span>              : </span>
+<span id="L368"><span class="lineNum">     368</span>              :     #[test]</span>
+<span id="L369"><span class="lineNum">     369</span>              :     fn test_challenge2answer(){</span>
+<span id="L370"><span class="lineNum">     370</span>              :         let challenge = Challenge::new();</span>
+<span id="L371"><span class="lineNum">     371</span>              :         let _binary = Binary::from(challenge);</span>
+<span id="L372"><span class="lineNum">     372</span>              :     }</span>
+<span id="L373"><span class="lineNum">     373</span>              : </span>
+<span id="L374"><span class="lineNum">     374</span>              :     #[test]</span>
+<span id="L375"><span class="lineNum">     375</span>              :     fn test_answer_string2answer(){</span>
+<span id="L376"><span class="lineNum">     376</span>              :         let answer_string = &quot;[[[0R:r#_c@ElzkUJr7*Uu17uvrN@B%;-U&gt;Qqj#y@{KnOyL&lt;L!a2tY_S&gt;N;uv%y1zTaRtZff&lt;Vt&lt;$Z4#6Itu&amp;&lt;:0000Wb8~1dWn?lnH8D9YV`Xx5Ep{+5KyPqmZgX&gt;JE@N+P0000W@6eqn1dj9(Z0ZI-kiyUZ!YHR*k)zAYKgNv`W=8ME0000WAl)rJ)FEJ|d@Zy`jdI?&lt;;)*c^slX9E!17Y&gt;aB$}`0000000000000010000KbY*jNb#rBMKxKGgZE$R5E@N+P0000C00008bY*jNb#rBM00000X#&amp;1500000d%=&gt;W000000001j0000LaAk6BX&gt;=`EF)=M&gt;Z*q5Ga%5?4X8-^I000007jR{AZE18ZVP|D-bS-9Ya(7{JWNB_^000000000MaAk6BX&gt;=`cZ*p`kW^ZzLVRB??Zf5`h00000019wra&amp;2jJEpT*s000000000EaAk6BX&gt;=`hb7gWZa$^7h000000000005bpp01I&lt;-Xf0)AGBq_ZIRF3vAZhB==tO2#AUh_rMLGzKsz6=J#5NtAYAqde990lr-2eapQvd(}3v+X5EoEdfH8n9g0000$74Z7x9c{A9ozu0KKI&amp;lKppMRYt|S_7K}UQ0Bf?aw-06hRfox*&amp;=H!Czutqff40`KrycD3oZ&gt;j(&amp;bdhuo]]]&quot;;</span>
+<span id="L377"><span class="lineNum">     377</span>              :         let answer_string_cstr = CString::new(answer_string).unwrap();</span>
+<span id="L378"><span class="lineNum">     378</span>              :         let tmp = Answer::try_from(answer_string);</span>
+<span id="L379"><span class="lineNum">     379</span>              :         assert!(tmp.is_ok());</span>
+<span id="L380"><span class="lineNum">     380</span>              :         let tmp = Answer::try_from(answer_string.to_string());</span>
+<span id="L381"><span class="lineNum">     381</span>              :         assert!(tmp.is_ok());</span>
+<span id="L382"><span class="lineNum">     382</span>              :         let tmp = Answer::try_from(answer_string_cstr.as_c_str());</span>
+<span id="L383"><span class="lineNum">     383</span>              :         assert!(tmp.is_ok());</span>
+<span id="L384"><span class="lineNum">     384</span>              :         assert!(Binary::try_from(tmp.unwrap()).is_ok());</span>
+<span id="L385"><span class="lineNum">     385</span>              :     }</span>
+<span id="L386"><span class="lineNum">     386</span>              : </span>
+<span id="L387"><span class="lineNum">     387</span>              :     #[test]</span>
+<span id="L388"><span class="lineNum">     388</span>              :     fn test_challengestring2challenge(){</span>
+<span id="L389"><span class="lineNum">     389</span>              :         let challenge_string = &quot;[[[4UqQ2gDz+Vf_IR`U!gV}^Z)DIoE6{3?4-b&lt;WL(*F]]]&quot;;</span>
+<span id="L390"><span class="lineNum">     390</span>              :         let challenge_string_cstr = CString::new(challenge_string).unwrap();</span>
+<span id="L391"><span class="lineNum">     391</span>              :         assert!(Challenge::try_from(challenge_string).is_ok());</span>
+<span id="L392"><span class="lineNum">     392</span>              :         assert!(Challenge::try_from(challenge_string.to_owned()).is_ok());</span>
+<span id="L393"><span class="lineNum">     393</span>              :         assert!(Challenge::try_from(challenge_string).is_ok());</span>
+<span id="L394"><span class="lineNum">     394</span>              :         assert!(Challenge::try_from(challenge_string_cstr.as_c_str()).is_ok());</span>
+<span id="L395"><span class="lineNum">     395</span>              :     }</span>
+<span id="L396"><span class="lineNum">     396</span>              : </span>
+<span id="L397"><span class="lineNum">     397</span>              :     #[test]</span>
+<span id="L398"><span class="lineNum">     398</span>              :     fn test_detects_non_matching_key(){</span>
+<span id="L399"><span class="lineNum">     399</span>              :         let private_path_false = PathBuf::from_str(&quot;../tests/signed_false&quot;).unwrap();</span>
+<span id="L400"><span class="lineNum">     400</span>              :         let cert_path = PathBuf::from_str(&quot;../tests/signed-cert.pub&quot;).unwrap();</span>
+<span id="L401"><span class="lineNum">     401</span>              : </span>
+<span id="L402"><span class="lineNum">     402</span>              :         let private_false = load_private_key(&amp;private_path_false).unwrap();</span>
+<span id="L403"><span class="lineNum">     403</span>              :         let certificate = load_certificate(&amp;cert_path).unwrap();</span>
+<span id="L404"><span class="lineNum">     404</span>              :         assert!(private_false.matches(&amp;certificate).is_err());</span>
+<span id="L405"><span class="lineNum">     405</span>              :     }</span>
+<span id="L406"><span class="lineNum">     406</span>              : </span>
+<span id="L407"><span class="lineNum">     407</span>              : </span>
+<span id="L408"><span class="lineNum">     408</span>              :     macro_rules! signer_signee_combination {</span>
+<span id="L409"><span class="lineNum">     409</span>              :         ($($signee:ident, $signed:ident);* $(;)?) =&gt; {</span>
+<span id="L410"><span class="lineNum">     410</span>              :             paste!{</span>
+<span id="L411"><span class="lineNum">     411</span>              :                 $(</span>
+<span id="L412"><span class="lineNum">     412</span>              :                     #[test]</span>
+<span id="L413"><span class="lineNum">     413</span>              :                     fn [&lt;$signee _ $signed&gt;]() {</span>
+<span id="L414"><span class="lineNum">     414</span>              :                         let key_folder = PathBuf::from_str(&quot;../tests/keys/&quot;).unwrap();</span>
+<span id="L415"><span class="lineNum">     415</span>              :                         let signed_private_path = key_folder.clone().join(stringify!($signed));</span>
+<span id="L416"><span class="lineNum">     416</span>              :                         let _signee_public_path = key_folder.clone().join(format!(&quot;{}.pub&quot;, stringify!($signee)));</span>
+<span id="L417"><span class="lineNum">     417</span>              :                         let cert_path = key_folder.clone().join(format!(&quot;{}-{}.cert&quot;, stringify!($signee), stringify!($signed)));</span>
+<span id="L418"><span class="lineNum">     418</span>              : </span>
+<span id="L419"><span class="lineNum">     419</span>              :                         println!(&quot;Signed private path: {}&quot;, fs::canonicalize(&amp;signed_private_path).unwrap().display());</span>
+<span id="L420"><span class="lineNum">     420</span>              :                         println!(&quot;Certificate path: {}&quot;, fs::canonicalize(&amp;cert_path).unwrap().display());</span>
+<span id="L421"><span class="lineNum">     421</span>              :                         let private_key = load_private_key(&amp;signed_private_path).unwrap();</span>
+<span id="L422"><span class="lineNum">     422</span>              :                         let cert = load_certificate(&amp;cert_path).unwrap();</span>
+<span id="L423"><span class="lineNum">     423</span>              : </span>
+<span id="L424"><span class="lineNum">     424</span>              :                         let engine = PrivateKeyAndCertificate {</span>
+<span id="L425"><span class="lineNum">     425</span>              :                             private: private_key,</span>
+<span id="L426"><span class="lineNum">     426</span>              :                             intermediate: cert</span>
+<span id="L427"><span class="lineNum">     427</span>              :                         };</span>
+<span id="L428"><span class="lineNum">     428</span>              : </span>
+<span id="L429"><span class="lineNum">     429</span>              :                         let challenge = Challenge::new();</span>
+<span id="L430"><span class="lineNum">     430</span>              :                         let answer = engine.generate_answer(&amp;challenge).unwrap();</span>
+<span id="L431"><span class="lineNum">     431</span>              : </span>
+<span id="L432"><span class="lineNum">     432</span>              :                         let tmp = answer.to_string();</span>
+<span id="L433"><span class="lineNum">     433</span>              :                         let back = Answer::try_from(tmp);</span>
+<span id="L434"><span class="lineNum">     434</span>              :                         match back{</span>
+<span id="L435"><span class="lineNum">     435</span>              :                             Ok(t) =&gt; {</span>
+<span id="L436"><span class="lineNum">     436</span>              :                                 //assert_eq!(t.signature.algorithm(), answer.signature.algorithm());</span>
+<span id="L437"><span class="lineNum">     437</span>              :                                 assert!(t.signature.as_bytes() == answer.signature.as_bytes());</span>
+<span id="L438"><span class="lineNum">     438</span>              :                                 assert!(t.intermediate.algorithm() == answer.intermediate.algorithm());</span>
+<span id="L439"><span class="lineNum">     439</span>              :                                 assert!(t.intermediate.signature() == answer.intermediate.signature());</span>
+<span id="L440"><span class="lineNum">     440</span>              :                             }</span>
+<span id="L441"><span class="lineNum">     441</span>              :                             Err(e) =&gt; {</span>
+<span id="L442"><span class="lineNum">     442</span>              :                                 println!(&quot;{} {}: {}&quot;, stringify!($signee), stringify!($signed), e);</span>
+<span id="L443"><span class="lineNum">     443</span>              :                                 assert!(false);</span>
+<span id="L444"><span class="lineNum">     444</span>              :                             }</span>
+<span id="L445"><span class="lineNum">     445</span>              :                         };</span>
+<span id="L446"><span class="lineNum">     446</span>              :                     }</span>
+<span id="L447"><span class="lineNum">     447</span>              :                 )*</span>
+<span id="L448"><span class="lineNum">     448</span>              :             }</span>
+<span id="L449"><span class="lineNum">     449</span>              :         }</span>
+<span id="L450"><span class="lineNum">     450</span>              :     }</span>
+<span id="L451"><span class="lineNum">     451</span>              : </span>
+<span id="L452"><span class="lineNum">     452</span>              :     signer_signee_combination!(ecdsa_nistp256, ecdsa_nistp384);</span>
+<span id="L453"><span class="lineNum">     453</span>              :     signer_signee_combination!(ecdsa_nistp256, ecdsa_nistp521);</span>
+<span id="L454"><span class="lineNum">     454</span>              :     signer_signee_combination!(ecdsa_nistp256, ed25519);</span>
+<span id="L455"><span class="lineNum">     455</span>              :     //signer_signee_combination!(ecdsa_nistp256, rsa_sha256); // signing support is apparently broken in ssh_key 0.6.7</span>
+<span id="L456"><span class="lineNum">     456</span>              :     //signer_signee_combination!(ecdsa_nistp256, rsa_sha512); // signing support is apparently broken in ssh_key 0.6.7</span>
+<span id="L457"><span class="lineNum">     457</span>              : </span>
+<span id="L458"><span class="lineNum">     458</span>              :     signer_signee_combination!(ecdsa_nistp384, ecdsa_nistp256);</span>
+<span id="L459"><span class="lineNum">     459</span>              :     signer_signee_combination!(ecdsa_nistp384, ecdsa_nistp521);</span>
+<span id="L460"><span class="lineNum">     460</span>              :     signer_signee_combination!(ecdsa_nistp384, ed25519);</span>
+<span id="L461"><span class="lineNum">     461</span>              :     //signer_signee_combination!(ecdsa_nistp384, rsa_sha256); // signing support is apparently broken in ssh_key 0.6.7</span>
+<span id="L462"><span class="lineNum">     462</span>              :     //signer_signee_combination!(ecdsa_nistp384, rsa_sha512); // signing support is apparently broken in ssh_key 0.6.7</span>
+<span id="L463"><span class="lineNum">     463</span>              : </span>
+<span id="L464"><span class="lineNum">     464</span>              :     signer_signee_combination!(ecdsa_nistp521, ecdsa_nistp256);</span>
+<span id="L465"><span class="lineNum">     465</span>              :     signer_signee_combination!(ecdsa_nistp521, ecdsa_nistp384);</span>
+<span id="L466"><span class="lineNum">     466</span>              :     signer_signee_combination!(ecdsa_nistp521, ed25519);</span>
+<span id="L467"><span class="lineNum">     467</span>              :     //signer_signee_combination!(ecdsa_nistp521, rsa_sha256); // signing support is apparently broken in ssh_key 0.6.7</span>
+<span id="L468"><span class="lineNum">     468</span>              :     //signer_signee_combination!(ecdsa_nistp521, rsa_sha512); // signing support is apparently broken in ssh_key 0.6.7</span>
+<span id="L469"><span class="lineNum">     469</span>              : </span>
+<span id="L470"><span class="lineNum">     470</span>              :     signer_signee_combination!(ed25519, ecdsa_nistp256);</span>
+<span id="L471"><span class="lineNum">     471</span>              :     signer_signee_combination!(ed25519, ecdsa_nistp384);</span>
+<span id="L472"><span class="lineNum">     472</span>              :     signer_signee_combination!(ed25519, ecdsa_nistp521);</span>
+<span id="L473"><span class="lineNum">     473</span>              :     //signer_signee_combination!(ed25519, rsa_sha256); // signing support is apparently broken in ssh_key 0.6.7</span>
+<span id="L474"><span class="lineNum">     474</span>              :     //signer_signee_combination!(ed25519, rsa_sha512); // signing support is apparently broken in ssh_key 0.6.7</span>
+<span id="L475"><span class="lineNum">     475</span>              : </span>
+<span id="L476"><span class="lineNum">     476</span>              :     signer_signee_combination!(rsa_sha256, ecdsa_nistp256);</span>
+<span id="L477"><span class="lineNum">     477</span>              :     signer_signee_combination!(rsa_sha256, ecdsa_nistp384);</span>
+<span id="L478"><span class="lineNum">     478</span>              :     signer_signee_combination!(rsa_sha256, ecdsa_nistp521);</span>
+<span id="L479"><span class="lineNum">     479</span>              :     signer_signee_combination!(rsa_sha256, ed25519);</span>
+<span id="L480"><span class="lineNum">     480</span>              :     //signer_signee_combination!(rsa_sha256, rsa_sha512);  // signing support is apparently broken in ssh_key 0.6.7</span>
+<span id="L481"><span class="lineNum">     481</span>              : </span>
+<span id="L482"><span class="lineNum">     482</span>              :     signer_signee_combination!(rsa_sha512, ecdsa_nistp256);</span>
+<span id="L483"><span class="lineNum">     483</span>              :     signer_signee_combination!(rsa_sha512, ecdsa_nistp384);</span>
+<span id="L484"><span class="lineNum">     484</span>              :     signer_signee_combination!(rsa_sha512, ecdsa_nistp521);</span>
+<span id="L485"><span class="lineNum">     485</span>              :     signer_signee_combination!(rsa_sha512, ed25519);</span>
+<span id="L486"><span class="lineNum">     486</span>              :     //signer_signee_combination!(rsa_sha512, rsa_sha256); // signing support is apparently broken in ssh_key 0.6.7</span>
+<span id="L487"><span class="lineNum">     487</span>              : }</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.0-1</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>
