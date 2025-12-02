@@ -117,6 +117,7 @@ jobs:
           lcov -a cat_merged.lcov -o merged.lcov
           mkdir -p merged-coverage
           sed -i 's#D:\\a\\#\/home/runner/work/#g' merged.lcov
+          sed -i 's|\\|/|g' merged.lcov
           genhtml merged.lcov -o merged-coverage/html
           zip -r coverage-html.zip merged-coverage/html
 
