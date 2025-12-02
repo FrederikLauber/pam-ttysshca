@@ -116,7 +116,7 @@ jobs:
           find coverage -name "*.info" -exec cat "{}" + > cat_merged.lcov
           lcov -a cat_merged.lcov -o merged.lcov
           mkdir -p merged-coverage
-          sed -i 's#D:\\a\\#\/home/runner/work/#g' coverage.lcov
+          sed -i 's#D:\\a\\#\/home/runner/work/#g' merged.lcov
           genhtml merged.lcov -o merged-coverage/html
           zip -r coverage-html.zip merged-coverage/html
 
