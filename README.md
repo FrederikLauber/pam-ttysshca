@@ -1,5 +1,5 @@
 # pam-ttysshca
-![Coverage](https://FrederikLauber.github.io/pam-ttysshca/coverage.svg)
+[![codecov](https://codecov.io/gh/FrederikLauber/pam-ttysshca/graph/badge.svg)](https://codecov.io/gh/FrederikLauber/pam-ttysshca)
 
 **pam-ttysshca** is a PAM module that implements a human-readable challenge–response login mechanism. It is primarily intended for situations where the transport layer can be assumed to be secure—such as a serial connection, local console, or remote control via tools like TeamViewer—and where authentication is traditionally password-based.
 
