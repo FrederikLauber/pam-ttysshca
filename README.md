@@ -56,15 +56,6 @@ pamtester your_workflow your_user authenticate
 
 to test the workflow.
 
-## Limitations
-
-This software mostly uses the functionality provided by the ssh_key crate, currently in version 0.7.0-rc4.
-Due to this, there are some limitations in key algorithms that can be used most notable 
-
-- rsa256 and rsa512 does not work
-
-Most of these should be fixed as of release 0.7.0 in the near future.
-
 ## ⚖️ License
 
 All parts of this project are licensed under the GPL3.0.

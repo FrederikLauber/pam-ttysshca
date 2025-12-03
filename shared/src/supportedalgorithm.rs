@@ -12,6 +12,7 @@ pub enum SupportedAlgorithm {
     EcdsaNistP521 = 6u8,
     RsaSha256 = 7u8,
     RsaSha512 = 8u8,
+    RsaSha = 9u8,
 }
 
 
@@ -31,6 +32,7 @@ impl SupportedAlgorithm {
             6u8 => Some(Self::EcdsaNistP521),
             7u8 => Some(Self::RsaSha256),
             8u8 => Some(Self::RsaSha512),
+            9u8 => Some(Self::RsaSha),
             _ => None,
         }
     }
@@ -46,6 +48,7 @@ impl SupportedAlgorithm {
             SupportedAlgorithm::EcdsaNistP521 => Some(Algorithm::Ecdsa { curve: EcdsaCurve::NistP521 }),
             SupportedAlgorithm::RsaSha256 => Some(Algorithm::Rsa { hash: Some(HashAlg::Sha256) }),
             SupportedAlgorithm::RsaSha512 => Some(Algorithm::Rsa { hash: Some(HashAlg::Sha512) }),
+            SupportedAlgorithm::RsaSha => Some(Algorithm::Rsa { hash: None }),
         }
     }
 
@@ -60,12 +63,11 @@ impl SupportedAlgorithm {
             Algorithm::Ecdsa { curve: EcdsaCurve::NistP521 } => Some(SupportedAlgorithm::EcdsaNistP521),
             Algorithm::Rsa { hash: Some(HashAlg::Sha256) } => Some(SupportedAlgorithm::RsaSha256),
             Algorithm::Rsa { hash: Some(HashAlg::Sha512) } => Some(SupportedAlgorithm::RsaSha512),
+            Algorithm::Rsa { hash: None } => Some(SupportedAlgorithm::RsaSha),
             _ => None
         }
     }
 }
-
-
 
 #[cfg(test)]
 mod tests {
