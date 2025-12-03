@@ -71,8 +71,8 @@ jobs:
           mv tarpaulin-report/lcov.info tarpaulin-report/Authenticator_cli.info
           cargo tarpaulin --engine llvm --out Lcov -p pam-ttysshca --output-dir tarpaulin-report
           mv tarpaulin-report/lcov.info tarpaulin-report/pam-ttysshca.info
-
-        # cargo tarpaulin --out Lcov -p pypam_ttysshca --output-dir tarpaulin-report --engine llvm # broken on linux atm  --engine llvm
+          cargo tarpaulin  --engine llvm --out Lcov -p pypam_ttysshca --output-dir tarpaulin-report
+          mv tarpaulin-report/lcov.info tarpaulin-report/pypam-ttysshca.info
 
       - name: Upload lcov coverage
         uses: actions/upload-artifact@v4
