@@ -459,36 +459,36 @@ mod tests {
     signer_signee_combination!(ecdsa_nistp256, ecdsa_nistp384);
     signer_signee_combination!(ecdsa_nistp256, ecdsa_nistp521);
     signer_signee_combination!(ecdsa_nistp256, ed25519);
-    //signer_signee_combination!(ecdsa_nistp256, rsa_sha256); // signing support is apparently broken in ssh_key 0.6.7
-    //signer_signee_combination!(ecdsa_nistp256, rsa_sha512); // signing support is apparently broken in ssh_key 0.6.7
+    signer_signee_combination!(ecdsa_nistp256, rsa_sha256);
+    signer_signee_combination!(ecdsa_nistp256, rsa_sha512);
 
     signer_signee_combination!(ecdsa_nistp384, ecdsa_nistp256);
     signer_signee_combination!(ecdsa_nistp384, ecdsa_nistp521);
     signer_signee_combination!(ecdsa_nistp384, ed25519);
-    //signer_signee_combination!(ecdsa_nistp384, rsa_sha256); // signing support is apparently broken in ssh_key 0.6.7
-    //signer_signee_combination!(ecdsa_nistp384, rsa_sha512); // signing support is apparently broken in ssh_key 0.6.7
+    signer_signee_combination!(ecdsa_nistp384, rsa_sha256);
+    signer_signee_combination!(ecdsa_nistp384, rsa_sha512);
 
     signer_signee_combination!(ecdsa_nistp521, ecdsa_nistp256);
     signer_signee_combination!(ecdsa_nistp521, ecdsa_nistp384);
     signer_signee_combination!(ecdsa_nistp521, ed25519);
-    //signer_signee_combination!(ecdsa_nistp521, rsa_sha256); // signing support is apparently broken in ssh_key 0.6.7
-    //signer_signee_combination!(ecdsa_nistp521, rsa_sha512); // signing support is apparently broken in ssh_key 0.6.7
+    signer_signee_combination!(ecdsa_nistp521, rsa_sha256);
+    signer_signee_combination!(ecdsa_nistp521, rsa_sha512);
 
     signer_signee_combination!(ed25519, ecdsa_nistp256);
     signer_signee_combination!(ed25519, ecdsa_nistp384);
     signer_signee_combination!(ed25519, ecdsa_nistp521);
-    //signer_signee_combination!(ed25519, rsa_sha256); // signing support is apparently broken in ssh_key 0.6.7
-    //signer_signee_combination!(ed25519, rsa_sha512); // signing support is apparently broken in ssh_key 0.6.7
+    signer_signee_combination!(ed25519, rsa_sha256);
+    signer_signee_combination!(ed25519, rsa_sha512);
 
     signer_signee_combination!(rsa_sha256, ecdsa_nistp256);
     signer_signee_combination!(rsa_sha256, ecdsa_nistp384);
     signer_signee_combination!(rsa_sha256, ecdsa_nistp521);
     signer_signee_combination!(rsa_sha256, ed25519);
-    //signer_signee_combination!(rsa_sha256, rsa_sha512);  // signing support is apparently broken in ssh_key 0.6.7
+    signer_signee_combination!(rsa_sha256, rsa_sha512);
 
     signer_signee_combination!(rsa_sha512, ecdsa_nistp256);
     signer_signee_combination!(rsa_sha512, ecdsa_nistp384);
     signer_signee_combination!(rsa_sha512, ecdsa_nistp521);
     signer_signee_combination!(rsa_sha512, ed25519);
-    //signer_signee_combination!(rsa_sha512, rsa_sha256); // signing support is apparently broken in ssh_key 0.6.7
+    signer_signee_combination!(rsa_sha512, rsa_sha256);
 }
