@@ -31,13 +31,13 @@
             <td class="headerValue">merged.lcov</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryLo">25.0&nbsp;%</td>
+            <td class="headerCovTableEntryHi">97.5&nbsp;%</td>
             <td class="headerCovTableEntry">40</td>
-            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntry">39</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2025-12-03 12:04:32</td>
+            <td class="headerValue">2025-12-03 14:03:16</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
@@ -79,54 +79,54 @@
 <span id="L17"><span class="lineNum">      17</span>              : </span>
 <span id="L18"><span class="lineNum">      18</span>              : </span>
 <span id="L19"><span class="lineNum">      19</span>              : impl SupportedAlgorithm {</span>
-<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC tlaBgGNC"> >2161*10^14 :     pub fn to_byte(&amp;self) -&gt; u8 {</span></span>
-<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC"> >2161*10^14 :         *self as u8</span></span>
+<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC tlaBgGNC"> >3170*10^15 :     pub fn to_byte(&amp;self) -&gt; u8 {</span></span>
+<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC"> >3170*10^15 :         *self as u8</span></span>
 <span id="L22"><span class="lineNum">      22</span>              :     }</span>
 <span id="L23"><span class="lineNum">      23</span>              : </span>
-<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">           2 :     pub fn from_byte(byte: &amp;u8) -&gt; Option&lt;Self&gt; {</span></span>
-<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">           2 :         match byte {</span></span>
-<span id="L26"><span class="lineNum">      26</span> <span class="tlaUNC tlaBgUNC">           0 :             0u8 =&gt; Some(Self::Dsa),</span></span>
-<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC tlaBgGNC">           2 :             1u8 =&gt; Some(Self::Ed25519),</span></span>
-<span id="L28"><span class="lineNum">      28</span> <span class="tlaUNC tlaBgUNC">           0 :             2u8 =&gt; Some(Self::SkEd25519),</span></span>
-<span id="L29"><span class="lineNum">      29</span> <span class="tlaUNC">           0 :             3u8 =&gt; Some(Self::SkEcdsaSha2NistP256),</span></span>
-<span id="L30"><span class="lineNum">      30</span> <span class="tlaUNC">           0 :             4u8 =&gt; Some(Self::EcdsaNistP256),</span></span>
-<span id="L31"><span class="lineNum">      31</span> <span class="tlaUNC">           0 :             5u8 =&gt; Some(Self::EcdsaNistP384),</span></span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaUNC">           0 :             6u8 =&gt; Some(Self::EcdsaNistP521),</span></span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaUNC">           0 :             7u8 =&gt; Some(Self::RsaSha256),</span></span>
-<span id="L34"><span class="lineNum">      34</span> <span class="tlaUNC">           0 :             8u8 =&gt; Some(Self::RsaSha512),</span></span>
-<span id="L35"><span class="lineNum">      35</span> <span class="tlaUNC">           0 :             9u8 =&gt; Some(Self::RsaSha),</span></span>
-<span id="L36"><span class="lineNum">      36</span> <span class="tlaUNC">           0 :             _ =&gt; None,</span></span>
+<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC"> >3170*10^15 :     pub fn from_byte(byte: &amp;u8) -&gt; Option&lt;Self&gt; {</span></span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC"> >3170*10^15 :         match byte {</span></span>
+<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC"> >7205*10^13 :             0u8 =&gt; Some(Self::Dsa),</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC"> >7205*10^14 :             1u8 =&gt; Some(Self::Ed25519),</span></span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC"> >7205*10^13 :             2u8 =&gt; Some(Self::SkEd25519),</span></span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC"> >7205*10^13 :             3u8 =&gt; Some(Self::SkEcdsaSha2NistP256),</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC"> >4323*10^14 :             4u8 =&gt; Some(Self::EcdsaNistP256),</span></span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC"> >4323*10^14 :             5u8 =&gt; Some(Self::EcdsaNistP384),</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC"> >4323*10^14 :             6u8 =&gt; Some(Self::EcdsaNistP521),</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC"> >7205*10^13 :             7u8 =&gt; Some(Self::RsaSha256),</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC"> >7205*10^13 :             8u8 =&gt; Some(Self::RsaSha512),</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC"> >7205*10^14 :             9u8 =&gt; Some(Self::RsaSha),</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC"> >7205*10^13 :             _ =&gt; None,</span></span>
 <span id="L37"><span class="lineNum">      37</span>              :         }</span>
 <span id="L38"><span class="lineNum">      38</span>              :     }</span>
 <span id="L39"><span class="lineNum">      39</span>              : </span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC tlaBgGNC">           2 :     pub fn to_ssh_algorithm(&amp;self) -&gt; Option&lt;Algorithm&gt; {</span></span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">           2 :         match self {</span></span>
-<span id="L42"><span class="lineNum">      42</span> <span class="tlaUNC tlaBgUNC">           0 :             SupportedAlgorithm::Dsa =&gt; Some(Algorithm::Dsa),</span></span>
-<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC tlaBgGNC">           2 :             SupportedAlgorithm::Ed25519 =&gt; Some(Algorithm::Ed25519),</span></span>
-<span id="L44"><span class="lineNum">      44</span> <span class="tlaUNC tlaBgUNC">           0 :             SupportedAlgorithm::SkEd25519 =&gt; Some(Algorithm::SkEd25519),</span></span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaUNC">           0 :             SupportedAlgorithm::SkEcdsaSha2NistP256 =&gt; Some(Algorithm::SkEcdsaSha2NistP256),</span></span>
-<span id="L46"><span class="lineNum">      46</span> <span class="tlaUNC">           0 :             SupportedAlgorithm::EcdsaNistP256 =&gt; Some(Algorithm::Ecdsa { curve: EcdsaCurve::NistP256 }),</span></span>
-<span id="L47"><span class="lineNum">      47</span> <span class="tlaUNC">           0 :             SupportedAlgorithm::EcdsaNistP384 =&gt; Some(Algorithm::Ecdsa { curve: EcdsaCurve::NistP384 }),</span></span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaUNC">           0 :             SupportedAlgorithm::EcdsaNistP521 =&gt; Some(Algorithm::Ecdsa { curve: EcdsaCurve::NistP521 }),</span></span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaUNC">           0 :             SupportedAlgorithm::RsaSha256 =&gt; Some(Algorithm::Rsa { hash: Some(HashAlg::Sha256) }),</span></span>
-<span id="L50"><span class="lineNum">      50</span> <span class="tlaUNC">           0 :             SupportedAlgorithm::RsaSha512 =&gt; Some(Algorithm::Rsa { hash: Some(HashAlg::Sha512) }),</span></span>
-<span id="L51"><span class="lineNum">      51</span> <span class="tlaUNC">           0 :             SupportedAlgorithm::RsaSha =&gt; Some(Algorithm::Rsa { hash: None }),</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC"> >3098*10^15 :     pub fn to_ssh_algorithm(&amp;self) -&gt; Option&lt;Algorithm&gt; {</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC"> >3098*10^15 :         match self {</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC"> >7205*10^13 :             SupportedAlgorithm::Dsa =&gt; Some(Algorithm::Dsa),</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC"> >7205*10^14 :             SupportedAlgorithm::Ed25519 =&gt; Some(Algorithm::Ed25519),</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC"> >7205*10^13 :             SupportedAlgorithm::SkEd25519 =&gt; Some(Algorithm::SkEd25519),</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC"> >7205*10^13 :             SupportedAlgorithm::SkEcdsaSha2NistP256 =&gt; Some(Algorithm::SkEcdsaSha2NistP256),</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC"> >4323*10^14 :             SupportedAlgorithm::EcdsaNistP256 =&gt; Some(Algorithm::Ecdsa { curve: EcdsaCurve::NistP256 }),</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC"> >4323*10^14 :             SupportedAlgorithm::EcdsaNistP384 =&gt; Some(Algorithm::Ecdsa { curve: EcdsaCurve::NistP384 }),</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC"> >4323*10^14 :             SupportedAlgorithm::EcdsaNistP521 =&gt; Some(Algorithm::Ecdsa { curve: EcdsaCurve::NistP521 }),</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC"> >7205*10^13 :             SupportedAlgorithm::RsaSha256 =&gt; Some(Algorithm::Rsa { hash: Some(HashAlg::Sha256) }),</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC"> >7205*10^13 :             SupportedAlgorithm::RsaSha512 =&gt; Some(Algorithm::Rsa { hash: Some(HashAlg::Sha512) }),</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC"> >7205*10^14 :             SupportedAlgorithm::RsaSha =&gt; Some(Algorithm::Rsa { hash: None }),</span></span>
 <span id="L52"><span class="lineNum">      52</span>              :         }</span>
 <span id="L53"><span class="lineNum">      53</span>              :     }</span>
 <span id="L54"><span class="lineNum">      54</span>              : </span>
-<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC tlaBgGNC"> >2161*10^14 :     pub fn from_ssh_algorithm(a: &amp;Algorithm) -&gt; Option&lt;Self&gt; {</span></span>
-<span id="L56"><span class="lineNum">      56</span> <span class="tlaUNC tlaBgUNC">           0 :         match a {</span></span>
-<span id="L57"><span class="lineNum">      57</span> <span class="tlaUNC">           0 :             Algorithm::Dsa =&gt; Some(SupportedAlgorithm::Dsa),</span></span>
-<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC tlaBgGNC"> >2161*10^14 :             Algorithm::Ed25519 =&gt; Some(SupportedAlgorithm::Ed25519),</span></span>
-<span id="L59"><span class="lineNum">      59</span> <span class="tlaUNC tlaBgUNC">           0 :             Algorithm::SkEd25519 =&gt; Some(SupportedAlgorithm::SkEd25519),</span></span>
-<span id="L60"><span class="lineNum">      60</span> <span class="tlaUNC">           0 :             Algorithm::SkEcdsaSha2NistP256 =&gt; Some(SupportedAlgorithm::SkEcdsaSha2NistP256),</span></span>
-<span id="L61"><span class="lineNum">      61</span> <span class="tlaUNC">           0 :             Algorithm::Ecdsa { curve: EcdsaCurve::NistP256 } =&gt; Some(SupportedAlgorithm::EcdsaNistP256),</span></span>
-<span id="L62"><span class="lineNum">      62</span> <span class="tlaUNC">           0 :             Algorithm::Ecdsa { curve: EcdsaCurve::NistP384 } =&gt; Some(SupportedAlgorithm::EcdsaNistP384),</span></span>
-<span id="L63"><span class="lineNum">      63</span> <span class="tlaUNC">           0 :             Algorithm::Ecdsa { curve: EcdsaCurve::NistP521 } =&gt; Some(SupportedAlgorithm::EcdsaNistP521),</span></span>
-<span id="L64"><span class="lineNum">      64</span> <span class="tlaUNC">           0 :             Algorithm::Rsa { hash: Some(HashAlg::Sha256) } =&gt; Some(SupportedAlgorithm::RsaSha256),</span></span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaUNC">           0 :             Algorithm::Rsa { hash: Some(HashAlg::Sha512) } =&gt; Some(SupportedAlgorithm::RsaSha512),</span></span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaUNC">           0 :             Algorithm::Rsa { hash: None } =&gt; Some(SupportedAlgorithm::RsaSha),</span></span>
-<span id="L67"><span class="lineNum">      67</span> <span class="tlaUNC">           0 :             _ =&gt; None</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC"> >3170*10^15 :     pub fn from_ssh_algorithm(a: &amp;Algorithm) -&gt; Option&lt;Self&gt; {</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC"> >1297*10^15 :         match a {</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC"> >7205*10^13 :             Algorithm::Dsa =&gt; Some(SupportedAlgorithm::Dsa),</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC"> >7926*10^14 :             Algorithm::Ed25519 =&gt; Some(SupportedAlgorithm::Ed25519),</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC"> >7205*10^13 :             Algorithm::SkEd25519 =&gt; Some(SupportedAlgorithm::SkEd25519),</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC"> >7205*10^13 :             Algorithm::SkEcdsaSha2NistP256 =&gt; Some(SupportedAlgorithm::SkEcdsaSha2NistP256),</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC"> >4323*10^14 :             Algorithm::Ecdsa { curve: EcdsaCurve::NistP256 } =&gt; Some(SupportedAlgorithm::EcdsaNistP256),</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC"> >4323*10^14 :             Algorithm::Ecdsa { curve: EcdsaCurve::NistP384 } =&gt; Some(SupportedAlgorithm::EcdsaNistP384),</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC"> >4323*10^14 :             Algorithm::Ecdsa { curve: EcdsaCurve::NistP521 } =&gt; Some(SupportedAlgorithm::EcdsaNistP521),</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC"> >7205*10^13 :             Algorithm::Rsa { hash: Some(HashAlg::Sha256) } =&gt; Some(SupportedAlgorithm::RsaSha256),</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC"> >7205*10^13 :             Algorithm::Rsa { hash: Some(HashAlg::Sha512) } =&gt; Some(SupportedAlgorithm::RsaSha512),</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC"> >7205*10^14 :             Algorithm::Rsa { hash: None } =&gt; Some(SupportedAlgorithm::RsaSha),</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaUNC tlaBgUNC">           0 :             _ =&gt; None</span></span>
 <span id="L68"><span class="lineNum">      68</span>              :         }</span>
 <span id="L69"><span class="lineNum">      69</span>              :     }</span>
 <span id="L70"><span class="lineNum">      70</span>              : }</span>
