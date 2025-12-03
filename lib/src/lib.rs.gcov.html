@@ -31,18 +31,18 @@
             <td class="headerValue">merged.lcov</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryLo">6.5&nbsp;%</td>
+            <td class="headerCovTableEntryLo">50.0&nbsp;%</td>
             <td class="headerCovTableEntry">46</td>
-            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">23</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2025-12-02 16:42:11</td>
+            <td class="headerValue">2025-12-03 12:04:32</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntryLo">33.3&nbsp;%</td>
+            <td class="headerCovTableEntryLo">66.7&nbsp;%</td>
             <td class="headerCovTableEntry">3</td>
-            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">2</td>
           </tr>
                   <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
                 </table>
@@ -76,66 +76,66 @@
 <span id="L14"><span class="lineNum">      14</span>              : struct Pamttysshca;</span>
 <span id="L15"><span class="lineNum">      15</span>              : pam::pam_hooks!(Pamttysshca);</span>
 <span id="L16"><span class="lineNum">      16</span>              : </span>
-<span id="L17"><span class="lineNum">      17</span> <span class="tlaUNC tlaBgUNC">           0 : fn syslog(msg: &amp;str){</span></span>
+<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC tlaBgGNC">           3 : fn syslog(msg: &amp;str){</span></span>
 <span id="L18"><span class="lineNum">      18</span>              :     // build syslog so log macro works</span>
 <span id="L19"><span class="lineNum">      19</span>              :     let formatter = Formatter3164 {</span>
 <span id="L20"><span class="lineNum">      20</span>              :         facility: Facility::LOG_AUTHPRIV,</span>
 <span id="L21"><span class="lineNum">      21</span>              :         hostname: None,</span>
-<span id="L22"><span class="lineNum">      22</span> <span class="tlaUNC">           0 :         process: &quot;pam-ttysshca&quot;.into(),</span></span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaUNC">           0 :         pid: std::process::id() as u32,</span></span>
+<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">           6 :         process: &quot;pam-ttysshca&quot;.into(),</span></span>
+<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">           3 :         pid: std::process::id() as u32,</span></span>
 <span id="L24"><span class="lineNum">      24</span>              :     };</span>
 <span id="L25"><span class="lineNum">      25</span>              : </span>
-<span id="L26"><span class="lineNum">      26</span> <span class="tlaUNC">           0 :     let mut logger = syslog::unix(formatter).ok();</span></span>
+<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">          12 :     let mut logger = syslog::unix(formatter).ok();</span></span>
 <span id="L27"><span class="lineNum">      27</span>              : </span>
-<span id="L28"><span class="lineNum">      28</span> <span class="tlaUNC">           0 :     match &amp;mut logger{</span></span>
-<span id="L29"><span class="lineNum">      29</span> <span class="tlaUNC">           0 :         Some(e) =&gt; {let _ = e.info(msg);},</span></span>
-<span id="L30"><span class="lineNum">      30</span> <span class="tlaUNC">           0 :         None =&gt; {}</span></span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">           3 :     match &amp;mut logger{</span></span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">           9 :         Some(e) =&gt; {let _ = e.info(msg);},</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaUNC tlaBgUNC">           0 :         None =&gt; {}</span></span>
 <span id="L31"><span class="lineNum">      31</span>              :     }</span>
 <span id="L32"><span class="lineNum">      32</span>              : }</span>
 <span id="L33"><span class="lineNum">      33</span>              : </span>
-<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC tlaBgGNC">           1 : fn correct_response(response_cstr: &amp;CStr, args: Vec&lt;&amp;CStr&gt;, username: &amp;str, challenge: Challenge) -&gt; bool {</span></span>
-<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">           1 :         let answer = match Answer::try_from(response_cstr) {</span></span>
-<span id="L36"><span class="lineNum">      36</span> <span class="tlaUNC tlaBgUNC">           0 :             Ok(a) =&gt; a,</span></span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC tlaBgGNC">           1 :             Err(_) =&gt; {return false}</span></span>
-<span id="L38"><span class="lineNum">      38</span>              :         };</span>
-<span id="L39"><span class="lineNum">      39</span>              : </span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaUNC tlaBgUNC">           0 :         if let Err(_) = answer.verify_signature(&amp;challenge) {</span></span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaUNC">           0 :             return false;</span></span>
-<span id="L42"><span class="lineNum">      42</span>              :         }</span>
-<span id="L43"><span class="lineNum">      43</span>              : </span>
-<span id="L44"><span class="lineNum">      44</span> <span class="tlaUNC">           0 :         let mut trusted_certs = Vec::new();</span></span>
-<span id="L45"><span class="lineNum">      45</span>              : </span>
-<span id="L46"><span class="lineNum">      46</span> <span class="tlaUNC">           0 :         syslog(&quot;starting to parse args&quot;);</span></span>
-<span id="L47"><span class="lineNum">      47</span>              : </span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaUNC">           0 :         for arg_cstr in &amp;args {</span></span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaUNC">           0 :             if let Ok(arg) = arg_cstr.to_str() {</span></span>
-<span id="L50"><span class="lineNum">      50</span> <span class="tlaUNC">           0 :                 syslog(format!(&quot;Arg: `{}`&quot;, arg).as_str());</span></span>
-<span id="L51"><span class="lineNum">      51</span>              : </span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaUNC">           0 :                 if let Some(rest) = arg.strip_prefix(&quot;ca=&quot;) {</span></span>
-<span id="L53"><span class="lineNum">      53</span> <span class="tlaUNC">           0 :                     let ca_path = PathBuf::from(rest);</span></span>
-<span id="L54"><span class="lineNum">      54</span> <span class="tlaUNC">           0 :                     if let Ok(cert) = load_ca(&amp;ca_path) {</span></span>
-<span id="L55"><span class="lineNum">      55</span> <span class="tlaUNC">           0 :                         trusted_certs.push(cert.fingerprint(Default::default()));</span></span>
-<span id="L56"><span class="lineNum">      56</span>              :                     } else {</span>
-<span id="L57"><span class="lineNum">      57</span> <span class="tlaUNC">           0 :                         syslog(format!(&quot;Could not load CA `{}`&quot;, rest).as_str());</span></span>
-<span id="L58"><span class="lineNum">      58</span>              :                     }</span>
-<span id="L59"><span class="lineNum">      59</span>              :                 }</span>
-<span id="L60"><span class="lineNum">      60</span>              :             } else {</span>
-<span id="L61"><span class="lineNum">      61</span> <span class="tlaUNC">           0 :                 syslog(&quot;Invalid UTF-8 in C string&quot;);</span></span>
-<span id="L62"><span class="lineNum">      62</span>              :             }</span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC tlaBgGNC">           3 : fn correct_response(response_cstr: &amp;CStr, args: Vec&lt;&amp;CStr&gt;, username: &amp;str, challenge: Challenge) -&gt; bool {</span></span>
+<span id="L35"><span class="lineNum">      35</span>              : </span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">           5 :     let answer = match Answer::try_from(response_cstr) {</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">           4 :         Ok(a) =&gt; a,</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">           1 :         Err(_) =&gt; {return false}</span></span>
+<span id="L39"><span class="lineNum">      39</span>              :     };</span>
+<span id="L40"><span class="lineNum">      40</span>              : </span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">           4 :     if let Err(_) = answer.verify_signature(&amp;challenge) {</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaUNC tlaBgUNC">           0 :         return false;</span></span>
+<span id="L43"><span class="lineNum">      43</span>              :     }</span>
+<span id="L44"><span class="lineNum">      44</span>              : </span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC tlaBgGNC">           4 :     let mut trusted_certs = Vec::new();</span></span>
+<span id="L46"><span class="lineNum">      46</span>              : </span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">           6 :     for arg_cstr in args {</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">           4 :         if let Ok(arg) = arg_cstr.to_str() {</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">           4 :             if let Some(rest) = arg.strip_prefix(&quot;ca=&quot;) {</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">           6 :                 let ca_path = PathBuf::from(rest);</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">           6 :                 syslog(format!(&quot;Loading: `{}`&quot;, rest).as_str());</span></span>
+<span id="L52"><span class="lineNum">      52</span>              : </span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">           6 :                 if let Ok(cert) = load_ca(&amp;ca_path) {</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">           8 :                     trusted_certs.push(cert.fingerprint(Default::default()));</span></span>
+<span id="L55"><span class="lineNum">      55</span>              :                 } else {</span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaUNC tlaBgUNC">           0 :                     syslog(format!(&quot;Could not load CA `{}`&quot;, rest).as_str());</span></span>
+<span id="L57"><span class="lineNum">      57</span>              :                 }</span>
+<span id="L58"><span class="lineNum">      58</span>              :             } else {</span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaUNC">           0 :                 syslog(format!(&quot;Unsupported argument `{}`&quot;, arg).as_str());</span></span>
+<span id="L60"><span class="lineNum">      60</span>              :             }</span>
+<span id="L61"><span class="lineNum">      61</span>              :         } else {</span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaUNC">           0 :             syslog(&quot;Invalid UTF-8 in C string&quot;);</span></span>
 <span id="L63"><span class="lineNum">      63</span>              :         }</span>
-<span id="L64"><span class="lineNum">      64</span>              : </span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaUNC">           0 :         if let Ok(_) = answer.verify_intermediate(&amp;trusted_certs, username){</span></span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaUNC">           0 :             true</span></span>
-<span id="L67"><span class="lineNum">      67</span>              :         } else {</span>
-<span id="L68"><span class="lineNum">      68</span> <span class="tlaUNC">           0 :             false</span></span>
-<span id="L69"><span class="lineNum">      69</span>              :         }</span>
-<span id="L70"><span class="lineNum">      70</span>              : </span>
-<span id="L71"><span class="lineNum">      71</span>              : }</span>
-<span id="L72"><span class="lineNum">      72</span>              : </span>
+<span id="L64"><span class="lineNum">      64</span>              :     }</span>
+<span id="L65"><span class="lineNum">      65</span>              : </span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC tlaBgGNC">           7 :     if let Err(e) = answer.verify_intermediate(&amp;trusted_certs, username){</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">           2 :         syslog(e);</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">           1 :         false</span></span>
+<span id="L69"><span class="lineNum">      69</span>              :     } else {</span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">           1 :         true</span></span>
+<span id="L71"><span class="lineNum">      71</span>              :     }</span>
+<span id="L72"><span class="lineNum">      72</span>              : }</span>
 <span id="L73"><span class="lineNum">      73</span>              : </span>
-<span id="L74"><span class="lineNum">      74</span>              : impl PamHooks for Pamttysshca {</span>
-<span id="L75"><span class="lineNum">      75</span> <span class="tlaUNC">           0 :     fn sm_authenticate(pamh: &amp;mut PamHandle, args: Vec&lt;&amp;CStr&gt;, _flags: PamFlag) -&gt; PamResultCode  {</span></span>
-<span id="L76"><span class="lineNum">      76</span> <span class="tlaUNC">           0 :         syslog(&quot;Start&quot;);</span></span>
+<span id="L74"><span class="lineNum">      74</span>              : </span>
+<span id="L75"><span class="lineNum">      75</span>              : impl PamHooks for Pamttysshca {</span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaUNC tlaBgUNC">           0 :     fn sm_authenticate(pamh: &amp;mut PamHandle, args: Vec&lt;&amp;CStr&gt;, _flags: PamFlag) -&gt; PamResultCode  {</span></span>
 <span id="L77"><span class="lineNum">      77</span>              : </span>
 <span id="L78"><span class="lineNum">      78</span> <span class="tlaUNC">           0 :         let username = match pam_try!(pamh.get_item::&lt;pam::items::User&gt;()) {</span></span>
 <span id="L79"><span class="lineNum">      79</span> <span class="tlaUNC">           0 :             Some(e) =&gt;</span></span>
@@ -174,27 +174,85 @@
 <span id="L112"><span class="lineNum">     112</span>              : mod tests {</span>
 <span id="L113"><span class="lineNum">     113</span>              :     use std::ffi::CString;</span>
 <span id="L114"><span class="lineNum">     114</span>              :     use std::str::FromStr;</span>
-<span id="L115"><span class="lineNum">     115</span>              :     use super::*;</span>
-<span id="L116"><span class="lineNum">     116</span>              : </span>
-<span id="L117"><span class="lineNum">     117</span>              :     #[test]</span>
-<span id="L118"><span class="lineNum">     118</span>              :     fn test_correct_response(){</span>
-<span id="L119"><span class="lineNum">     119</span>              :         let challenge = Challenge::new();</span>
-<span id="L120"><span class="lineNum">     120</span>              :         let user = &quot;tesuser&quot;;</span>
-<span id="L121"><span class="lineNum">     121</span>              : </span>
-<span id="L122"><span class="lineNum">     122</span>              :         // just some random bytes for testing</span>
-<span id="L123"><span class="lineNum">     123</span>              :         let answer = CString::new([86, 235, 98, 201, 205, 180, 24, 232, 218, 79, 226, 20, 185, 128, 148, 207, 38, 62, 13, 177, 30, 250, 1, 28, 157, 132, 109, 190, 185, 161, 63, 180]).unwrap();</span>
-<span id="L124"><span class="lineNum">     124</span>              :         let mut args = Vec::new();</span>
-<span id="L125"><span class="lineNum">     125</span>              : </span>
-<span id="L126"><span class="lineNum">     126</span>              :         let ca1 = CString::from_str(&quot;ca=Ca1.pub&quot;).unwrap();</span>
-<span id="L127"><span class="lineNum">     127</span>              :         let ca2 = CString::from_str(&quot;ca=Ca2.pub&quot;).unwrap();</span>
-<span id="L128"><span class="lineNum">     128</span>              : </span>
-<span id="L129"><span class="lineNum">     129</span>              :         args.push(ca1.as_ref());</span>
-<span id="L130"><span class="lineNum">     130</span>              :         args.push(ca2.as_ref());</span>
-<span id="L131"><span class="lineNum">     131</span>              : </span>
-<span id="L132"><span class="lineNum">     132</span>              :         let _ = correct_response(answer.as_ref(), args, user, challenge);</span>
-<span id="L133"><span class="lineNum">     133</span>              : </span>
+<span id="L115"><span class="lineNum">     115</span>              :     use shared::{load_certificate, load_private_key, AnswerEngine, PrivateKeyAndCertificate};</span>
+<span id="L116"><span class="lineNum">     116</span>              :     use super::*;</span>
+<span id="L117"><span class="lineNum">     117</span>              : </span>
+<span id="L118"><span class="lineNum">     118</span>              :     #[test]</span>
+<span id="L119"><span class="lineNum">     119</span>              :     fn test_incorrect_response(){</span>
+<span id="L120"><span class="lineNum">     120</span>              :         let challenge = Challenge::new();</span>
+<span id="L121"><span class="lineNum">     121</span>              :         let user = &quot;tesuser&quot;;</span>
+<span id="L122"><span class="lineNum">     122</span>              : </span>
+<span id="L123"><span class="lineNum">     123</span>              :         // just some random bytes for testing</span>
+<span id="L124"><span class="lineNum">     124</span>              :         let answer = CString::new([86, 235, 98, 201, 205, 180, 24, 232, 218, 79, 226, 20, 185, 128, 148, 207, 38, 62, 13, 177, 30, 250, 1, 28, 157, 132, 109, 190, 185, 161, 63, 180]).unwrap();</span>
+<span id="L125"><span class="lineNum">     125</span>              :         let mut args = Vec::new();</span>
+<span id="L126"><span class="lineNum">     126</span>              : </span>
+<span id="L127"><span class="lineNum">     127</span>              :         let ca1 = CString::from_str(&quot;ca=Ca1.pub&quot;).unwrap();</span>
+<span id="L128"><span class="lineNum">     128</span>              :         let ca2 = CString::from_str(&quot;ca=Ca2.pub&quot;).unwrap();</span>
+<span id="L129"><span class="lineNum">     129</span>              : </span>
+<span id="L130"><span class="lineNum">     130</span>              :         args.push(ca1.as_ref());</span>
+<span id="L131"><span class="lineNum">     131</span>              :         args.push(ca2.as_ref());</span>
+<span id="L132"><span class="lineNum">     132</span>              : </span>
+<span id="L133"><span class="lineNum">     133</span>              :         assert!(! correct_response(answer.as_ref(), args, user, challenge));</span>
 <span id="L134"><span class="lineNum">     134</span>              :     }</span>
-<span id="L135"><span class="lineNum">     135</span>              : }</span>
+<span id="L135"><span class="lineNum">     135</span>              : </span>
+<span id="L136"><span class="lineNum">     136</span>              :     #[test]</span>
+<span id="L137"><span class="lineNum">     137</span>              :     fn test_correct_response(){</span>
+<span id="L138"><span class="lineNum">     138</span>              :         let challenge = Challenge::new();</span>
+<span id="L139"><span class="lineNum">     139</span>              :         let user = &quot;testuser&quot;;</span>
+<span id="L140"><span class="lineNum">     140</span>              : </span>
+<span id="L141"><span class="lineNum">     141</span>              :         let priv_path = PathBuf::from(&quot;../tests/signed&quot;);</span>
+<span id="L142"><span class="lineNum">     142</span>              :         let cert_path = PathBuf::from(&quot;../tests/signed-cert.pub&quot;);</span>
+<span id="L143"><span class="lineNum">     143</span>              :         let ca = PathBuf::from(&quot;../tests/CAs/ca1.pub&quot;).canonicalize().expect(&quot;We should see the file here&quot;);</span>
+<span id="L144"><span class="lineNum">     144</span>              : </span>
+<span id="L145"><span class="lineNum">     145</span>              :         let private = load_private_key(&amp;priv_path).expect(&quot;Tested keys and path should load&quot;);</span>
+<span id="L146"><span class="lineNum">     146</span>              :         let cert = load_certificate(&amp;cert_path).expect(&quot;Tested keys and paths should load&quot;);</span>
+<span id="L147"><span class="lineNum">     147</span>              :         let answer_engine = PrivateKeyAndCertificate::new(private, cert).unwrap();</span>
+<span id="L148"><span class="lineNum">     148</span>              : </span>
+<span id="L149"><span class="lineNum">     149</span>              :         let answer = answer_engine.generate_answer(&amp;challenge).expect(&quot;Tested keys should generate a answer&quot;);</span>
+<span id="L150"><span class="lineNum">     150</span>              : </span>
+<span id="L151"><span class="lineNum">     151</span>              :         let mut args = Vec::new();</span>
+<span id="L152"><span class="lineNum">     152</span>              : </span>
+<span id="L153"><span class="lineNum">     153</span>              :         let ca1_path = format!(&quot;ca={}&quot;, ca.display());</span>
+<span id="L154"><span class="lineNum">     154</span>              :         let ca1 = CString::from_str(&amp;ca1_path).expect(&quot;This should be a valid CString&quot;);</span>
+<span id="L155"><span class="lineNum">     155</span>              : </span>
+<span id="L156"><span class="lineNum">     156</span>              :         args.push(ca1.as_ref());</span>
+<span id="L157"><span class="lineNum">     157</span>              : </span>
+<span id="L158"><span class="lineNum">     158</span>              :         let answer_str = format!(&quot;{}&quot;, answer);</span>
+<span id="L159"><span class="lineNum">     159</span>              :         let answer_cstr = CString::new(answer_str).unwrap();</span>
+<span id="L160"><span class="lineNum">     160</span>              : </span>
+<span id="L161"><span class="lineNum">     161</span>              :         assert!(correct_response(&amp;answer_cstr, args, user, challenge));</span>
+<span id="L162"><span class="lineNum">     162</span>              : </span>
+<span id="L163"><span class="lineNum">     163</span>              :     }</span>
+<span id="L164"><span class="lineNum">     164</span>              : </span>
+<span id="L165"><span class="lineNum">     165</span>              :     #[test]</span>
+<span id="L166"><span class="lineNum">     166</span>              :     fn test_all_correct_but_not_from_ca(){</span>
+<span id="L167"><span class="lineNum">     167</span>              :         let challenge = Challenge::new();</span>
+<span id="L168"><span class="lineNum">     168</span>              :         let user = &quot;testuser&quot;;</span>
+<span id="L169"><span class="lineNum">     169</span>              : </span>
+<span id="L170"><span class="lineNum">     170</span>              :         let priv_path = PathBuf::from(&quot;../tests/signed&quot;);</span>
+<span id="L171"><span class="lineNum">     171</span>              :         let cert_path = PathBuf::from(&quot;../tests/signed-cert.pub&quot;);</span>
+<span id="L172"><span class="lineNum">     172</span>              :         let ca = PathBuf::from(&quot;../tests/CAs/ca2.pub&quot;).canonicalize().expect(&quot;We should see the file here&quot;);</span>
+<span id="L173"><span class="lineNum">     173</span>              : </span>
+<span id="L174"><span class="lineNum">     174</span>              :         let private = load_private_key(&amp;priv_path).expect(&quot;Tested keys and path should load&quot;);</span>
+<span id="L175"><span class="lineNum">     175</span>              :         let cert = load_certificate(&amp;cert_path).expect(&quot;Tested keys and paths should load&quot;);</span>
+<span id="L176"><span class="lineNum">     176</span>              :         let answer_engine = PrivateKeyAndCertificate::new(private, cert).unwrap();</span>
+<span id="L177"><span class="lineNum">     177</span>              : </span>
+<span id="L178"><span class="lineNum">     178</span>              :         let answer = answer_engine.generate_answer(&amp;challenge).expect(&quot;Tested keys should generate a answer&quot;);</span>
+<span id="L179"><span class="lineNum">     179</span>              : </span>
+<span id="L180"><span class="lineNum">     180</span>              :         let mut args = Vec::new();</span>
+<span id="L181"><span class="lineNum">     181</span>              : </span>
+<span id="L182"><span class="lineNum">     182</span>              :         let ca1_path = format!(&quot;ca={}&quot;, ca.display());</span>
+<span id="L183"><span class="lineNum">     183</span>              :         let ca1 = CString::from_str(&amp;ca1_path).expect(&quot;This should be a valid CString&quot;);</span>
+<span id="L184"><span class="lineNum">     184</span>              : </span>
+<span id="L185"><span class="lineNum">     185</span>              :         args.push(ca1.as_ref());</span>
+<span id="L186"><span class="lineNum">     186</span>              : </span>
+<span id="L187"><span class="lineNum">     187</span>              :         let answer_str = format!(&quot;{}&quot;, answer);</span>
+<span id="L188"><span class="lineNum">     188</span>              :         let answer_cstr = CString::new(answer_str).unwrap();</span>
+<span id="L189"><span class="lineNum">     189</span>              : </span>
+<span id="L190"><span class="lineNum">     190</span>              :         assert!(! correct_response(&amp;answer_cstr, args, user, challenge));</span>
+<span id="L191"><span class="lineNum">     191</span>              : </span>
+<span id="L192"><span class="lineNum">     192</span>              :     }</span>
+<span id="L193"><span class="lineNum">     193</span>              : }</span>
         </pre>
               </td>
             </tr>
