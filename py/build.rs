@@ -1,6 +1,11 @@
 use std::process::Command;
 
 fn main() {
+    if !cfg!(target_os = "linux") {
+        // only add linker information on linux
+        return;
+    }
+
     let output = Command::new("python3")
         .arg("-c")
         .arg("import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
