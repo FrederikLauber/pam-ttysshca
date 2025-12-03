@@ -411,26 +411,33 @@ mod tests {
                 $(
                     #[test]
                     fn [<$signee _ $signed>]() {
-                        let key_folder = PathBuf::from_str("../tests/keys_unlimited/").unwrap();
+                        let key_folder = PathBuf::from_str("../tests/keys_unlimited/").expect("Folder should be there");
                         let signed_private_path = key_folder.clone().join(stringify!($signed));
                         let _signee_public_path = key_folder.clone().join(format!("{}.pub", stringify!($signee)));
                         let cert_path = key_folder.clone().join(format!("{}-{}.cert", stringify!($signee), stringify!($signed)));
 
-                        println!("Signed private path: {}", fs::canonicalize(&signed_private_path).unwrap().display());
-                        println!("Certificate path: {}", fs::canonicalize(&cert_path).unwrap().display());
-                        let private_key = load_private_key(&signed_private_path).unwrap();
-                        let cert = load_certificate(&cert_path).unwrap();
-
+                        println!("Signed private path: {}", fs::canonicalize(&signed_private_path).expect("Private Key should be there").display());
+                        println!("Certificate path: {}", fs::canonicalize(&cert_path).expect("Certificate should be there").display());
+                        let private_key = load_private_key(&signed_private_path).expect("We already have tests covering the loading of these key, this should work");
+                        let cert = load_certificate(&cert_path).expect("We already tested the loading of the key, this should work");
+                        println!("Key loading finished");
                         let engine = PrivateKeyAndCertificate {
                             private: private_key,
                             intermediate: cert
                         };
+                        println!("Engine created");
 
                         let challenge = Challenge::new();
-                        let answer = engine.generate_answer(&challenge).unwrap();
+                        println!("Challenge created");
+
+                        let answer = engine.generate_answer(&challenge).expect("A answer should always be generated");
+                        println!("Answer created");
 
                         let tmp = answer.to_string();
+                        println!("Into string worked");
                         let back = Answer::try_from(tmp);
+
+                        println!("Back and forth also worked");
                         match back{
                             Ok(t) => {
                                 //assert_eq!(t.signature.algorithm(), answer.signature.algorithm());
