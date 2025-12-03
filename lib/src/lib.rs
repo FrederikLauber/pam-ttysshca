@@ -31,17 +31,7 @@ fn syslog(msg: &str){
     }
 }
 
-fn correct_response(response_cstr: &CStr, args: Vec<&CStr>, username: &str, challenge: Challenge) -> bool {
-
-    let answer = match Answer::try_from(response_cstr) {
-        Ok(a) => a,
-        Err(_) => {return false}
-    };
-
-    if let Err(_) = answer.verify_signature(&challenge) {
-        return false;
-    }
-
+fn args2fingerprints(args: Vec<&CStr>) -> Vec<Fingerprint> {
     let mut trusted_certs = Vec::new();
 
     for arg_cstr in args {
@@ -62,6 +52,16 @@ fn correct_response(response_cstr: &CStr, args: Vec<&CStr>, username: &str, chal
             syslog("Invalid UTF-8 in C string");
         }
     }
+    return trusted_certs;
+}
+
+fn correct_response(response_cstr: &CStr, args: Vec<&CStr>, username: &str, challenge: Challenge) -> bool {
+
+
+    if let Err(_) = answer.verify_signature(&challenge) {
+        return false;
+    }
+
 
     if let Err(e) = answer.verify_intermediate(&trusted_certs, username){
         syslog(e);
@@ -71,42 +71,62 @@ fn correct_response(response_cstr: &CStr, args: Vec<&CStr>, username: &str, chal
     }
 }
 
+pub trait PamContext {
+    fn get_user(&self) -> Result<String, PamResult>;
+    fn get_item(&self, item: PamItemType) -> Result<Option<String>, PamResult>;
+    fn putenv(&self, key: &str, val: &str) -> Result<(), PamResult>;
+    fn send_msg(&self, msg: &str);
+}
 
-impl PamHooks for Pamttysshca {
-    fn sm_authenticate(pamh: &mut PamHandle, args: Vec<&CStr>, _flags: PamFlag) -> PamResultCode  {
-
-        let username = match pam_try!(pamh.get_item::<pam::items::User>()) {
-            Some(e) =>
-                match e.0.to_str() {
-                    Ok(u) => u,
-                    Err(_) => {return PamResultCode::PAM_ABORT;}
-                },
-            None => {return PamResultCode::PAM_ABORT;}
+impl PamContext for PamHandle {
+    fn username(&self) -> Result<String, PamResult> {
+        match &self.get_user() {
+            Ok(Some(u)) => u,
+            _ => return Err(PAM_ABORT),
         };
+    }
+    
+    fn get_response(&self, challenge: &Challenge) -> Result<Answer, PamResult> {
+        
+    }
+    
+}
 
-        let conv = match pamh.get_item::<Conv>() {
-            Ok(Some(conv)) => conv,
-            _ => { return PamResultCode::PAM_ABORT; }
-        };
+fn authenticate<T: PamContext>(ctx: &T, args: &[&CStr]) ->PamResult {
+    let username = ctx.get_user()?;
+    let challenge = Challenge::new();
+    ctx.info(&format!("pam-ttysshca Challenge: {}\n", challenge))?;
+    let response_cstr = ctx.prompt(PAM_PROMPT_ECHO_ON, "Response: ")?;
 
-        let challenge = Challenge::new();
-        let _ = conv.send(pam::constants::PAM_TEXT_INFO, &format!("pam-ttysshca Challenge: {}\n", challenge));
-        // Now prompt for the response
-        let response_cstr = match pam_try!(conv.send(PAM_PROMPT_ECHO_ON, "Response: ")) {
-            Some(response) => response,
-            None => {
-                return PamResultCode::PAM_ABORT;
-            },
-        };
-
-        if correct_response(response_cstr, args, username, challenge){
-            PamResultCode::PAM_SUCCESS
-        } else {
-            PamResultCode::PAM_AUTH_ERR
-        }
+    let answer = match Answer::try_from(response_cstr) {
+        Ok(a) => a,
+        Err(_) => {return PAM_AUTH_ERR}
+    };
+    
+    if correct_response(&response_cstr, args, &username, challenge) {
+        PAM_SUCCESS
+    } else {
+        PAM_AUTH_ERR
     }
 }
 
+#[no_mangle]
+pub extern "C" fn pam_sm_authenticate(pamh: *mut PamHandle, args: *mut *const i8, argc: i32) -> i32 {
+    let (pamh, args) = unsafe {
+        let pamh = PamHandle::from_ptr(pamh);
+        let args: Vec<&CStr> = (0..argc)
+            .map(|i| CStr::from_ptr(*args.offset(i as isize)))
+            .collect();
+
+        (pamh, args)
+    };
+    authenticate(&pamh, &args)
+}
+
+#[no_mangle]
+pub extern "C" fn pam_sm_setcred(_pamh: *mut PamHandle, _flags: i32) -> i32 {
+    PAM_SUCCESS
+}
 
 #[cfg(test)]
 mod tests {
