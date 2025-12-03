@@ -44,12 +44,8 @@ fn correct_response(response_cstr: &CStr, args: Vec<&CStr>, username: &str, chal
 
     let mut trusted_certs = Vec::new();
 
-    syslog("starting to parse args");
-
     for arg_cstr in args {
         if let Ok(arg) = arg_cstr.to_str() {
-            syslog(format!("Arg: `{}`", arg).as_str());
-
             if let Some(rest) = arg.strip_prefix("ca=") {
                 let ca_path = PathBuf::from(rest);
                 syslog(format!("Loading: `{}`", rest).as_str());
@@ -67,9 +63,6 @@ fn correct_response(response_cstr: &CStr, args: Vec<&CStr>, username: &str, chal
         }
     }
 
-    syslog(format!("Loaded {} trusted certificates", trusted_certs.len()).as_str());
-
-
     if let Err(e) = answer.verify_intermediate(&trusted_certs, username){
         syslog(e);
         false
@@ -81,7 +74,6 @@ fn correct_response(response_cstr: &CStr, args: Vec<&CStr>, username: &str, chal
 
 impl PamHooks for Pamttysshca {
     fn sm_authenticate(pamh: &mut PamHandle, args: Vec<&CStr>, _flags: PamFlag) -> PamResultCode  {
-        syslog("Start");
 
         let username = match pam_try!(pamh.get_item::<pam::items::User>()) {
             Some(e) =>
