@@ -112,10 +112,11 @@ impl PamHooks for Pamttysshca {
 mod tests {
     use std::ffi::CString;
     use std::str::FromStr;
+    use shared::{load_certificate, load_private_key, AnswerEngine, PrivateKeyAndCertificate};
     use super::*;
 
     #[test]
-    fn test_correct_response(){
+    fn test_incorrect_response(){
         let challenge = Challenge::new();
         let user = "tesuser";
 
@@ -129,7 +130,64 @@ mod tests {
         args.push(ca1.as_ref());
         args.push(ca2.as_ref());
 
-        let _ = correct_response(answer.as_ref(), args, user, challenge);
+        assert!(! correct_response(answer.as_ref(), args, user, challenge));
+    }
+
+    #[test]
+    fn test_correct_response(){
+        let challenge = Challenge::new();
+        let user = "testuser";
+
+        let priv_path = PathBuf::from("../tests/signed");
+        let cert_path = PathBuf::from("../tests/signed-cert.pub");
+        let ca = PathBuf::from("../tests/CAs/ca1.pub").canonicalize().expect("We should see the file here");
+
+        let private = load_private_key(&priv_path).expect("Tested keys and path should load");
+        let cert = load_certificate(&cert_path).expect("Tested keys and paths should load");
+        let answer_engine = PrivateKeyAndCertificate::new(private, cert).unwrap();
+
+        let answer = answer_engine.generate_answer(&challenge).expect("Tested keys should generate a answer");
+
+        let mut args = Vec::new();
+
+        let ca1_path = format!("ca={}", ca.display());
+        let ca1 = CString::from_str(&ca1_path).expect("This should be a valid CString");
+
+        args.push(ca1.as_ref());
+
+        let answer_str = format!("{}", answer);
+        let answer_cstr = CString::new(answer_str).unwrap();
+
+        assert!(correct_response(&answer_cstr, args, user, challenge));
+
+    }
+
+    #[test]
+    fn test_all_correct_but_not_from_ca(){
+        let challenge = Challenge::new();
+        let user = "testuser";
+
+        let priv_path = PathBuf::from("../tests/signed");
+        let cert_path = PathBuf::from("../tests/signed-cert.pub");
+        let ca = PathBuf::from("../tests/CAs/ca2.pub").canonicalize().expect("We should see the file here");
+
+        let private = load_private_key(&priv_path).expect("Tested keys and path should load");
+        let cert = load_certificate(&cert_path).expect("Tested keys and paths should load");
+        let answer_engine = PrivateKeyAndCertificate::new(private, cert).unwrap();
+
+        let answer = answer_engine.generate_answer(&challenge).expect("Tested keys should generate a answer");
+
+        let mut args = Vec::new();
+
+        let ca1_path = format!("ca={}", ca.display());
+        let ca1 = CString::from_str(&ca1_path).expect("This should be a valid CString");
+
+        args.push(ca1.as_ref());
+
+        let answer_str = format!("{}", answer);
+        let answer_cstr = CString::new(answer_str).unwrap();
+
+        assert!(! correct_response(&answer_cstr, args, user, challenge));
 
     }
 }
