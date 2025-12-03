@@ -32,42 +32,50 @@ fn syslog(msg: &str){
 }
 
 fn correct_response(response_cstr: &CStr, args: Vec<&CStr>, username: &str, challenge: Challenge) -> bool {
-        let answer = match Answer::try_from(response_cstr) {
-            Ok(a) => a,
-            Err(_) => {return false}
-        };
 
-        if let Err(_) = answer.verify_signature(&challenge) {
-            return false;
-        }
+    let answer = match Answer::try_from(response_cstr) {
+        Ok(a) => a,
+        Err(_) => {return false}
+    };
 
-        let mut trusted_certs = Vec::new();
+    if let Err(_) = answer.verify_signature(&challenge) {
+        return false;
+    }
 
-        syslog("starting to parse args");
+    let mut trusted_certs = Vec::new();
 
-        for arg_cstr in &args {
-            if let Ok(arg) = arg_cstr.to_str() {
-                syslog(format!("Arg: `{}`", arg).as_str());
+    syslog("starting to parse args");
 
-                if let Some(rest) = arg.strip_prefix("ca=") {
-                    let ca_path = PathBuf::from(rest);
-                    if let Ok(cert) = load_ca(&ca_path) {
-                        trusted_certs.push(cert.fingerprint(Default::default()));
-                    } else {
-                        syslog(format!("Could not load CA `{}`", rest).as_str());
-                    }
+    for arg_cstr in args {
+        if let Ok(arg) = arg_cstr.to_str() {
+            syslog(format!("Arg: `{}`", arg).as_str());
+
+            if let Some(rest) = arg.strip_prefix("ca=") {
+                let ca_path = PathBuf::from(rest);
+                syslog(format!("Loading: `{}`", rest).as_str());
+
+                if let Ok(cert) = load_ca(&ca_path) {
+                    trusted_certs.push(cert.fingerprint(Default::default()));
+                } else {
+                    syslog(format!("Could not load CA `{}`", rest).as_str());
                 }
             } else {
-                syslog("Invalid UTF-8 in C string");
+                syslog(format!("Unsupported argument `{}`", arg).as_str());
             }
-        }
-
-        if let Ok(_) = answer.verify_intermediate(&trusted_certs, username){
-            true
         } else {
-            false
+            syslog("Invalid UTF-8 in C string");
         }
+    }
 
+    syslog(format!("Loaded {} trusted certificates", trusted_certs.len()).as_str());
+
+
+    if let Err(e) = answer.verify_intermediate(&trusted_certs, username){
+        syslog(e);
+        false
+    } else {
+        true
+    }
 }
 
 
