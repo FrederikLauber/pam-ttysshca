@@ -58,7 +58,7 @@ to test the workflow.
 
 ## Limitations
 
-This software mostly uses the functionality provided by the ssh_key crate, currently in version 0.6.7.
+This software mostly uses the functionality provided by the ssh_key crate, currently in version 0.7.0-rc4.
 Due to this, there are some limitations in key algorithms that can be used most notable 
 
 - rsa256 and rsa512 does not work
