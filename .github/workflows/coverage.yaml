@@ -55,24 +55,12 @@ jobs:
       - name: Run tests with coverage Windows
         if: matrix.os == 'windows-latest'
         run: |
-          cargo tarpaulin --out Lcov -p Authenticator --output-dir tarpaulin-report
-          mv tarpaulin-report/lcov.info tarpaulin-report/Authenticator.info
-          cargo tarpaulin --out Lcov -p Authenticator_cli --output-dir tarpaulin-report
-          mv tarpaulin-report/lcov.info tarpaulin-report/Authenticator_cli.info
-          cargo tarpaulin --out Lcov -p pypam_ttysshca --output-dir tarpaulin-report
-          mv tarpaulin-report/lcov.info tarpaulin-report/pypam-ttysshca.info
+          cargo tarpaulin --out Lcov --output-dir tarpaulin-report
 
       - name: Run tests with coverage Linux
         if: matrix.os == 'ubuntu-latest'
         run: |
-          cargo tarpaulin --engine llvm --out Lcov -p Authenticator --output-dir tarpaulin-report
-          mv tarpaulin-report/lcov.info tarpaulin-report/Authenticator.info
-          cargo tarpaulin --engine llvm --out Lcov -p Authenticator_cli --output-dir tarpaulin-report
-          mv tarpaulin-report/lcov.info tarpaulin-report/Authenticator_cli.info
-          cargo tarpaulin --engine llvm --out Lcov -p pam-ttysshca --output-dir tarpaulin-report
-          mv tarpaulin-report/lcov.info tarpaulin-report/pam-ttysshca.info
-          cargo tarpaulin  --engine llvm --out Lcov -p pypam_ttysshca --output-dir tarpaulin-report
-          mv tarpaulin-report/lcov.info tarpaulin-report/pypam-ttysshca.info
+          cargo tarpaulin --engine llvm --out Lcov --output-dir tarpaulin-report
 
       - name: Upload lcov coverage
         uses: actions/upload-artifact@v4
@@ -114,10 +102,10 @@ jobs:
       - name: Merge lcov files
         run: |
           find coverage -name "*.info" -exec cat "{}" + > cat_merged.lcov
+          sed -i 's#D:\\a\\#\/home/runner/work/#g' cat_merged.lcov
+          sed -i 's|\\|/|g' cat_merged.lcov
           lcov -a cat_merged.lcov -o merged.lcov
           mkdir -p merged-coverage
-          sed -i 's#D:\\a\\#\/home/runner/work/#g' merged.lcov
-          sed -i 's|\\|/|g' merged.lcov
           genhtml merged.lcov -o merged-coverage/html
           zip -r coverage-html.zip merged-coverage/html
 
