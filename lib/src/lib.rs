@@ -4,15 +4,8 @@ extern crate pam;
 
 use std::ffi::CStr;
 use std::path::PathBuf;
-use pam::constants::{PamFlag, PamResultCode, PAM_PROMPT_ECHO_ON};
-use pam::conv::Conv;
-use pam::module::{PamHandle, PamHooks};
-use pam::pam_try;
 use shared::{Answer, Challenge, load_ca};
 use syslog::{Facility, Formatter3164};
-
-struct Pamttysshca;
-pam::pam_hooks!(Pamttysshca);
 
 fn syslog(msg: &str){
     // build syslog so log macro works
@@ -55,58 +48,33 @@ fn args2fingerprints(args: Vec<&CStr>) -> Vec<Fingerprint> {
     return trusted_certs;
 }
 
-fn correct_response(response_cstr: &CStr, args: Vec<&CStr>, username: &str, challenge: Challenge) -> bool {
-
-
-    if let Err(_) = answer.verify_signature(&challenge) {
-        return false;
-    }
-
-
-    if let Err(e) = answer.verify_intermediate(&trusted_certs, username){
-        syslog(e);
-        false
-    } else {
-        true
-    }
-}
-
-pub trait PamContext {
-    fn get_user(&self) -> Result<String, PamResult>;
-    fn get_item(&self, item: PamItemType) -> Result<Option<String>, PamResult>;
-    fn putenv(&self, key: &str, val: &str) -> Result<(), PamResult>;
-    fn send_msg(&self, msg: &str);
-}
-
 impl PamContext for PamHandle {
     fn username(&self) -> Result<String, PamResult> {
-        match &self.get_user() {
-            Ok(Some(u)) => u,
-            _ => return Err(PAM_ABORT),
-        };
+        &self.get_user().ok_or(PAM_ABORT)
     }
     
     fn get_response(&self, challenge: &Challenge) -> Result<Answer, PamResult> {
-        
+        &self.info(&format!("pam-ttysshca Challenge: {}\n", challenge)).map_err(|_| PAM_ABORT)?;
+        let response_cstr = &self.prompt(PAM_PROMPT_ECHO_ON, "Response: ").map_err(|_| PAM_ABORT)?;
+        Answer::try_from(response_cstr).map_err(|_| PAM_AUTH_ERR)
     }
-    
 }
 
 fn authenticate<T: PamContext>(ctx: &T, args: &[&CStr]) ->PamResult {
-    let username = ctx.get_user()?;
+    let username = ctx.username()?;
     let challenge = Challenge::new();
-    ctx.info(&format!("pam-ttysshca Challenge: {}\n", challenge))?;
-    let response_cstr = ctx.prompt(PAM_PROMPT_ECHO_ON, "Response: ")?;
-
-    let answer = match Answer::try_from(response_cstr) {
-        Ok(a) => a,
-        Err(_) => {return PAM_AUTH_ERR}
-    };
     
-    if correct_response(&response_cstr, args, &username, challenge) {
-        PAM_SUCCESS
-    } else {
+    let answer = ctx.get_response(challenge)?;
+
+    let _ = answer.verify_signature(&challenge).map_err(|_| PAM_AUTH_ERR)?;
+
+    let trusted_certs = args2fingerprints(args);
+    
+    if let Err(e) = answer.verify_intermediate(&trusted_certs, username){
+        syslog(e);
         PAM_AUTH_ERR
+    } else {
+        PAM_SUCCESS
     }
 }
 
