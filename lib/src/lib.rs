@@ -1,5 +1,4 @@
 #![cfg(target_os = "linux")]
-
 extern crate pam;
 
 use std::ffi::CStr;
@@ -8,7 +7,7 @@ use pam::constants::{PamFlag, PamResultCode, PAM_PROMPT_ECHO_ON};
 use pam::conv::Conv;
 use pam::module::{PamHandle, PamHooks};
 use pam::pam_try;
-use shared::{Answer, Challenge, load_ca};
+use shared::{Answer, Challenge, load_ca, Fingerprint};
 use syslog::{Facility, Formatter3164};
 
 struct Pamttysshca;
@@ -31,17 +30,7 @@ fn syslog(msg: &str){
     }
 }
 
-fn correct_response(response_cstr: &CStr, args: Vec<&CStr>, username: &str, challenge: Challenge) -> bool {
-
-    let answer = match Answer::try_from(response_cstr) {
-        Ok(a) => a,
-        Err(_) => {return false}
-    };
-
-    if let Err(_) = answer.verify_signature(&challenge) {
-        return false;
-    }
-
+fn args2fingerprints(args: Vec<&CStr>) -> Vec<Fingerprint>{
     let mut trusted_certs = Vec::new();
 
     for arg_cstr in args {
@@ -62,132 +51,227 @@ fn correct_response(response_cstr: &CStr, args: Vec<&CStr>, username: &str, chal
             syslog("Invalid UTF-8 in C string");
         }
     }
+    trusted_certs
+}
 
-    if let Err(e) = answer.verify_intermediate(&trusted_certs, username){
-        syslog(e);
-        false
-    } else {
-        true
+trait PamContext {
+    fn post_challenge_and_get_response(&self, challenge:  &Challenge) -> Result<Answer, PamResultCode>;
+}
+
+
+impl PamContext for PamHandle {
+    fn post_challenge_and_get_response(&self, challenge: &Challenge, ) -> Result<Answer, PamResultCode> {
+        let conv = self
+            .get_item::<Conv>()
+            .ok()
+            .flatten()
+            .ok_or(PamResultCode::PAM_ABORT)?;
+
+        conv.send(
+            pam::constants::PAM_TEXT_INFO,
+            &format!("pam-ttysshca Challenge: {}\n", challenge),
+        ).map_err(|_| PamResultCode::PAM_ABORT)?;
+
+        let userinput = conv.send(PAM_PROMPT_ECHO_ON, "Response: ")
+            .ok()
+            .flatten()
+            .ok_or(PamResultCode::PAM_AUTH_ERR)?;
+
+        Answer::try_from(userinput).map_err(|_| PamResultCode::PAM_AUTH_ERR)
     }
 }
 
+fn authenticate<T: PamContext>(ctx: &T, args: Vec<&CStr>, username: &str) -> PamResultCode {
+    let challenge = Challenge::new();
+    let answer = pam_try!(ctx.post_challenge_and_get_response(&challenge));
+
+    if let Err(_) = answer.verify_signature(&challenge) {
+        return PamResultCode::PAM_AUTH_ERR;
+    }
+
+    let trusted_certs = args2fingerprints(args);
+
+    if let Err(e) = answer.verify_intermediate(&trusted_certs, &username){
+        syslog(e);
+        PamResultCode::PAM_AUTH_ERR
+    } else {
+        PamResultCode::PAM_SUCCESS
+    }
+}
 
 impl PamHooks for Pamttysshca {
-    fn sm_authenticate(pamh: &mut PamHandle, args: Vec<&CStr>, _flags: PamFlag) -> PamResultCode  {
-
-        let username = match pam_try!(pamh.get_item::<pam::items::User>()) {
-            Some(e) =>
-                match e.0.to_str() {
-                    Ok(u) => u,
-                    Err(_) => {return PamResultCode::PAM_ABORT;}
-                },
-            None => {return PamResultCode::PAM_ABORT;}
-        };
-
-        let conv = match pamh.get_item::<Conv>() {
-            Ok(Some(conv)) => conv,
-            _ => { return PamResultCode::PAM_ABORT; }
-        };
-
-        let challenge = Challenge::new();
-        let _ = conv.send(pam::constants::PAM_TEXT_INFO, &format!("pam-ttysshca Challenge: {}\n", challenge));
-        // Now prompt for the response
-        let response_cstr = match pam_try!(conv.send(PAM_PROMPT_ECHO_ON, "Response: ")) {
-            Some(response) => response,
-            None => {
-                return PamResultCode::PAM_ABORT;
-            },
-        };
-
-        if correct_response(response_cstr, args, username, challenge){
-            PamResultCode::PAM_SUCCESS
-        } else {
-            PamResultCode::PAM_AUTH_ERR
+    fn sm_authenticate(pamh: &mut PamHandle, args: Vec<&CStr>, _flags: PamFlag) -> PamResultCode {
+        if let Some(user) = pamh.get_item::<pam::items::User>().ok().flatten() {
+            if let Ok(username) = user.0.to_str() {
+                return authenticate(pamh, args, username);
+            }
         }
+        PamResultCode::PAM_ABORT
     }
 }
-
 
 #[cfg(test)]
 mod tests {
     use std::ffi::CString;
     use std::str::FromStr;
-    use shared::{load_certificate, load_private_key, AnswerEngine, PrivateKeyAndCertificate};
+    use shared::{load_certificate, load_private_key, AnswerEngine, Binary, PrivateKeyAndCertificate};
     use super::*;
 
+    struct MockPamHandlerSuccess;
+    struct MockPamHandlerFailure1;
+    struct MockPamHandlerFailure2;
+    struct MockPamHandlerFailure3;
+
+
+    impl PamContext for MockPamHandlerSuccess{
+        fn post_challenge_and_get_response(&self, challenge:  &Challenge) -> Result<Answer, PamResultCode>{
+            let private_path = PathBuf::from_str("../tests/signed").unwrap();
+            let cert_path = PathBuf::from_str("../tests/signed-cert.pub").unwrap();
+
+            let private = load_private_key(&private_path).unwrap();
+            let certificate = load_certificate(&cert_path).unwrap();
+
+            let engine = PrivateKeyAndCertificate::new(private, certificate).unwrap();
+            let answer = engine.generate_answer(challenge).unwrap();
+            Ok(answer)
+        }
+    }
+
+    impl PamContext for MockPamHandlerFailure1{
+        fn post_challenge_and_get_response(&self, challenge:  &Challenge) -> Result<Answer, PamResultCode>{
+            let private_path = PathBuf::from_str("../tests/signed_false").unwrap();
+            let cert_path = PathBuf::from_str("../tests/signed_false-cert.pub").unwrap();
+
+            let private = load_private_key(&private_path).unwrap();
+            let certificate = load_certificate(&cert_path).unwrap();
+
+            let engine = PrivateKeyAndCertificate::new(private, certificate).unwrap();
+            let answer = engine.generate_answer(challenge).unwrap();
+            Ok(answer)
+        }
+    }
+
+    impl PamContext for MockPamHandlerFailure2{
+        fn post_challenge_and_get_response(&self, challenge:  &Challenge) -> Result<Answer, PamResultCode>{
+            let challenge = Challenge::new();
+
+            let private_path = PathBuf::from_str("../tests/signed_false").unwrap();
+            let cert_path = PathBuf::from_str("../tests/signed_false-cert.pub").unwrap();
+
+            let private = load_private_key(&private_path).unwrap();
+            let certificate = load_certificate(&cert_path).unwrap();
+
+            let engine = PrivateKeyAndCertificate::new(private, certificate).unwrap();
+            let answer = engine.generate_answer(&challenge).unwrap();
+            Ok(answer)
+        }
+    }
+
+    impl PamContext for MockPamHandlerFailure3{
+        fn post_challenge_and_get_response(&self, challenge:  &Challenge) -> Result<Answer, PamResultCode>{
+            let private_path = PathBuf::from_str("../tests/signed").unwrap();
+            let cert_path = PathBuf::from_str("../tests/signed-cert.pub").unwrap();
+
+            let private = load_private_key(&private_path).unwrap();
+            let certificate = load_certificate(&cert_path).unwrap();
+
+            let engine = PrivateKeyAndCertificate::new(private, certificate).unwrap();
+            let answer = engine.generate_answer(challenge).unwrap();
+
+            let cert_path_fake = PathBuf::from_str("../tests/signed_false-cert.pub").unwrap();
+            let certificate_false = load_certificate(&cert_path_fake).unwrap();
+            let faked_answer = Answer{signature: answer.signature, intermediate: certificate_false};
+            Ok(faked_answer)
+        }
+    }
+
+
     #[test]
-    fn test_incorrect_response(){
-        let challenge = Challenge::new();
-        let user = "tesuser";
+    fn test_correct_response(){
+        let user = "testuser";
 
         // just some random bytes for testing
-        let answer = CString::new([86, 235, 98, 201, 205, 180, 24, 232, 218, 79, 226, 20, 185, 128, 148, 207, 38, 62, 13, 177, 30, 250, 1, 28, 157, 132, 109, 190, 185, 161, 63, 180]).unwrap();
         let mut args = Vec::new();
 
-        let ca1 = CString::from_str("ca=Ca1.pub").unwrap();
-        let ca2 = CString::from_str("ca=Ca2.pub").unwrap();
+        let ca1 = CString::from_str("ca=../tests/CAs/ca1.pub").unwrap();
+        let ca2 = CString::from_str("ca=CA_does_not_exist.pub").unwrap();
 
         args.push(ca1.as_ref());
         args.push(ca2.as_ref());
 
-        assert!(! correct_response(answer.as_ref(), args, user, challenge));
+        let ctx = MockPamHandlerSuccess;
+        assert_eq!(authenticate(&ctx, args, user), PamResultCode::PAM_SUCCESS);
     }
 
     #[test]
-    fn test_correct_response(){
-        let challenge = Challenge::new();
+    fn test_non_matching_signature(){
         let user = "testuser";
 
-        let priv_path = PathBuf::from("../tests/signed");
-        let cert_path = PathBuf::from("../tests/signed-cert.pub");
-        let ca = PathBuf::from("../tests/CAs/ca1.pub").canonicalize().expect("We should see the file here");
-
-        let private = load_private_key(&priv_path).expect("Tested keys and path should load");
-        let cert = load_certificate(&cert_path).expect("Tested keys and paths should load");
-        let answer_engine = PrivateKeyAndCertificate::new(private, cert).unwrap();
-
-        let answer = answer_engine.generate_answer(&challenge).expect("Tested keys should generate a answer");
-
+        // just some random bytes for testing
         let mut args = Vec::new();
 
-        let ca1_path = format!("ca={}", ca.display());
-        let ca1 = CString::from_str(&ca1_path).expect("This should be a valid CString");
+        let ca1 = CString::from_str("ca=../tests/CAs/ca1.pub").unwrap();
+        let ca2 = CString::from_str("ca=CA_does_not_exist.pub").unwrap();
+
+        args.push(ca1.as_ref());
+        args.push(ca2.as_ref());
+
+        let ctx = MockPamHandlerFailure1;
+        assert_eq!(authenticate(&ctx, args, user), PamResultCode::PAM_AUTH_ERR);
+    }
+
+
+    #[test]
+    fn test_incorrect_response(){
+        let user = "testuser";
+
+        // just some random bytes for testing
+        let mut args = Vec::new();
+
+        let ca1 = CString::from_str("ca=../tests/CAs/ca1.pub").unwrap();
 
         args.push(ca1.as_ref());
 
-        let answer_str = format!("{}", answer);
-        let answer_cstr = CString::new(answer_str).unwrap();
-
-        assert!(correct_response(&answer_cstr, args, user, challenge));
-
+        let ctx = MockPamHandlerFailure2;
+        assert_eq!(authenticate(&ctx, args, user), PamResultCode::PAM_AUTH_ERR);
     }
 
     #[test]
-    fn test_all_correct_but_not_from_ca(){
-        let challenge = Challenge::new();
+    fn test_non_matching_intermediate(){
         let user = "testuser";
 
-        let priv_path = PathBuf::from("../tests/signed");
-        let cert_path = PathBuf::from("../tests/signed-cert.pub");
-        let ca = PathBuf::from("../tests/CAs/ca2.pub").canonicalize().expect("We should see the file here");
-
-        let private = load_private_key(&priv_path).expect("Tested keys and path should load");
-        let cert = load_certificate(&cert_path).expect("Tested keys and paths should load");
-        let answer_engine = PrivateKeyAndCertificate::new(private, cert).unwrap();
-
-        let answer = answer_engine.generate_answer(&challenge).expect("Tested keys should generate a answer");
-
+        // just some random bytes for testing
         let mut args = Vec::new();
 
-        let ca1_path = format!("ca={}", ca.display());
-        let ca1 = CString::from_str(&ca1_path).expect("This should be a valid CString");
+        let ca1 = CString::from_str("ca=../tests/CAs/ca1.pub").unwrap();
+        let ca2 = CString::from_str("ca=CA_does_not_exist.pub").unwrap();
 
         args.push(ca1.as_ref());
+        args.push(ca2.as_ref());
 
-        let answer_str = format!("{}", answer);
-        let answer_cstr = CString::new(answer_str).unwrap();
+        let ctx = MockPamHandlerFailure3;
+        assert_eq!(authenticate(&ctx, args, user), PamResultCode::PAM_AUTH_ERR);
+    }
 
-        assert!(! correct_response(&answer_cstr, args, user, challenge));
 
+    #[test]
+    fn test_non_utf8_in_arguments(){
+        let mut args = Vec::new();
+
+        let bytes = vec![0xE2, 0x28, 0xA1]; // invalid UTF-8
+        let cstr = CString::new(bytes).unwrap();
+
+        args.push(cstr.as_c_str());
+        args2fingerprints(args);
+    }
+
+    #[test]
+    fn test_non_supported_argument(){
+        let mut args = Vec::new();
+
+        let ca1 = CString::from_str("TESTTESTTEST").unwrap();
+
+        args.push(ca1.as_ref());
+        args2fingerprints(args);
     }
 }
