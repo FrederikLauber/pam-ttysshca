@@ -49,12 +49,17 @@ You can integrate this project into your pam system by copying the pam .so file 
 
 Then add it to your pam workflow for example your login
 
-   auth       required   pam_ttysshca.so ca=/lib/test/CA1.pub ca=/lib/test/CA2.pub
+    auth       required   pam_ttysshca.so ca=/lib/test/CA1.pub ca=/lib/test/CA2.pub
 
 afterwards, you can run
 pamtester your_workflow your_user authenticate
 
 to test the workflow.
+
+If you only want to use this module for example for root, you can something like this 
+
+    auth    [success=1 default=ignore] pam_succeed_if.so user != root
+    auth       required   pam_ttysshca.so ca=/etc/pam.d/ca1.pub
 
 ## Python library
 
