@@ -24,14 +24,22 @@ jobs:
       - name: Build workspace member
         run: |
           echo "Building on ${{ matrix.os }}"
-          cd py
-          maturin build --release
-          cd ..
-          cargo build --manifest-path Cargo.toml --release -p pypam_ttysshca -p Authenticator -p Authenticator_cli
+          cargo build --release -p pypam_ttysshca -p Authenticator -p Authenticator_cli
 
-      - name: Upload artifact
+      - name: Unify lib name on Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: mv target/release/libpypam_ttysshca.so target/release/pypam_ttysshca.so
+
+      - name: Copy artifacts
         uses: softprops/action-gh-release@v1
         with:
-          files: target/release/Authenticator*{{ matrix.os == 'windows-latest' && '.exe' || '' }}
+          name: binaries
+          files: |
+            target/release/Authenticator
+            target/release/Authenticator_cli
+            target/release/pypam_ttysshca.so
+            target/release/Authenticator.exe
+            target/release/Authenticator_cli.exe
+            target/release/pypam_ttysshca.dll
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
