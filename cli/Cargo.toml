@@ -1,6 +1,6 @@
 [package]
 name = "Authenticator_cli"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2024"
 authors = ["Dr. Frederik Lauber"]
 keywords = ["pam", "linux", "authentication", "challenge-response", "tty"]
