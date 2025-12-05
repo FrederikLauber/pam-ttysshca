@@ -114,7 +114,7 @@ impl PamHooks for Pamttysshca {
 mod tests {
     use std::ffi::CString;
     use std::str::FromStr;
-    use shared::{load_certificate, load_private_key, AnswerEngine, Binary, PrivateKeyAndCertificate};
+    use shared::{load_certificate, load_private_key, AnswerEngine, PrivateKeyAndCertificate};
     use super::*;
 
     struct MockPamHandlerSuccess;
