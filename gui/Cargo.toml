@@ -6,12 +6,11 @@ authors = ["Dr. Frederik Lauber"]
 keywords = ["pam", "linux", "authentication", "challenge-response", "tty"]
 license = "GPL-3.0-or-later"
 
-
 [dependencies]
-eframe = { version = "0.32.3", features = ["glow", "default_fonts"]}
-egui = { version = "0.32.3"}
-egui_kittest = {version = "0.32.3"}
-rfd = { version = "0.15.4" }
+eframe = { version = "0.33.2", features = ["glow", "default_fonts"]}
+egui = { version = "0.33.2"}
+egui_kittest = {version = "0.33.2"}
+rfd = { version = "0.16.0" }
 directories = { version = "6.0.0" }
 toml = { version = "0.9.7" , features = ["display", "serde", "parse"]}
 serde = { version = "1.0.228", features = ["derive"] }
