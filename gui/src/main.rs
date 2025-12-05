@@ -234,8 +234,6 @@ impl AppState {
             ui.horizontal(|ui| {
                 let button = ui.button("Generate");
                 if button.clicked() {
-                    println!("{}", Challenge::new());
-                    println!("{}", self.challenge);
                     match Binary::try_from(&self.challenge){
                         Ok(binary) => {
                             match Challenge::try_from(binary) {
