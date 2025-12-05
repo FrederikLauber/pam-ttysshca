@@ -31,13 +31,13 @@
             <td class="headerValue">merged.lcov</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryMed">83.6&nbsp;%</td>
-            <td class="headerCovTableEntry">146</td>
-            <td class="headerCovTableEntry">122</td>
+            <td class="headerCovTableEntryMed">83.3&nbsp;%</td>
+            <td class="headerCovTableEntry">144</td>
+            <td class="headerCovTableEntry">120</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2025-12-05 13:38:18</td>
+            <td class="headerValue">2025-12-05 19:06:08</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryMed">87.5&nbsp;%</td>
@@ -296,170 +296,168 @@
 <span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC"> >6485*10^15 :             ui.horizontal(|ui| {</span></span>
 <span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC"> >6485*10^15 :                 let button = ui.button(&quot;Generate&quot;);</span></span>
 <span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC"> >4323*10^15 :                 if button.clicked() {</span></span>
-<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC"> >2161*10^14 :                     println!(&quot;{}&quot;, Challenge::new());</span></span>
-<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC"> >1441*10^14 :                     println!(&quot;{}&quot;, self.challenge);</span></span>
-<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC"> >7205*10^13 :                     match Binary::try_from(&amp;self.challenge){</span></span>
-<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC"> >7205*10^13 :                         Ok(binary) =&gt; {</span></span>
-<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC"> >7205*10^13 :                             match Challenge::try_from(binary) {</span></span>
-<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC"> >7205*10^13 :                                 Ok(challenge) =&gt; {</span></span>
-<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC"> >2882*10^14 :                                     let engine = self.answer_engine.as_ref().unwrap();</span></span>
-<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC"> >1441*10^14 :                                     match engine.generate_answer(&amp;challenge){</span></span>
-<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC"> >1441*10^14 :                                         Ok(answer) =&gt; {</span></span>
-<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC"> >2882*10^14 :                                             let tmp = answer.to_string();</span></span>
-<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC"> >2161*10^14 :                                             clipboard(tmp.clone());</span></span>
-<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC"> >7205*10^13 :                                             self.answer = tmp;</span></span>
-<span id="L249"><span class="lineNum">     249</span>              :                                         },</span>
-<span id="L250"><span class="lineNum">     250</span> <span class="tlaUNC tlaBgUNC">           0 :                                         Err(e) =&gt; {self.answer = e.to_string()}</span></span>
-<span id="L251"><span class="lineNum">     251</span>              :                                     }</span>
-<span id="L252"><span class="lineNum">     252</span>              :                                 },</span>
-<span id="L253"><span class="lineNum">     253</span> <span class="tlaUNC">           0 :                                 Err(_) =&gt; {</span></span>
-<span id="L254"><span class="lineNum">     254</span> <span class="tlaUNC">           0 :                                     self.answer = &quot;No challenge found&quot;.to_owned();</span></span>
-<span id="L255"><span class="lineNum">     255</span>              :                                 }</span>
-<span id="L256"><span class="lineNum">     256</span>              :                             }</span>
-<span id="L257"><span class="lineNum">     257</span>              :                         }</span>
-<span id="L258"><span class="lineNum">     258</span> <span class="tlaUNC">           0 :                         Err(_) =&gt; {</span></span>
-<span id="L259"><span class="lineNum">     259</span> <span class="tlaUNC">           0 :                             self.answer = &quot;No challenge found&quot;.to_owned();</span></span>
-<span id="L260"><span class="lineNum">     260</span>              :                         }</span>
-<span id="L261"><span class="lineNum">     261</span>              :                     }</span>
-<span id="L262"><span class="lineNum">     262</span>              :                 }</span>
-<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC tlaBgGNC"> >6485*10^15 :                 let button2 = ui.button(&quot;Copy to clipboard&quot;);</span></span>
-<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC"> >4395*10^15 :                 if button2.clicked() {</span></span>
-<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC"> >1441*10^14 :                     clipboard(self.answer.clone());</span></span>
-<span id="L266"><span class="lineNum">     266</span>              :                 }</span>
-<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC"> >2161*10^15 :                 button</span></span>
-<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC"> >2161*10^15 :             }).inner</span></span>
-<span id="L269"><span class="lineNum">     269</span>              :         });</span>
-<span id="L270"><span class="lineNum">     270</span>              :     }</span>
-<span id="L271"><span class="lineNum">     271</span>              : </span>
-<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC"> >2161*10^15 :     pub fn ui_display(&amp;mut self, ui: &amp;mut egui::Ui) {</span></span>
-<span id="L273"><span class="lineNum">     273</span>              :         let mut job = text::LayoutJob::simple(</span>
-<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC"> >4323*10^15 :             self.answer.clone(),</span></span>
-<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC"> >6485*10^15 :             TextStyle::Monospace.resolve(ui.style()),</span></span>
-<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC"> >4323*10^15 :             ui.visuals().text_color(),</span></span>
-<span id="L277"><span class="lineNum">     277</span>              :             f32::INFINITY,</span>
-<span id="L278"><span class="lineNum">     278</span>              :         );</span>
-<span id="L279"><span class="lineNum">     279</span>              : </span>
-<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC"> >2161*10^15 :         job.wrap = text::TextWrapping {      // force wrapping at fixed width instead of punctuation</span></span>
-<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC"> >4323*10^15 :             max_width: ui.available_width(), // pixels, not characters</span></span>
-<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC"> >2161*10^15 :             break_anywhere: true,            // break anywhere, not just at spaces</span></span>
-<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC"> >2161*10^15 :             ..Default::default()</span></span>
-<span id="L284"><span class="lineNum">     284</span>              :         };</span>
-<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC"> >6485*10^15 :         ui.label(job);</span></span>
-<span id="L286"><span class="lineNum">     286</span>              :     }</span>
-<span id="L287"><span class="lineNum">     287</span>              : }</span>
-<span id="L288"><span class="lineNum">     288</span>              : </span>
-<span id="L289"><span class="lineNum">     289</span>              : impl eframe::App for AppState {</span>
-<span id="L290"><span class="lineNum">     290</span> <span class="tlaUNC tlaBgUNC">           0 :     fn update(&amp;mut self, ctx: &amp;egui::Context, _frame: &amp;mut eframe::Frame) {</span></span>
-<span id="L291"><span class="lineNum">     291</span> <span class="tlaUNC">           0 :         egui::CentralPanel::default().show(ctx, |ui| {</span></span>
-<span id="L292"><span class="lineNum">     292</span> <span class="tlaUNC">           0 :             AppState::ui_private_key(self, ui, &amp;mut || FileDialog::new().pick_file());</span></span>
-<span id="L293"><span class="lineNum">     293</span> <span class="tlaUNC">           0 :             AppState::ui_certificate(self, ui, &amp;mut || FileDialog::new().pick_file());</span></span>
-<span id="L294"><span class="lineNum">     294</span> <span class="tlaUNC">           0 :             AppState::ui_answer_generator(self, ui, &amp;mut |text| ctx.copy_text(text));</span></span>
-<span id="L295"><span class="lineNum">     295</span> <span class="tlaUNC">           0 :             AppState::ui_display(self, ui);</span></span>
-<span id="L296"><span class="lineNum">     296</span>              :         });</span>
-<span id="L297"><span class="lineNum">     297</span>              :     }</span>
-<span id="L298"><span class="lineNum">     298</span>              : }</span>
-<span id="L299"><span class="lineNum">     299</span>              : </span>
-<span id="L300"><span class="lineNum">     300</span>              : #[cfg(test)]</span>
-<span id="L301"><span class="lineNum">     301</span>              : mod tests {</span>
-<span id="L302"><span class="lineNum">     302</span>              :     use std::cell::RefCell;</span>
-<span id="L303"><span class="lineNum">     303</span>              :     use std::rc::Rc;</span>
-<span id="L304"><span class="lineNum">     304</span>              :     use std::str::FromStr;</span>
-<span id="L305"><span class="lineNum">     305</span>              :     use egui::accesskit;</span>
-<span id="L306"><span class="lineNum">     306</span>              :     use egui_kittest::Harness;</span>
-<span id="L307"><span class="lineNum">     307</span>              :     use egui_kittest::kittest::Queryable;</span>
-<span id="L308"><span class="lineNum">     308</span>              :     use super::*;</span>
-<span id="L309"><span class="lineNum">     309</span>              : </span>
-<span id="L310"><span class="lineNum">     310</span>              :     #[test]</span>
-<span id="L311"><span class="lineNum">     311</span>              :     fn test_cert_load_workflow() {</span>
-<span id="L312"><span class="lineNum">     312</span>              :         let mut app = AppState::default();</span>
-<span id="L313"><span class="lineNum">     313</span>              :         let private_key_path = PathBuf::from_str(&quot;../tests/signed&quot;).unwrap();</span>
-<span id="L314"><span class="lineNum">     314</span>              :         let certificate_path = PathBuf::from_str(&quot;../tests/signed-cert.pub&quot;).unwrap();</span>
-<span id="L315"><span class="lineNum">     315</span>              :         app.set_private_key(private_key_path).unwrap();</span>
-<span id="L316"><span class="lineNum">     316</span>              :         app.set_certificate(certificate_path).unwrap();</span>
-<span id="L317"><span class="lineNum">     317</span>              :         assert!(app.private_key.is_some());</span>
-<span id="L318"><span class="lineNum">     318</span>              :         assert!(app.certificate.is_some());</span>
-<span id="L319"><span class="lineNum">     319</span>              :         assert!(app.answer_engine.is_some());</span>
-<span id="L320"><span class="lineNum">     320</span>              :     }</span>
-<span id="L321"><span class="lineNum">     321</span>              : </span>
-<span id="L322"><span class="lineNum">     322</span>              :     #[test]</span>
-<span id="L323"><span class="lineNum">     323</span>              :     fn test_load_icon(){</span>
-<span id="L324"><span class="lineNum">     324</span>              :         let _= load_icon();</span>
-<span id="L325"><span class="lineNum">     325</span>              :     }</span>
-<span id="L326"><span class="lineNum">     326</span>              : </span>
-<span id="L327"><span class="lineNum">     327</span>              :     #[test]</span>
-<span id="L328"><span class="lineNum">     328</span>              :     fn test_main_window() {</span>
-<span id="L329"><span class="lineNum">     329</span>              :         let app = Rc::new(RefCell::new(AppState::default()));</span>
-<span id="L330"><span class="lineNum">     330</span>              :         //mocks</span>
-<span id="L331"><span class="lineNum">     331</span>              :         let mut private_key_picker = || PathBuf::from_str(&quot;../tests/signed&quot;).ok();</span>
-<span id="L332"><span class="lineNum">     332</span>              :         let mut certificate_picker = || PathBuf::from_str(&quot;../tests/signed-cert.pub&quot;).ok();</span>
-<span id="L333"><span class="lineNum">     333</span>              : </span>
-<span id="L334"><span class="lineNum">     334</span>              :         let clipboard_called = Rc::new(RefCell::new(false));</span>
-<span id="L335"><span class="lineNum">     335</span>              :         let clipboard_clone = clipboard_called.clone();</span>
-<span id="L336"><span class="lineNum">     336</span>              : </span>
-<span id="L337"><span class="lineNum">     337</span>              :         let mut fake_clipboard = move |_: String| {</span>
-<span id="L338"><span class="lineNum">     338</span>              :             *clipboard_called.borrow_mut() = true;        };</span>
-<span id="L339"><span class="lineNum">     339</span>              : </span>
-<span id="L340"><span class="lineNum">     340</span>              :         let mut harness = Harness::new(|ctx: &amp;egui::Context| {</span>
-<span id="L341"><span class="lineNum">     341</span>              :             egui::CentralPanel::default().show(ctx, |ui| {</span>
-<span id="L342"><span class="lineNum">     342</span>              :                 let mut app = app.borrow_mut();</span>
-<span id="L343"><span class="lineNum">     343</span>              :                 app.ui_private_key(ui, &amp;mut private_key_picker);</span>
-<span id="L344"><span class="lineNum">     344</span>              :                 app.ui_certificate(ui, &amp;mut certificate_picker);</span>
-<span id="L345"><span class="lineNum">     345</span>              :                 app.ui_answer_generator(ui, &amp;mut fake_clipboard);</span>
-<span id="L346"><span class="lineNum">     346</span>              :                 app.ui_display(ui);</span>
-<span id="L347"><span class="lineNum">     347</span>              :             });</span>
-<span id="L348"><span class="lineNum">     348</span>              :         });</span>
-<span id="L349"><span class="lineNum">     349</span>              : </span>
-<span id="L350"><span class="lineNum">     350</span>              :         // Click the &quot;Select private keys&quot; button</span>
-<span id="L351"><span class="lineNum">     351</span>              :         {</span>
-<span id="L352"><span class="lineNum">     352</span>              :             // not a typo the label is either Select private keys or Private Key: something so this matches both</span>
-<span id="L353"><span class="lineNum">     353</span>              :             let btn = harness.get_by_label_contains(&quot;rivate keys&quot;);</span>
-<span id="L354"><span class="lineNum">     354</span>              :             btn.click();</span>
-<span id="L355"><span class="lineNum">     355</span>              :         }</span>
-<span id="L356"><span class="lineNum">     356</span>              :         harness.run();</span>
-<span id="L357"><span class="lineNum">     357</span>              :         assert!(app.borrow().private_key.is_some());</span>
-<span id="L358"><span class="lineNum">     358</span>              :         assert_eq!(app.borrow().config.private_key_path.as_ref().unwrap(), &amp;PathBuf::from_str(&quot;../tests/signed&quot;).unwrap());</span>
-<span id="L359"><span class="lineNum">     359</span>              :         {</span>
-<span id="L360"><span class="lineNum">     360</span>              :             let btn = harness.get_by_label_contains(&quot;public keys&quot;);</span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC"> >7205*10^13 :                     match Binary::try_from(&amp;self.challenge){</span></span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC"> >7205*10^13 :                         Ok(binary) =&gt; {</span></span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC"> >7205*10^13 :                             match Challenge::try_from(binary) {</span></span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC"> >7205*10^13 :                                 Ok(challenge) =&gt; {</span></span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC"> >2882*10^14 :                                     let engine = self.answer_engine.as_ref().unwrap();</span></span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC"> >1441*10^14 :                                     match engine.generate_answer(&amp;challenge){</span></span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC"> >1441*10^14 :                                         Ok(answer) =&gt; {</span></span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC"> >2882*10^14 :                                             let tmp = answer.to_string();</span></span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC"> >2161*10^14 :                                             clipboard(tmp.clone());</span></span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC"> >7205*10^13 :                                             self.answer = tmp;</span></span>
+<span id="L247"><span class="lineNum">     247</span>              :                                         },</span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaUNC tlaBgUNC">           0 :                                         Err(e) =&gt; {self.answer = e.to_string()}</span></span>
+<span id="L249"><span class="lineNum">     249</span>              :                                     }</span>
+<span id="L250"><span class="lineNum">     250</span>              :                                 },</span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaUNC">           0 :                                 Err(_) =&gt; {</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaUNC">           0 :                                     self.answer = &quot;No challenge found&quot;.to_owned();</span></span>
+<span id="L253"><span class="lineNum">     253</span>              :                                 }</span>
+<span id="L254"><span class="lineNum">     254</span>              :                             }</span>
+<span id="L255"><span class="lineNum">     255</span>              :                         }</span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaUNC">           0 :                         Err(_) =&gt; {</span></span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaUNC">           0 :                             self.answer = &quot;No challenge found&quot;.to_owned();</span></span>
+<span id="L258"><span class="lineNum">     258</span>              :                         }</span>
+<span id="L259"><span class="lineNum">     259</span>              :                     }</span>
+<span id="L260"><span class="lineNum">     260</span>              :                 }</span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC tlaBgGNC"> >6485*10^15 :                 let button2 = ui.button(&quot;Copy to clipboard&quot;);</span></span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC"> >4395*10^15 :                 if button2.clicked() {</span></span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC"> >1441*10^14 :                     clipboard(self.answer.clone());</span></span>
+<span id="L264"><span class="lineNum">     264</span>              :                 }</span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC"> >2161*10^15 :                 button</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC"> >2161*10^15 :             }).inner</span></span>
+<span id="L267"><span class="lineNum">     267</span>              :         });</span>
+<span id="L268"><span class="lineNum">     268</span>              :     }</span>
+<span id="L269"><span class="lineNum">     269</span>              : </span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC"> >2161*10^15 :     pub fn ui_display(&amp;mut self, ui: &amp;mut egui::Ui) {</span></span>
+<span id="L271"><span class="lineNum">     271</span>              :         let mut job = text::LayoutJob::simple(</span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC"> >4323*10^15 :             self.answer.clone(),</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC"> >6485*10^15 :             TextStyle::Monospace.resolve(ui.style()),</span></span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC"> >4323*10^15 :             ui.visuals().text_color(),</span></span>
+<span id="L275"><span class="lineNum">     275</span>              :             f32::INFINITY,</span>
+<span id="L276"><span class="lineNum">     276</span>              :         );</span>
+<span id="L277"><span class="lineNum">     277</span>              : </span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC"> >2161*10^15 :         job.wrap = text::TextWrapping {      // force wrapping at fixed width instead of punctuation</span></span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC"> >4323*10^15 :             max_width: ui.available_width(), // pixels, not characters</span></span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC"> >2161*10^15 :             break_anywhere: true,            // break anywhere, not just at spaces</span></span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC"> >2161*10^15 :             ..Default::default()</span></span>
+<span id="L282"><span class="lineNum">     282</span>              :         };</span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC"> >6485*10^15 :         ui.label(job);</span></span>
+<span id="L284"><span class="lineNum">     284</span>              :     }</span>
+<span id="L285"><span class="lineNum">     285</span>              : }</span>
+<span id="L286"><span class="lineNum">     286</span>              : </span>
+<span id="L287"><span class="lineNum">     287</span>              : impl eframe::App for AppState {</span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaUNC tlaBgUNC">           0 :     fn update(&amp;mut self, ctx: &amp;egui::Context, _frame: &amp;mut eframe::Frame) {</span></span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaUNC">           0 :         egui::CentralPanel::default().show(ctx, |ui| {</span></span>
+<span id="L290"><span class="lineNum">     290</span> <span class="tlaUNC">           0 :             AppState::ui_private_key(self, ui, &amp;mut || FileDialog::new().pick_file());</span></span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaUNC">           0 :             AppState::ui_certificate(self, ui, &amp;mut || FileDialog::new().pick_file());</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaUNC">           0 :             AppState::ui_answer_generator(self, ui, &amp;mut |text| ctx.copy_text(text));</span></span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaUNC">           0 :             AppState::ui_display(self, ui);</span></span>
+<span id="L294"><span class="lineNum">     294</span>              :         });</span>
+<span id="L295"><span class="lineNum">     295</span>              :     }</span>
+<span id="L296"><span class="lineNum">     296</span>              : }</span>
+<span id="L297"><span class="lineNum">     297</span>              : </span>
+<span id="L298"><span class="lineNum">     298</span>              : #[cfg(test)]</span>
+<span id="L299"><span class="lineNum">     299</span>              : mod tests {</span>
+<span id="L300"><span class="lineNum">     300</span>              :     use std::cell::RefCell;</span>
+<span id="L301"><span class="lineNum">     301</span>              :     use std::rc::Rc;</span>
+<span id="L302"><span class="lineNum">     302</span>              :     use std::str::FromStr;</span>
+<span id="L303"><span class="lineNum">     303</span>              :     use egui::accesskit;</span>
+<span id="L304"><span class="lineNum">     304</span>              :     use egui_kittest::Harness;</span>
+<span id="L305"><span class="lineNum">     305</span>              :     use egui_kittest::kittest::Queryable;</span>
+<span id="L306"><span class="lineNum">     306</span>              :     use super::*;</span>
+<span id="L307"><span class="lineNum">     307</span>              : </span>
+<span id="L308"><span class="lineNum">     308</span>              :     #[test]</span>
+<span id="L309"><span class="lineNum">     309</span>              :     fn test_cert_load_workflow() {</span>
+<span id="L310"><span class="lineNum">     310</span>              :         let mut app = AppState::default();</span>
+<span id="L311"><span class="lineNum">     311</span>              :         let private_key_path = PathBuf::from_str(&quot;../tests/signed&quot;).unwrap();</span>
+<span id="L312"><span class="lineNum">     312</span>              :         let certificate_path = PathBuf::from_str(&quot;../tests/signed-cert.pub&quot;).unwrap();</span>
+<span id="L313"><span class="lineNum">     313</span>              :         app.set_private_key(private_key_path).unwrap();</span>
+<span id="L314"><span class="lineNum">     314</span>              :         app.set_certificate(certificate_path).unwrap();</span>
+<span id="L315"><span class="lineNum">     315</span>              :         assert!(app.private_key.is_some());</span>
+<span id="L316"><span class="lineNum">     316</span>              :         assert!(app.certificate.is_some());</span>
+<span id="L317"><span class="lineNum">     317</span>              :         assert!(app.answer_engine.is_some());</span>
+<span id="L318"><span class="lineNum">     318</span>              :     }</span>
+<span id="L319"><span class="lineNum">     319</span>              : </span>
+<span id="L320"><span class="lineNum">     320</span>              :     #[test]</span>
+<span id="L321"><span class="lineNum">     321</span>              :     fn test_load_icon(){</span>
+<span id="L322"><span class="lineNum">     322</span>              :         let _= load_icon();</span>
+<span id="L323"><span class="lineNum">     323</span>              :     }</span>
+<span id="L324"><span class="lineNum">     324</span>              : </span>
+<span id="L325"><span class="lineNum">     325</span>              :     #[test]</span>
+<span id="L326"><span class="lineNum">     326</span>              :     fn test_main_window() {</span>
+<span id="L327"><span class="lineNum">     327</span>              :         let app = Rc::new(RefCell::new(AppState::default()));</span>
+<span id="L328"><span class="lineNum">     328</span>              :         //mocks</span>
+<span id="L329"><span class="lineNum">     329</span>              :         let mut private_key_picker = || PathBuf::from_str(&quot;../tests/signed&quot;).ok();</span>
+<span id="L330"><span class="lineNum">     330</span>              :         let mut certificate_picker = || PathBuf::from_str(&quot;../tests/signed-cert.pub&quot;).ok();</span>
+<span id="L331"><span class="lineNum">     331</span>              : </span>
+<span id="L332"><span class="lineNum">     332</span>              :         let clipboard_called = Rc::new(RefCell::new(false));</span>
+<span id="L333"><span class="lineNum">     333</span>              :         let clipboard_clone = clipboard_called.clone();</span>
+<span id="L334"><span class="lineNum">     334</span>              : </span>
+<span id="L335"><span class="lineNum">     335</span>              :         let mut fake_clipboard = move |_: String| {</span>
+<span id="L336"><span class="lineNum">     336</span>              :             *clipboard_called.borrow_mut() = true;        };</span>
+<span id="L337"><span class="lineNum">     337</span>              : </span>
+<span id="L338"><span class="lineNum">     338</span>              :         let mut harness = Harness::new(|ctx: &amp;egui::Context| {</span>
+<span id="L339"><span class="lineNum">     339</span>              :             egui::CentralPanel::default().show(ctx, |ui| {</span>
+<span id="L340"><span class="lineNum">     340</span>              :                 let mut app = app.borrow_mut();</span>
+<span id="L341"><span class="lineNum">     341</span>              :                 app.ui_private_key(ui, &amp;mut private_key_picker);</span>
+<span id="L342"><span class="lineNum">     342</span>              :                 app.ui_certificate(ui, &amp;mut certificate_picker);</span>
+<span id="L343"><span class="lineNum">     343</span>              :                 app.ui_answer_generator(ui, &amp;mut fake_clipboard);</span>
+<span id="L344"><span class="lineNum">     344</span>              :                 app.ui_display(ui);</span>
+<span id="L345"><span class="lineNum">     345</span>              :             });</span>
+<span id="L346"><span class="lineNum">     346</span>              :         });</span>
+<span id="L347"><span class="lineNum">     347</span>              : </span>
+<span id="L348"><span class="lineNum">     348</span>              :         // Click the &quot;Select private keys&quot; button</span>
+<span id="L349"><span class="lineNum">     349</span>              :         {</span>
+<span id="L350"><span class="lineNum">     350</span>              :             // not a typo the label is either Select private keys or Private Key: something so this matches both</span>
+<span id="L351"><span class="lineNum">     351</span>              :             let btn = harness.get_by_label_contains(&quot;rivate keys&quot;);</span>
+<span id="L352"><span class="lineNum">     352</span>              :             btn.click();</span>
+<span id="L353"><span class="lineNum">     353</span>              :         }</span>
+<span id="L354"><span class="lineNum">     354</span>              :         harness.run();</span>
+<span id="L355"><span class="lineNum">     355</span>              :         assert!(app.borrow().private_key.is_some());</span>
+<span id="L356"><span class="lineNum">     356</span>              :         assert_eq!(app.borrow().config.private_key_path.as_ref().unwrap(), &amp;PathBuf::from_str(&quot;../tests/signed&quot;).unwrap());</span>
+<span id="L357"><span class="lineNum">     357</span>              :         {</span>
+<span id="L358"><span class="lineNum">     358</span>              :             let btn = harness.get_by_label_contains(&quot;public keys&quot;);</span>
+<span id="L359"><span class="lineNum">     359</span>              :             btn.click();</span>
+<span id="L360"><span class="lineNum">     360</span>              :             let btn = harness.get_by_label(&quot;Copy to clipboard&quot;);</span>
 <span id="L361"><span class="lineNum">     361</span>              :             btn.click();</span>
-<span id="L362"><span class="lineNum">     362</span>              :             let btn = harness.get_by_label(&quot;Copy to clipboard&quot;);</span>
-<span id="L363"><span class="lineNum">     363</span>              :             btn.click();</span>
-<span id="L364"><span class="lineNum">     364</span>              :         }</span>
-<span id="L365"><span class="lineNum">     365</span>              :         harness.run();</span>
-<span id="L366"><span class="lineNum">     366</span>              :         assert!(*clipboard_clone.borrow());</span>
-<span id="L367"><span class="lineNum">     367</span>              :         assert!(app.borrow().certificate.is_some());</span>
-<span id="L368"><span class="lineNum">     368</span>              :         assert_eq!(app.borrow().config.certificate_path.as_ref().unwrap(), &amp;PathBuf::from_str(&quot;../tests/signed-cert.pub&quot;).unwrap());</span>
-<span id="L369"><span class="lineNum">     369</span>              :         {</span>
-<span id="L370"><span class="lineNum">     370</span>              :             let challenge_str = &quot;[[[dUHu!9csD2^MlD3Yf_|-sUU}Ut8s25A5Ry6j}}w%]]]&quot;;</span>
-<span id="L371"><span class="lineNum">     371</span>              :             let txt = harness.get_by(|node| {node.role() == accesskit::Role::TextInput});</span>
-<span id="L372"><span class="lineNum">     372</span>              :             txt.focus();</span>
-<span id="L373"><span class="lineNum">     373</span>              :             txt.type_text(challenge_str);</span>
-<span id="L374"><span class="lineNum">     374</span>              :         }</span>
-<span id="L375"><span class="lineNum">     375</span>              :         harness.run();</span>
-<span id="L376"><span class="lineNum">     376</span>              :         {</span>
-<span id="L377"><span class="lineNum">     377</span>              :             let btn = harness.get_by_label(&quot;Generate&quot;);</span>
-<span id="L378"><span class="lineNum">     378</span>              :             btn.click();</span>
-<span id="L379"><span class="lineNum">     379</span>              :         }</span>
-<span id="L380"><span class="lineNum">     380</span>              :         harness.run();</span>
-<span id="L381"><span class="lineNum">     381</span>              :         {</span>
-<span id="L382"><span class="lineNum">     382</span>              :             let answer_str = &quot;[[[0R:7rC9mWd0t=nRuOOl+&gt;8Swx;;KzD9Sn;qvo$SHmrfapZ&lt;)#)2adM!D3-6AGV**_!-!hoP63$Ntf2940{s:0000Wb8~1dWn?lnH8D9YV`Xx5Ep{+5KyPqmZgX&gt;JE@N+P0000W@6eqn1dj9(Z0ZI-kiyUZ!YHR*k)zAYKgNv`W=8ME0000WAl)rJ)FEJ|d@Zy`jdI?&lt;;)*c^slX9E!17Y&gt;aB$}`0000000000000010000KbY*jNb#rBMKxKGgZE$R5E@N+P0000C00008bY*jNb#rBM00000X#&amp;1500000d%=&gt;W000000001j0000LaAk6BX&gt;=`EF)=M&gt;Z*q5Ga%5?4X8-^I000007jR{AZE18ZVP|D-bS-9Ya(7{JWNB_^000000000MaAk6BX&gt;=`cZ*p`kW^ZzLVRB??Zf5`h00000019wra&amp;2jJEpT*s000000000EaAk6BX&gt;=`hb7gWZa$^7h000000000005bpp01I&lt;-Xf0)AGBq_ZIRF3vAZhB==tO2#AUh_rMLGzKsz6=J#5NtAYAqde990lr-2eapQvd(}3v+X5EoEdfH8n9g0000$74Z7x9c{A9ozu0KKI&amp;lKppMRYt|S_7K}UQ0Bf?aw-06hRfox*&amp;=H!Czutqff40`KrycD3oZ&gt;j(&amp;bdhuo]]]&quot;;</span>
-<span id="L383"><span class="lineNum">     383</span>              :             let out = harness.get_by(|node| { node.role() == accesskit::Role::Label &amp;&amp; node.value().unwrap() != &quot;Challenge:&quot;});</span>
-<span id="L384"><span class="lineNum">     384</span>              :             let output = out.value().unwrap();</span>
-<span id="L385"><span class="lineNum">     385</span>              :             assert_eq!(output, answer_str);</span>
-<span id="L386"><span class="lineNum">     386</span>              :         }</span>
-<span id="L387"><span class="lineNum">     387</span>              :         harness.run();</span>
-<span id="L388"><span class="lineNum">     388</span>              :         {</span>
-<span id="L389"><span class="lineNum">     389</span>              :             let btn = harness.get_by_label_contains(&quot;Private keys&quot;);</span>
-<span id="L390"><span class="lineNum">     390</span>              :             btn.click_secondary();</span>
-<span id="L391"><span class="lineNum">     391</span>              :         }</span>
-<span id="L392"><span class="lineNum">     392</span>              :         harness.run();</span>
-<span id="L393"><span class="lineNum">     393</span>              :         assert!(app.borrow().private_key.is_none());</span>
-<span id="L394"><span class="lineNum">     394</span>              :         assert!(app.borrow().certificate.is_none());</span>
-<span id="L395"><span class="lineNum">     395</span>              :         assert!(app.borrow().config.private_key_path.is_none());</span>
-<span id="L396"><span class="lineNum">     396</span>              :         assert!(app.borrow().config.certificate_path.is_none());</span>
-<span id="L397"><span class="lineNum">     397</span>              :     }</span>
-<span id="L398"><span class="lineNum">     398</span>              : }</span>
-<span id="L399"><span class="lineNum">     399</span>              : </span>
-<span id="L400"><span class="lineNum">     400</span>              : </span>
+<span id="L362"><span class="lineNum">     362</span>              :         }</span>
+<span id="L363"><span class="lineNum">     363</span>              :         harness.run();</span>
+<span id="L364"><span class="lineNum">     364</span>              :         assert!(*clipboard_clone.borrow());</span>
+<span id="L365"><span class="lineNum">     365</span>              :         assert!(app.borrow().certificate.is_some());</span>
+<span id="L366"><span class="lineNum">     366</span>              :         assert_eq!(app.borrow().config.certificate_path.as_ref().unwrap(), &amp;PathBuf::from_str(&quot;../tests/signed-cert.pub&quot;).unwrap());</span>
+<span id="L367"><span class="lineNum">     367</span>              :         {</span>
+<span id="L368"><span class="lineNum">     368</span>              :             let challenge_str = &quot;[[[dUHu!9csD2^MlD3Yf_|-sUU}Ut8s25A5Ry6j}}w%]]]&quot;;</span>
+<span id="L369"><span class="lineNum">     369</span>              :             let txt = harness.get_by(|node| {node.role() == accesskit::Role::TextInput});</span>
+<span id="L370"><span class="lineNum">     370</span>              :             txt.focus();</span>
+<span id="L371"><span class="lineNum">     371</span>              :             txt.type_text(challenge_str);</span>
+<span id="L372"><span class="lineNum">     372</span>              :         }</span>
+<span id="L373"><span class="lineNum">     373</span>              :         harness.run();</span>
+<span id="L374"><span class="lineNum">     374</span>              :         {</span>
+<span id="L375"><span class="lineNum">     375</span>              :             let btn = harness.get_by_label(&quot;Generate&quot;);</span>
+<span id="L376"><span class="lineNum">     376</span>              :             btn.click();</span>
+<span id="L377"><span class="lineNum">     377</span>              :         }</span>
+<span id="L378"><span class="lineNum">     378</span>              :         harness.run();</span>
+<span id="L379"><span class="lineNum">     379</span>              :         {</span>
+<span id="L380"><span class="lineNum">     380</span>              :             let answer_str = &quot;[[[0R:7rC9mWd0t=nRuOOl+&gt;8Swx;;KzD9Sn;qvo$SHmrfapZ&lt;)#)2adM!D3-6AGV**_!-!hoP63$Ntf2940{s:0000Wb8~1dWn?lnH8D9YV`Xx5Ep{+5KyPqmZgX&gt;JE@N+P0000W@6eqn1dj9(Z0ZI-kiyUZ!YHR*k)zAYKgNv`W=8ME0000WAl)rJ)FEJ|d@Zy`jdI?&lt;;)*c^slX9E!17Y&gt;aB$}`0000000000000010000KbY*jNb#rBMKxKGgZE$R5E@N+P0000C00008bY*jNb#rBM00000X#&amp;1500000d%=&gt;W000000001j0000LaAk6BX&gt;=`EF)=M&gt;Z*q5Ga%5?4X8-^I000007jR{AZE18ZVP|D-bS-9Ya(7{JWNB_^000000000MaAk6BX&gt;=`cZ*p`kW^ZzLVRB??Zf5`h00000019wra&amp;2jJEpT*s000000000EaAk6BX&gt;=`hb7gWZa$^7h000000000005bpp01I&lt;-Xf0)AGBq_ZIRF3vAZhB==tO2#AUh_rMLGzKsz6=J#5NtAYAqde990lr-2eapQvd(}3v+X5EoEdfH8n9g0000$74Z7x9c{A9ozu0KKI&amp;lKppMRYt|S_7K}UQ0Bf?aw-06hRfox*&amp;=H!Czutqff40`KrycD3oZ&gt;j(&amp;bdhuo]]]&quot;;</span>
+<span id="L381"><span class="lineNum">     381</span>              :             let out = harness.get_by(|node| { node.role() == accesskit::Role::Label &amp;&amp; node.value().unwrap() != &quot;Challenge:&quot;});</span>
+<span id="L382"><span class="lineNum">     382</span>              :             let output = out.value().unwrap();</span>
+<span id="L383"><span class="lineNum">     383</span>              :             assert_eq!(output, answer_str);</span>
+<span id="L384"><span class="lineNum">     384</span>              :         }</span>
+<span id="L385"><span class="lineNum">     385</span>              :         harness.run();</span>
+<span id="L386"><span class="lineNum">     386</span>              :         {</span>
+<span id="L387"><span class="lineNum">     387</span>              :             let btn = harness.get_by_label_contains(&quot;Private keys&quot;);</span>
+<span id="L388"><span class="lineNum">     388</span>              :             btn.click_secondary();</span>
+<span id="L389"><span class="lineNum">     389</span>              :         }</span>
+<span id="L390"><span class="lineNum">     390</span>              :         harness.run();</span>
+<span id="L391"><span class="lineNum">     391</span>              :         assert!(app.borrow().private_key.is_none());</span>
+<span id="L392"><span class="lineNum">     392</span>              :         assert!(app.borrow().certificate.is_none());</span>
+<span id="L393"><span class="lineNum">     393</span>              :         assert!(app.borrow().config.private_key_path.is_none());</span>
+<span id="L394"><span class="lineNum">     394</span>              :         assert!(app.borrow().config.certificate_path.is_none());</span>
+<span id="L395"><span class="lineNum">     395</span>              :     }</span>
+<span id="L396"><span class="lineNum">     396</span>              : }</span>
+<span id="L397"><span class="lineNum">     397</span>              : </span>
+<span id="L398"><span class="lineNum">     398</span>              : </span>
         </pre>
               </td>
             </tr>

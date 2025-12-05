@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2025-12-05 13:38:18</td>
+            <td class="headerValue">2025-12-05 19:06:08</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
@@ -149,15 +149,15 @@
 <span id="L87"><span class="lineNum">      87</span>              : impl&lt;'a, T&gt; fmt::Display for DisplayBinary&lt;'a, T&gt;</span>
 <span id="L88"><span class="lineNum">      88</span>              : where</span>
 <span id="L89"><span class="lineNum">      89</span>              :     T: AsRef&lt;[u8]&gt;,</span>
-<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC"> >2666*10^15 : {    fn fmt(&amp;self, f: &amp;mut fmt::Formatter&lt;'_&gt;) -&gt; fmt::Result {</span></span>
-<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC"> >7998*10^15 :     write!(f, &quot;[[[&quot;)?;</span></span>
-<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC"> >4539*10^15 :     for (i, part) in self.0.iter().enumerate() {</span></span>
-<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC"> >5764*10^14 :         write!(f, &quot;{}&quot;, base85::encode(part.as_ref()))?;</span></span>
-<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC"> >1441*10^15 :         if i &lt; self.0.len() - 1 {</span></span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC"> >2594*10^15 : {    fn fmt(&amp;self, f: &amp;mut fmt::Formatter&lt;'_&gt;) -&gt; fmt::Result {</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC"> >7782*10^15 :     write!(f, &quot;[[[&quot;)?;</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC"> >4179*10^15 :     for (i, part) in self.0.iter().enumerate() {</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC"> >2161*10^14 :         write!(f, &quot;{}&quot;, base85::encode(part.as_ref()))?;</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC"> >1297*10^15 :         if i &lt; self.0.len() - 1 {</span></span>
 <span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC"> >1297*10^15 :             write!(f, &quot;:&quot;)?;</span></span>
 <span id="L96"><span class="lineNum">      96</span>              :         }</span>
 <span id="L97"><span class="lineNum">      97</span>              :     }</span>
-<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC"> >7998*10^15 :     write!(f, &quot;]]]&quot;)</span></span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC"> >7782*10^15 :     write!(f, &quot;]]]&quot;)</span></span>
 <span id="L99"><span class="lineNum">      99</span>              : }</span>
 <span id="L100"><span class="lineNum">     100</span>              : }</span>
 <span id="L101"><span class="lineNum">     101</span>              : </span>
