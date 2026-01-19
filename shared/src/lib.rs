@@ -4,6 +4,7 @@ mod supportedalgorithm;
 
 use std::path::PathBuf;
 pub use ssh_key::{Certificate, PrivateKey, PublicKey, Fingerprint};
+pub use ssh_key::authorized_keys::AuthorizedKeys;
 pub use crate::crypto::{CertificateMatches, Challenge, Answer, AnswerEngine, PrivateKeyAndCertificate};
 pub use crate::binary::{Binary, IntoBinary};
 
