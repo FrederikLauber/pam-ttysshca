@@ -39,9 +39,9 @@ fn args2fingerprints(args: Vec<&CStr>) -> Vec<Fingerprint>{
                 let ca_path = PathBuf::from(rest);
                 syslog(format!("Loading: `{}`", rest).as_str());
 
-                if let Ok(certs) = AuthorizedKeys::read_file(&ca_path){
-                    for cert in certs {
-                        trusted_certs.push(cert.fingerprint(Default::default()));
+                if let Ok(entries) = AuthorizedKeys::read_file(&ca_path){
+                    for entry in entries {
+                        trusted_certs.push(entry.public_key().fingerprint(Default::default()));
                     }
                 } else {
                     syslog(format!("Could not load CA `{}`", rest).as_str());
