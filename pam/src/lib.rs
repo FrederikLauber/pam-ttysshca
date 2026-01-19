@@ -9,6 +9,7 @@ use pam::module::{PamHandle, PamHooks};
 use pam::pam_try;
 use shared::{Answer, Challenge, load_ca, Fingerprint};
 use syslog::{Facility, Formatter3164};
+use ssh_key::authorized_keys::AuthorizedKeys;
 
 struct Pamttysshca;
 pam::pam_hooks!(Pamttysshca);
@@ -39,8 +40,10 @@ fn args2fingerprints(args: Vec<&CStr>) -> Vec<Fingerprint>{
                 let ca_path = PathBuf::from(rest);
                 syslog(format!("Loading: `{}`", rest).as_str());
 
-                if let Ok(cert) = load_ca(&ca_path) {
-                    trusted_certs.push(cert.fingerprint(Default::default()));
+                if let Ok(certs) = AuthorizedKeys::read_file(&ca_path){
+                    for cert in certs {
+                        trusted_certs.push(cert.fingerprint(Default::default()));
+                    }
                 } else {
                     syslog(format!("Could not load CA `{}`", rest).as_str());
                 }
