@@ -86,9 +86,12 @@ impl PamContext for PamHandle {
 
 fn authenticate<T: PamContext>(ctx: &T, args: Vec<&CStr>, username: &str) -> PamResultCode {
     let challenge = Challenge::new();
+    syslog("Posting challenge");
     let answer = pam_try!(ctx.post_challenge_and_get_response(&challenge));
+    syslog("Answer received, starting validation");
 
     if let Err(_) = answer.verify_signature(&challenge) {
+        syslog("Signature verification failed");
         return PamResultCode::PAM_AUTH_ERR;
     }
 
