@@ -62,7 +62,7 @@ impl AnswerEngine for PrivateKeyAndCertificate {
     fn generate_answer(&self, challenge: &Challenge) -> Result<Answer, String> {
         let data: &[u8] = challenge.0.as_ref();
 
-        let sshsig = self.private.sign(NAMESPACE, HashAlg::default(), data).map_err(|e| format!("Could not sign challenge: {}", e))?;
+        let sshsig = self.private.sign(NAMESPACE, HashAlg::Sha256, data).map_err(|e| format!("Could not sign challenge: {}", e))?;
         let signature = sshsig.signature();
         Ok(Answer{signature: signature.clone(), intermediate: self.intermediate.clone()})
     }
@@ -98,7 +98,7 @@ impl Answer {
         let sig = SshSig::new(
             keydata,
             NAMESPACE,
-            HashAlg::default(),
+            HashAlg::Sha256,
             self.signature.clone()
         ).map_err(|_| "invalid signature format")?;
 
