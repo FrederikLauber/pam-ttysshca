@@ -7,7 +7,7 @@ use pam::constants::{PamFlag, PamResultCode, PAM_PROMPT_ECHO_ON};
 use pam::conv::Conv;
 use pam::module::{PamHandle, PamHooks};
 use pam::pam_try;
-use shared::{Answer, Challenge, load_ca, Fingerprint, AuthorizedKeys};
+use shared::{Answer, Challenge, Fingerprint, AuthorizedKeys};
 use syslog::{Facility, Formatter3164};
 
 struct Pamttysshca;
