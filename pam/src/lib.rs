@@ -95,6 +95,7 @@ fn authenticate<T: PamContext>(ctx: &T, args: Vec<&CStr>, username: &str) -> Pam
     }
 
     let trusted_certs = args2fingerprints(args);
+    syslog("{} certificates loaded");
 
     if let Err(e) = answer.verify_intermediate(&trusted_certs, &username){
         syslog(e);
