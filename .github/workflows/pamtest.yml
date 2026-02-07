@@ -29,7 +29,7 @@ jobs:
 
       - name: Configure test PAM service and copy files
         run: |
-          sudo cp ./target/release/libpypam_ttysshca.so /usr/lib/security/pam_ttysshca.so
+          sudo cp ./target/release/libpam_ttysshca.so /usr/lib/security/pam_ttysshca.so
           sudo cp ./tests/CAs/ca1.pub /etc/pam.d/ca1.pub
           sudo cat > /etc/pam.d/testauth <<EOF
           auth       required   pam_ttysshca.so ca=/etc/pam.d/ca1.pub
