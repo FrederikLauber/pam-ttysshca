@@ -69,12 +69,7 @@ impl PamContext for PamHandle {
             .flatten()
             .ok_or(PamResultCode::PAM_ABORT)?;
 
-        conv.send(
-            pam::constants::PAM_TEXT_INFO,
-            &format!("pam-ttysshca Challenge: {}\n", challenge),
-        ).map_err(|_| PamResultCode::PAM_ABORT)?;
-
-        let userinput = conv.send(PAM_PROMPT_ECHO_ON, "Response: ")
+        let userinput = conv.send(PAM_PROMPT_ECHO_ON, &format!("pam-ttysshca Challenge: {}\nResponse: ", challenge))
             .ok()
             .flatten()
             .ok_or(PamResultCode::PAM_AUTH_ERR)?;
