@@ -25,7 +25,7 @@ jobs:
 
       - name: Build PAM module and tester
         run: |
-          cargo build --release -p pam -p pamtester
+          cargo build --release -p pam-ttysshca -p pamtester
 
       - name: Configure test PAM service and copy files
         run: |
