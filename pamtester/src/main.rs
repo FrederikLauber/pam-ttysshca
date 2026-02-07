@@ -1,3 +1,4 @@
+#![cfg(target_os = "linux")]
 use libc::{c_char, c_int, c_void};
 use std::ffi::{CStr, CString};
 use std::path::PathBuf;
