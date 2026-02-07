@@ -7,27 +7,21 @@ on:
     branches: [ master ]
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
   build:
-    name: Build Workspace on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+    name: Build Workspace
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm]
+        arch: [x86_64, arm64]
       fail-fast: false
-    container:
-      image: ${{ matrix.arch == 'x86_64' && 'ubuntu:24.04' || 'arm64v8/ubuntu:24.04' }}
-      options: --privileged
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: apt-get update && apt-get install -y build-essential pkg-config libssl-dev python3-dev libpam0g-dev libffi-dev libc6-dev llvm clang lld
+        run: sudo apt-get update && sudo apt-get install -y build-essential pkg-config libssl-dev python3-dev libpam0g-dev libffi-dev libc6-dev llvm clang lld
 
       - name: Build PAM module and tester
         run: |
@@ -35,9 +29,9 @@ jobs:
 
       - name: Configure test PAM service and copy files
         run: |
-          cp ./target/release/libpypam_ttysshca.so /usr/lib/security/pam_ttysshca.so
-          cp ./tests/CAs/ca1.pub /etc/pam.d/ca1.pub
-          cat > /etc/pam.d/testauth <<EOF
+          sudo cp ./target/release/libpypam_ttysshca.so /usr/lib/security/pam_ttysshca.so
+          sudo cp ./tests/CAs/ca1.pub /etc/pam.d/ca1.pub
+          sudo cat > /etc/pam.d/testauth <<EOF
           auth       required   pam_ttysshca.so ca=/etc/pam.d/ca1.pub
           account    required   pam_permit.so
           EOF
