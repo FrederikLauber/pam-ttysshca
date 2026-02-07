@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "pam",
+    "pamtester",
     "gui",
     "cli",
     "shared",
