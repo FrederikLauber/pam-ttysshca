@@ -10,7 +10,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 shared = { path = "../shared" }
-pyo3 = { version = "0.27.2", features = ["extension-module", "abi3"] }
+pyo3 = { version = "0.28.0", features = ["extension-module", "abi3"] }
 
 [dev-dependencies]
-pyo3 = { version = "0.27.2", features = ["auto-initialize"] }
+pyo3 = { version = "0.28.0", features = ["auto-initialize"] }
