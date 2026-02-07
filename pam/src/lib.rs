@@ -7,7 +7,7 @@ use pam::constants::{PamFlag, PamResultCode, PAM_PROMPT_ECHO_ON};
 use pam::conv::Conv;
 use pam::module::{PamHandle, PamHooks};
 use pam::pam_try;
-use shared::{Answer, Challenge, load_ca, Fingerprint, AuthorizedKeys};
+use shared::{Answer, Challenge, Fingerprint, AuthorizedKeys};
 use syslog::{Facility, Formatter3164};
 
 struct Pamttysshca;
@@ -95,6 +95,7 @@ fn authenticate<T: PamContext>(ctx: &T, args: Vec<&CStr>, username: &str) -> Pam
     }
 
     let trusted_certs = args2fingerprints(args);
+    syslog("{} certificates loaded");
 
     if let Err(e) = answer.verify_intermediate(&trusted_certs, &username){
         syslog(e);
