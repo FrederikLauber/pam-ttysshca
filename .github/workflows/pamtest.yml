@@ -31,7 +31,7 @@ jobs:
         run: |
           PAM_LIBDIR="$(pkg-config --variable=libdir pam)/security"
           sudo install -Dm755 target/release/libpam_ttysshca.so "$PAM_LIBDIR/pam_ttysshca.so"
-          sudo install -D655 ./tests/CAs/ca1.pub /etc/pam.d/ca1.pub
+          sudo install -Dm655 ./tests/CAs/ca1.pub /etc/pam.d/ca1.pub
           sudo cat > /etc/pam.d/testauth <<EOF
           auth       required   pam_ttysshca.so ca=/etc/pam.d/ca1.pub
           account    required   pam_permit.so
