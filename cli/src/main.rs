@@ -10,7 +10,7 @@ struct Cli {
     private_key: PathBuf,
     certificate: PathBuf,
 }
-fn inner_logic<R: BufRead, W: Write>(cli: Cli, mut input: R, mut output: W) {
+fn inner_logic<R: BufRead, W: Write>(cli: &Cli, mut input: R, mut output: W) {
     let private_key = load_private_key(&cli.private_key).unwrap();
     let certificate = load_certificate(&cli.certificate).unwrap();
     let answer_engine = PrivateKeyAndCertificate::new(private_key, certificate).unwrap();
@@ -35,15 +35,12 @@ fn inner_logic<R: BufRead, W: Write>(cli: Cli, mut input: R, mut output: W) {
 }
 
 fn main() {
-    let cli = Cli::parse();
-    let stdin = io::stdin();
-    let stdout = io::stdout();
-    inner_logic(cli, stdin.lock(), stdout.lock())
+    inner_logic(&Cli::parse(), io::stdin().lock(), io::stdout().lock())
 }
 
 #[cfg(test)]
 mod tests {
-    use std::io::BufReader;
+    use std::io::{BufReader, Cursor};
     use super::*;
 
     #[test]
@@ -62,8 +59,12 @@ mod tests {
 
         let mut output = Vec::new();
 
-        inner_logic(cli, reader, &mut output);
+        inner_logic(&cli, reader, &mut output);
         let output_str = String::from_utf8(output).unwrap();
         assert!(output_str.contains(answer_str));
+        // empty reader
+        let reader = BufReader::new(Cursor::new(Vec::<u8>::new()));
+        let mut output = Vec::new();
+        inner_logic(&cli, reader, &mut output);
     }
 }
