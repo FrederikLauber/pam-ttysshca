@@ -1,0 +1,39 @@
+version: 2
+updates:
+  - package-ecosystem: "cargo"
+    directory: "/cli"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: "cargo"
+    directory: "/gui"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: "cargo"
+    directory: "/pam"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: "cargo"
+    directory: "/pamtester"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: "cargo"
+    directory: "/py"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: "cargo"
+    directory: "/shared"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+
+
