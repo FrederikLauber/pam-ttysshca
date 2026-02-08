@@ -31,13 +31,13 @@
             <td class="headerValue">merged.lcov</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryLo">65.0&nbsp;%</td>
-            <td class="headerCovTableEntry">20</td>
+            <td class="headerCovTableEntryMed">76.5&nbsp;%</td>
+            <td class="headerCovTableEntry">17</td>
             <td class="headerCovTableEntry">13</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-02-07 23:25:32</td>
+            <td class="headerValue">2026-02-08 01:28:20</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryLo">50.0&nbsp;%</td>
@@ -72,16 +72,16 @@
 <span id="L10"><span class="lineNum">      10</span>              :     private_key: PathBuf,</span>
 <span id="L11"><span class="lineNum">      11</span>              :     certificate: PathBuf,</span>
 <span id="L12"><span class="lineNum">      12</span>              : }</span>
-<span id="L13"><span class="lineNum">      13</span> <span class="tlaGNC tlaBgGNC"> >7205*10^13 : fn inner_logic&lt;R: BufRead, W: Write&gt;(cli: Cli, mut input: R, mut output: W) {</span></span>
-<span id="L14"><span class="lineNum">      14</span> <span class="tlaGNC"> >2882*10^14 :     let private_key = load_private_key(&amp;cli.private_key).unwrap();</span></span>
-<span id="L15"><span class="lineNum">      15</span> <span class="tlaGNC"> >2882*10^14 :     let certificate = load_certificate(&amp;cli.certificate).unwrap();</span></span>
-<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC"> >3602*10^14 :     let answer_engine = PrivateKeyAndCertificate::new(private_key, certificate).unwrap();</span></span>
+<span id="L13"><span class="lineNum">      13</span> <span class="tlaGNC tlaBgGNC"> >1441*10^14 : fn inner_logic&lt;R: BufRead, W: Write&gt;(cli: &amp;Cli, mut input: R, mut output: W) {</span></span>
+<span id="L14"><span class="lineNum">      14</span> <span class="tlaGNC"> >5764*10^14 :     let private_key = load_private_key(&amp;cli.private_key).unwrap();</span></span>
+<span id="L15"><span class="lineNum">      15</span> <span class="tlaGNC"> >5764*10^14 :     let certificate = load_certificate(&amp;cli.certificate).unwrap();</span></span>
+<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC"> >7205*10^14 :     let answer_engine = PrivateKeyAndCertificate::new(private_key, certificate).unwrap();</span></span>
 <span id="L17"><span class="lineNum">      17</span>              : </span>
 <span id="L18"><span class="lineNum">      18</span> <span class="tlaUNC tlaBgUNC">           0 :     loop {</span></span>
-<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC tlaBgGNC"> >4323*10^14 :         write!(output, &quot;Input challenge:&quot;).unwrap();</span></span>
-<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC"> >2882*10^14 :         let mut line = String::new();</span></span>
-<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC"> >4323*10^14 :         if let Ok(t) = input.read_line(&amp;mut line) {</span></span>
-<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC"> >2882*10^14 :             if t == 0 { break; }</span></span>
+<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC tlaBgGNC"> >6485*10^14 :         write!(output, &quot;Input challenge:&quot;).unwrap();</span></span>
+<span id="L20"><span class="lineNum">      20</span> <span class="tlaGNC"> >4323*10^14 :         let mut line = String::new();</span></span>
+<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC"> >6485*10^14 :         if let Ok(t) = input.read_line(&amp;mut line) {</span></span>
+<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC"> >4323*10^14 :             if t == 0 { break; }</span></span>
 <span id="L23"><span class="lineNum">      23</span>              :         } else {</span>
 <span id="L24"><span class="lineNum">      24</span> <span class="tlaUNC tlaBgUNC">           0 :             break;</span></span>
 <span id="L25"><span class="lineNum">      25</span>              :         }</span>
@@ -97,38 +97,39 @@
 <span id="L35"><span class="lineNum">      35</span>              : }</span>
 <span id="L36"><span class="lineNum">      36</span>              : </span>
 <span id="L37"><span class="lineNum">      37</span> <span class="tlaUNC tlaBgUNC">           0 : fn main() {</span></span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaUNC">           0 :     let cli = Cli::parse();</span></span>
-<span id="L39"><span class="lineNum">      39</span> <span class="tlaUNC">           0 :     let stdin = io::stdin();</span></span>
-<span id="L40"><span class="lineNum">      40</span> <span class="tlaUNC">           0 :     let stdout = io::stdout();</span></span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaUNC">           0 :     inner_logic(cli, stdin.lock(), stdout.lock())</span></span>
-<span id="L42"><span class="lineNum">      42</span>              : }</span>
-<span id="L43"><span class="lineNum">      43</span>              : </span>
-<span id="L44"><span class="lineNum">      44</span>              : #[cfg(test)]</span>
-<span id="L45"><span class="lineNum">      45</span>              : mod tests {</span>
-<span id="L46"><span class="lineNum">      46</span>              :     use std::io::BufReader;</span>
-<span id="L47"><span class="lineNum">      47</span>              :     use super::*;</span>
-<span id="L48"><span class="lineNum">      48</span>              : </span>
-<span id="L49"><span class="lineNum">      49</span>              :     #[test]</span>
-<span id="L50"><span class="lineNum">      50</span>              :     fn cli_inner_logic() {</span>
-<span id="L51"><span class="lineNum">      51</span>              :         let priv_path = PathBuf::from(&quot;../tests/signed&quot;);</span>
-<span id="L52"><span class="lineNum">      52</span>              :         let cert_path = PathBuf::from(&quot;../tests/signed-cert.pub&quot;);</span>
-<span id="L53"><span class="lineNum">      53</span>              : </span>
-<span id="L54"><span class="lineNum">      54</span>              :         let challenge_str = &quot;[[[dUHu!9csD2^MlD3Yf_|-sUU}Ut8s25A5Ry6j}}w%]]]\nq\n&quot;;</span>
-<span id="L55"><span class="lineNum">      55</span>              :         let answer_str = &quot;[[[0R:7rC9mWd0t=nRuOOl+&gt;8Swx;;KzD9Sn;qvo$SHmrfapZ&lt;)#)2adM!D3-6AGV**_!-!hoP63$Ntf2940{s:0000Wb8~1dWn?lnH8D9YV`Xx5Ep{+5KyPqmZgX&gt;JE@N+P0000W@6eqn1dj9(Z0ZI-kiyUZ!YHR*k)zAYKgNv`W=8ME0000WAl)rJ)FEJ|d@Zy`jdI?&lt;;)*c^slX9E!17Y&gt;aB$}`0000000000000010000KbY*jNb#rBMKxKGgZE$R5E@N+P0000C00008bY*jNb#rBM00000X#&amp;1500000d%=&gt;W000000001j0000LaAk6BX&gt;=`EF)=M&gt;Z*q5Ga%5?4X8-^I000007jR{AZE18ZVP|D-bS-9Ya(7{JWNB_^000000000MaAk6BX&gt;=`cZ*p`kW^ZzLVRB??Zf5`h00000019wra&amp;2jJEpT*s000000000EaAk6BX&gt;=`hb7gWZa$^7h000000000005bpp01I&lt;-Xf0)AGBq_ZIRF3vAZhB==tO2#AUh_rMLGzKsz6=J#5NtAYAqde990lr-2eapQvd(}3v+X5EoEdfH8n9g0000$74Z7x9c{A9ozu0KKI&amp;lKppMRYt|S_7K}UQ0Bf?aw-06hRfox*&amp;=H!Czutqff40`KrycD3oZ&gt;j(&amp;bdhuo]]]&quot;;</span>
-<span id="L56"><span class="lineNum">      56</span>              :         let cli = Cli {</span>
-<span id="L57"><span class="lineNum">      57</span>              :             private_key: priv_path,</span>
-<span id="L58"><span class="lineNum">      58</span>              :             certificate: cert_path</span>
-<span id="L59"><span class="lineNum">      59</span>              :         };</span>
-<span id="L60"><span class="lineNum">      60</span>              : </span>
-<span id="L61"><span class="lineNum">      61</span>              :         let reader = BufReader::new(&amp;challenge_str.as_bytes()[..]);</span>
-<span id="L62"><span class="lineNum">      62</span>              : </span>
-<span id="L63"><span class="lineNum">      63</span>              :         let mut output = Vec::new();</span>
-<span id="L64"><span class="lineNum">      64</span>              : </span>
-<span id="L65"><span class="lineNum">      65</span>              :         inner_logic(cli, reader, &amp;mut output);</span>
-<span id="L66"><span class="lineNum">      66</span>              :         let output_str = String::from_utf8(output).unwrap();</span>
-<span id="L67"><span class="lineNum">      67</span>              :         assert!(output_str.contains(answer_str));</span>
-<span id="L68"><span class="lineNum">      68</span>              :     }</span>
-<span id="L69"><span class="lineNum">      69</span>              : }</span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaUNC">           0 :     inner_logic(&amp;Cli::parse(), io::stdin().lock(), io::stdout().lock())</span></span>
+<span id="L39"><span class="lineNum">      39</span>              : }</span>
+<span id="L40"><span class="lineNum">      40</span>              : </span>
+<span id="L41"><span class="lineNum">      41</span>              : #[cfg(test)]</span>
+<span id="L42"><span class="lineNum">      42</span>              : mod tests {</span>
+<span id="L43"><span class="lineNum">      43</span>              :     use std::io::{BufReader, Cursor};</span>
+<span id="L44"><span class="lineNum">      44</span>              :     use super::*;</span>
+<span id="L45"><span class="lineNum">      45</span>              : </span>
+<span id="L46"><span class="lineNum">      46</span>              :     #[test]</span>
+<span id="L47"><span class="lineNum">      47</span>              :     fn cli_inner_logic() {</span>
+<span id="L48"><span class="lineNum">      48</span>              :         let priv_path = PathBuf::from(&quot;../tests/signed&quot;);</span>
+<span id="L49"><span class="lineNum">      49</span>              :         let cert_path = PathBuf::from(&quot;../tests/signed-cert.pub&quot;);</span>
+<span id="L50"><span class="lineNum">      50</span>              : </span>
+<span id="L51"><span class="lineNum">      51</span>              :         let challenge_str = &quot;[[[dUHu!9csD2^MlD3Yf_|-sUU}Ut8s25A5Ry6j}}w%]]]\nq\n&quot;;</span>
+<span id="L52"><span class="lineNum">      52</span>              :         let answer_str = &quot;[[[0R:7rC9mWd0t=nRuOOl+&gt;8Swx;;KzD9Sn;qvo$SHmrfapZ&lt;)#)2adM!D3-6AGV**_!-!hoP63$Ntf2940{s:0000Wb8~1dWn?lnH8D9YV`Xx5Ep{+5KyPqmZgX&gt;JE@N+P0000W@6eqn1dj9(Z0ZI-kiyUZ!YHR*k)zAYKgNv`W=8ME0000WAl)rJ)FEJ|d@Zy`jdI?&lt;;)*c^slX9E!17Y&gt;aB$}`0000000000000010000KbY*jNb#rBMKxKGgZE$R5E@N+P0000C00008bY*jNb#rBM00000X#&amp;1500000d%=&gt;W000000001j0000LaAk6BX&gt;=`EF)=M&gt;Z*q5Ga%5?4X8-^I000007jR{AZE18ZVP|D-bS-9Ya(7{JWNB_^000000000MaAk6BX&gt;=`cZ*p`kW^ZzLVRB??Zf5`h00000019wra&amp;2jJEpT*s000000000EaAk6BX&gt;=`hb7gWZa$^7h000000000005bpp01I&lt;-Xf0)AGBq_ZIRF3vAZhB==tO2#AUh_rMLGzKsz6=J#5NtAYAqde990lr-2eapQvd(}3v+X5EoEdfH8n9g0000$74Z7x9c{A9ozu0KKI&amp;lKppMRYt|S_7K}UQ0Bf?aw-06hRfox*&amp;=H!Czutqff40`KrycD3oZ&gt;j(&amp;bdhuo]]]&quot;;</span>
+<span id="L53"><span class="lineNum">      53</span>              :         let cli = Cli {</span>
+<span id="L54"><span class="lineNum">      54</span>              :             private_key: priv_path,</span>
+<span id="L55"><span class="lineNum">      55</span>              :             certificate: cert_path</span>
+<span id="L56"><span class="lineNum">      56</span>              :         };</span>
+<span id="L57"><span class="lineNum">      57</span>              : </span>
+<span id="L58"><span class="lineNum">      58</span>              :         let reader = BufReader::new(&amp;challenge_str.as_bytes()[..]);</span>
+<span id="L59"><span class="lineNum">      59</span>              : </span>
+<span id="L60"><span class="lineNum">      60</span>              :         let mut output = Vec::new();</span>
+<span id="L61"><span class="lineNum">      61</span>              : </span>
+<span id="L62"><span class="lineNum">      62</span>              :         inner_logic(&amp;cli, reader, &amp;mut output);</span>
+<span id="L63"><span class="lineNum">      63</span>              :         let output_str = String::from_utf8(output).unwrap();</span>
+<span id="L64"><span class="lineNum">      64</span>              :         assert!(output_str.contains(answer_str));</span>
+<span id="L65"><span class="lineNum">      65</span>              :         // empty reader</span>
+<span id="L66"><span class="lineNum">      66</span>              :         let reader = BufReader::new(Cursor::new(Vec::&lt;u8&gt;::new()));</span>
+<span id="L67"><span class="lineNum">      67</span>              :         let mut output = Vec::new();</span>
+<span id="L68"><span class="lineNum">      68</span>              :         inner_logic(&amp;cli, reader, &amp;mut output);</span>
+<span id="L69"><span class="lineNum">      69</span>              :     }</span>
+<span id="L70"><span class="lineNum">      70</span>              : }</span>
         </pre>
               </td>
             </tr>
