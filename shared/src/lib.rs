@@ -1,6 +1,5 @@
 mod binary;
 mod crypto;
-mod supportedalgorithm;
 
 use std::path::PathBuf;
 pub use ssh_key::{Certificate, PrivateKey, PublicKey, Fingerprint};

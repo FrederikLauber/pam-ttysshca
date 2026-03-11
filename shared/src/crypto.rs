@@ -2,8 +2,8 @@ use std::ffi::CStr;
 use std::fmt;
 pub use ssh_key::{Certificate, Fingerprint, HashAlg, PrivateKey, Signature};
 use ssh_key::{PublicKey, SshSig};
+use ssh_key::encoding::{Decode, Encode};
 use crate::binary::{Binary, DisplayBinary, IntoBinary};
-use crate::supportedalgorithm::SupportedAlgorithm;
 
 const NAMESPACE: &str = "Pamttysshca";
 
@@ -134,13 +134,15 @@ impl From<Challenge> for Binary {
 
 impl fmt::Display for Answer {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut signature_bytes = Vec::new();
+        let mut certificate_bytes = Vec::new();
 
-        let algo = SupportedAlgorithm::from_ssh_algorithm(&self.intermediate.algorithm()).ok_or_else(|| std::fmt::Error)?.to_byte();
-        let algo_byte = vec![algo];
-        let raw_bytes = self.signature.as_bytes();
-        let certificate_bytes = self.intermediate.to_bytes().map_err(|_| std::fmt::Error)?;
+        self.signature.encode(&mut signature_bytes)
+            .map_err(|_| "Failed to encode signature").map_err(|_| fmt::Error)?;
+        self.intermediate.encode(&mut certificate_bytes)
+            .map_err(|_| "Failed to encode certificate").map_err(|_| fmt::Error)?;
 
-        write!(f, "{}", DisplayBinary{ 0: &*vec![&algo_byte, raw_bytes, &certificate_bytes] })
+        write!(f, "{}", Binary(vec![signature_bytes, certificate_bytes]))
     }
 }
 
@@ -149,15 +151,21 @@ impl TryFrom<Binary> for Answer {
     type Error = &'static str;
 
     fn try_from(s: Binary) -> Result<Self, Self::Error> {
-        if s.len() != 3 {
-            return Err("Expected 3 binary blobs");
+        if s.len() != 2 {
+            return Err("Expected 2 binary blobs");
         }
 
-        let algo = SupportedAlgorithm::from_byte(&s.0[0][0]).ok_or_else(|| "Unsupported algorithm")?;
-        let raw_bytes = s.0[1].clone();
-        let cert = Certificate::from_bytes(&*s.0[2].clone()).map_err(|_| "Invalid Certificate")?;
-        let tmp1 = Signature::new(algo.to_ssh_algorithm().ok_or_else(|| "Invalid Certificate")?, raw_bytes).map_err(|_| "Invalid signature")?;
-        Ok(Answer{signature: tmp1, intermediate: cert})
+        let mut signature_bytes: &[u8] = &s.0[0];
+        let mut intermediate_bytes: &[u8] = &s.0[1];
+
+
+        let signature = ssh_key::Signature::decode(&mut signature_bytes).map_err(|_| "Could not decode signature")?;
+        let intermediate = ssh_key::Certificate::decode(&mut intermediate_bytes).map_err(|_| "Could not decode intermediate")?;
+
+        Ok(Answer {
+            signature,
+            intermediate,
+        })
     }
 }
 
@@ -198,11 +206,15 @@ impl TryFrom<Answer> for Binary {
     type Error = &'static str;
 
     fn try_from(s: Answer) -> Result<Self, Self::Error> {
-        let raw_bytes = s.signature.as_bytes().to_vec();
-        let algo = SupportedAlgorithm::from_ssh_algorithm(&s.signature.algorithm()).ok_or_else(|| "Unsupported algorithm")?.to_byte();
-        let algo_byte = vec![algo];
-        let certificate_bytes = s.intermediate.to_bytes().map_err(|_| "Unsupported intermediate")?;
-        let tmp = vec![algo_byte, raw_bytes, certificate_bytes];
+        let mut signature_bytes = Vec::new();
+        let mut certificate_bytes = Vec::new();
+
+        s.signature.encode(&mut signature_bytes)
+            .map_err(|_| "Failed to encode signature")?;
+        s.intermediate.encode(&mut certificate_bytes)
+            .map_err(|_| "Failed to encode certificate")?;
+
+        let tmp = vec![signature_bytes, certificate_bytes];
         Ok(Binary{0: tmp})
     }
 }
@@ -360,7 +372,7 @@ mod tests {
     }
 
     #[test]
-    fn test_binary2answer_but_not_3_blobs(){
+    fn test_binary2answer_but_not_2_blobs(){
         let binary = Binary{0: Vec::new()};
         assert!(Answer::try_from(binary).is_err())
     }
@@ -373,7 +385,7 @@ mod tests {
 
     #[test]
     fn test_answer_string2answer(){
-        let answer_string = "[[[0R:r#_c@ElzkUJr7*Uu17uvrN@B%;-U>Qqj#y@{KnOyL<L!a2tY_S>N;uv%y1zTaRtZff<Vt<$Z4#6Itu&<:0000Wb8~1dWn?lnH8D9YV`Xx5Ep{+5KyPqmZgX>JE@N+P0000W@6eqn1dj9(Z0ZI-kiyUZ!YHR*k)zAYKgNv`W=8ME0000WAl)rJ)FEJ|d@Zy`jdI?<;)*c^slX9E!17Y>aB$}`0000000000000010000KbY*jNb#rBMKxKGgZE$R5E@N+P0000C00008bY*jNb#rBM00000X#&1500000d%=>W000000001j0000LaAk6BX>=`EF)=M>Z*q5Ga%5?4X8-^I000007jR{AZE18ZVP|D-bS-9Ya(7{JWNB_^000000000MaAk6BX>=`cZ*p`kW^ZzLVRB??Zf5`h00000019wra&2jJEpT*s000000000EaAk6BX>=`hb7gWZa$^7h000000000005bpp01I<-Xf0)AGBq_ZIRF3vAZhB==tO2#AUh_rMLGzKsz6=J#5NtAYAqde990lr-2eapQvd(}3v+X5EoEdfH8n9g0000$74Z7x9c{A9ozu0KKI&lKppMRYt|S_7K}UQ0Bf?aw-06hRfox*&=H!Czutqff40`KrycD3oZ>j(&bdhuo]]]";
+        let answer_string = "[[[0000Ca&uuVb7)~QEj2MR0004i702Zc!bS`vLvh4p*-25ks2XsC=p*;GopY~atzGY9j%4uoFf?hcwPSt=j`|DfqaG<NmQ<rzG+L;fYiHhh`RO3J!$uZN2%)$~uwRDyyxh{7M-Ks5sdX?XplJYslMF%)j3_xY>7CuXA46wzqxWXW%}5pxxFSN6YKK(Lf)E1YimzjFDQ2`dnvCEPI`I>B#{@d@?<uIaD#j-hVfcyry!GdwGin}$sQdRxbvXZ>&nk^Tze7aA1Yo}?uD0_EK=}ZoF+uOs$?>@=>U5VkB*hh7j)a_Dr(IleaVn~~zQnj9JCfMQwK4!@4;G<UC_tFoP6HvXr8Ae+{@SCBLtD!^YJht~gTec;-qW=1Z#(PCCwYJ@vXnbtrOsAv6fp6bRQ0bIc><D<`;(O#zIzT(i=iXlH7}odj`${l$9ed?J48+^x#SemG+>KPEyF|cs!2XImfeG0<lPJpBTXI^v_zHIyseffoxGL4J~mqlm*xZuqWW6w:0000Sb8~1da&uuVV`Xx5Ep{+5KyPqmZgX>JE@N+P0000Wen9_7+ArNdaR<(Hs`qAJ<)D&1&ekQX6SJek&)&=o000030RRC200Dsj@L-Bd(h+cZH7^vy`lVn34m8cD+dd6ztz|4{0y_LyFs<0OG-GXtcUhWk&Zj$JQlnly=D1;})+b6VQjggwn6DXg88=DtXTmarIP*%fKSgPd3&TI>W|doiMVWZ;(ZeP#qQiE-*l^NiLi-Eu9LZ(h=Q+Qat(Oy!hrx2tM2ojK%(=sXssE=P_>-u>HOAMui3UzPluqBbX-7u77fa;gqZWqxAQ`P#PB)-6@+t<cAbPD8B~o0H*nxJU0pX(=;P-ya*n4U!VjAe#+If!iNOXO8(ZK^r%9CRsd0rUOc<FL|+kh-T+>dDEoIow%>xiOoH$4U@z>JBBP|ATU{(C+>%bO%?C10LK1~Zx)Po#{td5P?za@_;HK^eH=+0LKJ>}d~KTG+Ix{MfAO7*lAv@baU2i8wf$HIgx2+j5Ca$g`x%F}XLI<f?WGBrHh>Kqwt=``-_qk~z|kAr;+?Y)=mU3e5#yQl#NJS7aO6mAo)s*8(h;0000000000000010000FMsj6jWpZh2AWUI(Vr6mw000O8000DXZ*Oz}0000000030|NsC0|Ns9000000004pj000$mWpZt4bS+phF)e0qa(7{JWNB_^000000000NaAk6BX>=`NXJu}5EoN_WcVTj5X>Ml#00000000(nWpZt4bS-dia&#?bZ*q5Ga%5?4X8-^I000003UFm|ZE18ZaCCV900000000hfWpZt4bS-srWpXWYV*mgE00000000027XSbN2Xk|1Epl^V000030RRC200IF3%O;)j7NYBIXxNWp2#wddHr~eq%>3voSP<A?%@%$C7}`ZM;}d)TQ!qa8@;YE*8{@s&%E4g}W`Rk+<i=aA^_)ypMH*$fAkw7evh9~E+%iyE0=z><_*`?Q+OnIZ?z*AfH7z?F7{a@Piv=E_<wqvVKDCtFNF32;L4W_})perU)wy6tx&P@pds7BIXe5qJhdyr*X=WF9>30f8VyW`kQ^)j`5la%G1S*+(8s^@S<q<BGrzGIb4CV2nEv{xK_$Y*F@j|g-I6ClXIgZ^HT180vKLG^h|G*DKt28<v3m|#T^LbMyk;e-kZ0t2A=V};L42+qVQ11>|SJ<9G2LLB}SCSzomr|R~1E^{nq7_j<V)RDvkQ=)re_pBt<O?il`d^>o*6Z5Y8#9!#PRcSC<|ijE?Vz%8eT~&TWgOkxL;%wdsw#2vX+M~p52~U)!?vRVxU-dS-bn4Sk9v{ijnc6}>e<#MOZ$|%93y0u#kno8&_~>K&m%}+QXxxU5!7Ie@rs91Ut0^$IHg-PgKyIbWKsN$9xSt>WZ7~v)ud1!kW=Y|URn+xbbXOL9rEFyl5QACOu{4CCfOQ*ZuAr)>@u@ify(#3U}0aEa1%H;=Xewu!2@F&nG$)DKjk^6Rj=x|9g@Mv^k=h&H1&^BKw=Gb0006M0000Ca&uuVb7)~QEj2MR00062AbfC9L%`A$y+9IJ!sXEHy>~I+G{Va0!xk-46(eO;pyr>z(6B(a_kU+c1dxA(RQt@jjN#Yh^;+0PNHqOw#PdALJLvFNCz9MZxwLOa3%NN{VBxvF0HPi22i-V+8d6-Mvs95Y3OY|s8)-vj%Hh_fpsL9#K)RLc^1!@EO=>YMLAzYPj&!9M^Gj;w<40$_dE<Nasau6>$Bscc?9p0my!BI)p6A#1t#=0AE6?sT)kADlMD^vKP?cVy=al%8Li2}ZTrpSbVm7x9Cu+{`gKzqSAq=JUCy+od+)`XmFuXYP{{d$(aN<@G29@(luX2P{4@?|1Hp%?HGFBuN8BBFmQ+UgJB9HocARbFh`4ibBYJIqwe}6hRWMHTa?I?!Zxu!!Bu0>gAycIPEi17N|lBs1)xyLko*ek>dwS5gm68|5VJ}LKxg(npMgq`To9$6|iYbBbm@GBDWHwz+~<HE@ugrQ9#xvBq}C5%<jplDm%nrwy-1N>my%a%H&yeZM&ru4xjF2dtHjeKqg+9ij2=+KK_v?4FMsiE7${j(@&)g3w1=NXS*8wkX<tOGsB6D0%I<eBJ^5T2V)Sk!E-1NUFQhf96hpycHZ=9gfej#0*u`2-(C14wJ2l)NCS6$+*ie}~j4JCJRWo_!|2gpTiG]]]";
         let answer_string_cstr = CString::new(answer_string).unwrap();
         let tmp = Answer::try_from(answer_string);
         assert!(tmp.is_ok());
