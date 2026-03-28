@@ -11,9 +11,18 @@ pub fn load_ca(path: &PathBuf) -> Result<PublicKey, String>{
     PublicKey::read_openssh_file(path).map_err(|e| format!("Could not load ca keys file: {}", e))
 }
 
-pub fn load_private_key(path: &PathBuf) -> Result<PrivateKey, String>{
-    PrivateKey::read_openssh_file(path).map_err(|e| format!("Could not load private keys file: {}", e))
-}
+
+pub fn load_private_key(path: &PathBuf, password_option: Option<impl AsRef<[u8]>>) -> Result<PrivateKey, String> {
+    let mut private_key = PrivateKey::read_openssh_file(path).map_err(|e| format!("Could not load private keys file: {}", e))?;
+    if private_key.is_encrypted() {
+        if let Some(password) = password_option {
+            private_key = private_key.decrypt(password).map_err(|e| format!("Private key is encrypted but decryption failed: {}", e))?;
+        } else {
+            return Err("Private key is encrypted. No password for decryption was given.".to_string());
+        }
+    }
+    Ok(private_key)
+    }
 
 pub fn load_certificate(path: &PathBuf) -> Result<Certificate, String>{
     Certificate::read_file(path).map_err(|e| format!("Could not intermediate cert file: {}", e))
@@ -50,6 +59,22 @@ mod tests {
         };
     }
 
+    macro_rules! static_path_test_ok_with_None {
+        ($var_name:meta, $func:expr) => {
+            paste! {
+                #[test]
+                #[allow(non_snake_case)]
+                fn [<test_static_path_ $var_name>]() {
+                    if let Err(msg) = $func(&$var_name, None::<&[u8]>) {
+                        println!("{}", msg);
+                        assert!(false)
+                    }
+                }
+            }
+        };
+    }
+
+
     macro_rules! algorithm_test_okay {
         ($algo_name:ident) => {
             paste! {
@@ -60,8 +85,8 @@ mod tests {
 
                 static_path_test_ok!([<$algo_name:upper _ PUB_TIME_LIMITED>], load_ca);
                 static_path_test_ok!([<$algo_name:upper _ PUB_TIME_UNLIMITED>], load_ca);
-                static_path_test_ok!([<$algo_name:upper _ PRIV_TIME_LIMITED>], load_private_key);
-                static_path_test_ok!([<$algo_name:upper _ PRIV_TIME_UNLIMITED>], load_private_key);
+                static_path_test_ok_with_None!([<$algo_name:upper _ PRIV_TIME_LIMITED>], load_private_key);
+                static_path_test_ok_with_None!([<$algo_name:upper _ PRIV_TIME_UNLIMITED>], load_private_key);
             }
         }
     }
@@ -78,10 +103,10 @@ mod tests {
     static_path!(SIGNED_FALSE_PRIV, "../tests/signed_false");
     static_path!(SIGNED_FALSE_CERT, "../tests/signed_false-cert.pub");
 
-    static_path_test_ok!(SIGNED_FALSE_PRIV, load_private_key);
-    static_path_test_ok!(SIGNED_PRIV, load_private_key);
-    static_path_test_ok!(CA1_PRIV, load_private_key);
-    static_path_test_ok!(CA2_PRIV, load_private_key);
+    static_path_test_ok_with_None!(SIGNED_FALSE_PRIV, load_private_key);
+    static_path_test_ok_with_None!(SIGNED_PRIV, load_private_key);
+    static_path_test_ok_with_None!(CA1_PRIV, load_private_key);
+    static_path_test_ok_with_None!(CA2_PRIV, load_private_key);
 
     static_path_test_ok!(CA1_PUB, load_ca);
     static_path_test_ok!(CA2_PUB, load_ca);

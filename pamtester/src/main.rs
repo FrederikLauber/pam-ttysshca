@@ -100,7 +100,7 @@ fn compute_response(challenge_str: &str) -> String {
     let private_path = PathBuf::from_str("./tests/signed").unwrap();
     let cert_path = PathBuf::from_str("./tests/signed-cert.pub").unwrap();
 
-    let private = load_private_key(&private_path).unwrap();
+    let private = load_private_key(&private_path, None::<&[u8]>).unwrap();
     let certificate = load_certificate(&cert_path).unwrap();
 
     let engine = PrivateKeyAndCertificate::new(private, certificate).unwrap();

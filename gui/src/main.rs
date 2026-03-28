@@ -147,7 +147,7 @@ impl AppState {
     }
 
     fn set_private_key(&mut self, private_key_path: PathBuf) -> Result<(), String>{
-        let private = load_private_key(&private_key_path)?;
+        let private = load_private_key(&private_key_path, None::<&[u8]>)?;
         
         if let Some(certificate) = self.certificate.as_ref(){
             if let Err(_) = private.matches(certificate){

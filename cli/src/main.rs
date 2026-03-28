@@ -11,7 +11,7 @@ struct Cli {
     certificate: PathBuf,
 }
 fn inner_logic<R: BufRead, W: Write>(cli: &Cli, mut input: R, mut output: W) {
-    let private_key = load_private_key(&cli.private_key).unwrap();
+    let private_key = load_private_key(&cli.private_key, None::<&[u8]>).unwrap();
     let certificate = load_certificate(&cli.certificate).unwrap();
     let answer_engine = PrivateKeyAndCertificate::new(private_key, certificate).unwrap();
 
