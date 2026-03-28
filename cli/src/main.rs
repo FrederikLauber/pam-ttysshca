@@ -80,6 +80,14 @@ mod tests {
         }
     }
 
+    struct MockPasswordReaderFail;
+    impl PasswordReader for MockPasswordReaderFail {
+        fn read(&self) -> std::io::Result<String> {
+            Ok("test2".to_owned())
+        }
+    }
+
+
     #[test]
     fn cli_inner_logic() {
         let priv_path = PathBuf::from("../tests/signed");
@@ -129,5 +137,22 @@ mod tests {
         let reader = BufReader::new(Cursor::new(Vec::<u8>::new()));
         let mut output = Vec::new();
         inner_logic(&cli, reader, &mut output, MockPasswordReader);
+    }
+
+    #[test]
+    #[should_panic]
+    fn cli_inner_logic_encrypted_failed_password() {
+        let priv_path = PathBuf::from("../tests/signed_encrypted");
+        let cert_path = PathBuf::from("../tests/signed-cert.pub");
+
+        let challenge_str = "not a challenge\n[[[dUHu!9csD2^MlD3Yf_|-sUU}Ut8s25A5Ry6j}}w%]]]\nq\n";
+        let cli = Cli {
+            private_key: priv_path,
+            certificate: cert_path
+        };
+
+        let reader = BufReader::new(&challenge_str.as_bytes()[..]);
+        let mut output = Vec::new();
+        inner_logic(&cli, reader, &mut output, MockPasswordReaderFail);
     }
 }
