@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-03-16 15:46:10</td>
+            <td class="headerValue">2026-03-28 23:24:41</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
@@ -89,21 +89,21 @@
 <span id="L27"><span class="lineNum">      27</span>              : }</span>
 <span id="L28"><span class="lineNum">      28</span>              : </span>
 <span id="L29"><span class="lineNum">      29</span>              : impl CertificateMatches for PrivateKey{</span>
-<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC tlaBgGNC"> >1008*10^15 :     fn matches(&amp;self, certificate: &amp;Certificate) -&gt; Result&lt;(), &amp;'static str&gt; {</span></span>
-<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC"> >3026*10^15 :         let pub_from_private = self.public_key();</span></span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC"> >3026*10^15 :         pub_from_private.matches(certificate)</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC tlaBgGNC"> >1224*10^15 :     fn matches(&amp;self, certificate: &amp;Certificate) -&gt; Result&lt;(), &amp;'static str&gt; {</span></span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC"> >3674*10^15 :         let pub_from_private = self.public_key();</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC"> >3674*10^15 :         pub_from_private.matches(certificate)</span></span>
 <span id="L33"><span class="lineNum">      33</span>              :     }</span>
 <span id="L34"><span class="lineNum">      34</span>              : }</span>
 <span id="L35"><span class="lineNum">      35</span>              : </span>
 <span id="L36"><span class="lineNum">      36</span>              : impl CertificateMatches for PublicKey{</span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC"> >1008*10^15 :     fn matches(&amp;self, certificate: &amp;Certificate) -&gt; Result&lt;(), &amp;'static str&gt; {</span></span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC"> >3026*10^15 :         let pub_from_private = self.key_data();</span></span>
-<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC"> >3026*10^15 :         let pub_from_intermediate = certificate.public_key();</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC"> >1224*10^15 :     fn matches(&amp;self, certificate: &amp;Certificate) -&gt; Result&lt;(), &amp;'static str&gt; {</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC"> >3674*10^15 :         let pub_from_private = self.key_data();</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC"> >3674*10^15 :         let pub_from_intermediate = certificate.public_key();</span></span>
 <span id="L40"><span class="lineNum">      40</span>              : </span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC"> >1008*10^15 :         if pub_from_private != pub_from_intermediate {</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC"> >1224*10^15 :         if pub_from_private != pub_from_intermediate {</span></span>
 <span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC"> >7205*10^13 :             Err(&quot;Certificate does not match the provided  keys&quot;)</span></span>
 <span id="L43"><span class="lineNum">      43</span>              :         } else {</span>
-<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC"> >9367*10^14 :             Ok(())</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC"> >1152*10^15 :             Ok(())</span></span>
 <span id="L45"><span class="lineNum">      45</span>              :         }</span>
 <span id="L46"><span class="lineNum">      46</span>              :     }</span>
 <span id="L47"><span class="lineNum">      47</span>              : }</span>
@@ -114,19 +114,19 @@
 <span id="L52"><span class="lineNum">      52</span>              :     /**</span>
 <span id="L53"><span class="lineNum">      53</span>              :     * Do some basic checks (does the private keys belong to the certificate? etc.)</span>
 <span id="L54"><span class="lineNum">      54</span>              :     */</span>
-<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC"> >6485*10^14 :     pub fn new(private: PrivateKey, intermediate: Certificate) -&gt; Result&lt;Self, &amp;'static str&gt; {</span></span>
-<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC"> >1945*10^15 :         private.matches(&amp;intermediate)?;</span></span>
-<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC"> >6485*10^14 :         Ok(Self { private, intermediate })</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC"> >7926*10^14 :     pub fn new(private: PrivateKey, intermediate: Certificate) -&gt; Result&lt;Self, &amp;'static str&gt; {</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC"> >2377*10^15 :         private.matches(&amp;intermediate)?;</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC"> >7926*10^14 :         Ok(Self { private, intermediate })</span></span>
 <span id="L58"><span class="lineNum">      58</span>              :     }</span>
 <span id="L59"><span class="lineNum">      59</span>              : }</span>
 <span id="L60"><span class="lineNum">      60</span>              : </span>
 <span id="L61"><span class="lineNum">      61</span>              : impl AnswerEngine for PrivateKeyAndCertificate {</span>
-<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC"> >2594*10^15 :     fn generate_answer(&amp;self, challenge: &amp;Challenge) -&gt; Result&lt;Answer, String&gt; {</span></span>
-<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC"> >7782*10^15 :         let data: &amp;[u8] = challenge.0.as_ref();</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC"> >2666*10^15 :     fn generate_answer(&amp;self, challenge: &amp;Challenge) -&gt; Result&lt;Answer, String&gt; {</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC"> >7998*10^15 :         let data: &amp;[u8] = challenge.0.as_ref();</span></span>
 <span id="L64"><span class="lineNum">      64</span>              : </span>
-<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC"> >1815*10^16 :         let sshsig = self.private.sign(NAMESPACE, HashAlg::Sha256, data).map_err(|e| format!(&quot;Could not sign challenge: {}&quot;, e))?;</span></span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC"> >7782*10^15 :         let signature = sshsig.signature();</span></span>
-<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC"> >7782*10^15 :         Ok(Answer{signature: signature.clone(), intermediate: self.intermediate.clone()})</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC"> >2161*10^14 :         let sshsig = self.private.sign(NAMESPACE, HashAlg::Sha256, data).map_err(|e| format!(&quot;Could not sign challenge: {}&quot;, e))?;</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC"> >7998*10^15 :         let signature = sshsig.signature();</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC"> >7998*10^15 :         Ok(Answer{signature: signature.clone(), intermediate: self.intermediate.clone()})</span></span>
 <span id="L68"><span class="lineNum">      68</span>              :     }</span>
 <span id="L69"><span class="lineNum">      69</span>              : }</span>
 <span id="L70"><span class="lineNum">      70</span>              : </span>
@@ -195,16 +195,16 @@
 <span id="L133"><span class="lineNum">     133</span>              : }</span>
 <span id="L134"><span class="lineNum">     134</span>              : </span>
 <span id="L135"><span class="lineNum">     135</span>              : impl fmt::Display for Answer {</span>
-<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC"> >2449*10^15 :     fn fmt(&amp;self, f: &amp;mut fmt::Formatter&lt;'_&gt;) -&gt; fmt::Result {</span></span>
-<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC"> >4899*10^15 :         let mut signature_bytes = Vec::new();</span></span>
-<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC"> >4899*10^15 :         let mut certificate_bytes = Vec::new();</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC"> >2522*10^15 :     fn fmt(&amp;self, f: &amp;mut fmt::Formatter&lt;'_&gt;) -&gt; fmt::Result {</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC"> >5044*10^15 :         let mut signature_bytes = Vec::new();</span></span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC"> >5044*10^15 :         let mut certificate_bytes = Vec::new();</span></span>
 <span id="L139"><span class="lineNum">     139</span>              : </span>
-<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC"> >7349*10^15 :         self.signature.encode(&amp;mut signature_bytes)</span></span>
-<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC"> >4899*10^15 :             .map_err(|_| &quot;Failed to encode signature&quot;).map_err(|_| fmt::Error)?;</span></span>
-<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC"> >7349*10^15 :         self.intermediate.encode(&amp;mut certificate_bytes)</span></span>
-<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC"> >4899*10^15 :             .map_err(|_| &quot;Failed to encode certificate&quot;).map_err(|_| fmt::Error)?;</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC"> >7566*10^15 :         self.signature.encode(&amp;mut signature_bytes)</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC"> >5044*10^15 :             .map_err(|_| &quot;Failed to encode signature&quot;).map_err(|_| fmt::Error)?;</span></span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC"> >7566*10^15 :         self.intermediate.encode(&amp;mut certificate_bytes)</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC"> >5044*10^15 :             .map_err(|_| &quot;Failed to encode certificate&quot;).map_err(|_| fmt::Error)?;</span></span>
 <span id="L144"><span class="lineNum">     144</span>              : </span>
-<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC"> >9799*10^15 :         write!(f, &quot;{}&quot;, Binary(vec![signature_bytes, certificate_bytes]))</span></span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC"> >1008*10^16 :         write!(f, &quot;{}&quot;, Binary(vec![signature_bytes, certificate_bytes]))</span></span>
 <span id="L146"><span class="lineNum">     146</span>              :     }</span>
 <span id="L147"><span class="lineNum">     147</span>              : }</span>
 <span id="L148"><span class="lineNum">     148</span>              : </span>
@@ -291,9 +291,9 @@
 <span id="L229"><span class="lineNum">     229</span>              : impl TryFrom&lt;Binary&gt; for Challenge {</span>
 <span id="L230"><span class="lineNum">     230</span>              :     type Error = &amp;'static str;</span>
 <span id="L231"><span class="lineNum">     231</span>              : </span>
-<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC"> >5764*10^14 :     fn try_from(s: Binary) -&gt; Result&lt;Self, Self::Error&gt; {</span></span>
-<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC"> >3458*10^15 :         let tmp: [u8; 32] = s.0[0].clone().try_into().map_err(|_| &quot;Too much data&quot;)?;</span></span>
-<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC"> >5764*10^14 :         Ok(Challenge(tmp))</span></span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC"> >6485*10^14 :     fn try_from(s: Binary) -&gt; Result&lt;Self, Self::Error&gt; {</span></span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC"> >3891*10^15 :         let tmp: [u8; 32] = s.0[0].clone().try_into().map_err(|_| &quot;Too much data&quot;)?;</span></span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC"> >6485*10^14 :         Ok(Challenge(tmp))</span></span>
 <span id="L235"><span class="lineNum">     235</span>              :     }</span>
 <span id="L236"><span class="lineNum">     236</span>              : }</span>
 <span id="L237"><span class="lineNum">     237</span>              : </span>
@@ -301,8 +301,8 @@
 <span id="L239"><span class="lineNum">     239</span>              : impl TryFrom&lt;String&gt; for Challenge {</span>
 <span id="L240"><span class="lineNum">     240</span>              :     type Error = &amp;'static str;</span>
 <span id="L241"><span class="lineNum">     241</span>              : </span>
-<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC"> >1441*10^14 :     fn try_from(s: String) -&gt; Result&lt;Self, Self::Error&gt; {</span></span>
-<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC"> >4323*10^14 :         Challenge::try_from(s.into_binary()?)</span></span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC"> >2161*10^14 :     fn try_from(s: String) -&gt; Result&lt;Self, Self::Error&gt; {</span></span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC"> >6485*10^14 :         Challenge::try_from(s.into_binary()?)</span></span>
 <span id="L244"><span class="lineNum">     244</span>              :     }</span>
 <span id="L245"><span class="lineNum">     245</span>              : }</span>
 <span id="L246"><span class="lineNum">     246</span>              : </span>
@@ -376,7 +376,7 @@
 <span id="L314"><span class="lineNum">     314</span>              : </span>
 <span id="L315"><span class="lineNum">     315</span>              :         let ca = load_ca(&amp;ca_path).unwrap();</span>
 <span id="L316"><span class="lineNum">     316</span>              :         let fingerprint = ca.fingerprint(Default::default());</span>
-<span id="L317"><span class="lineNum">     317</span>              :         let private = load_private_key(&amp;private_path).unwrap();</span>
+<span id="L317"><span class="lineNum">     317</span>              :         let private = load_private_key(&amp;private_path, None::&lt;&amp;[u8]&gt;).unwrap();</span>
 <span id="L318"><span class="lineNum">     318</span>              :         let certificate = load_certificate(&amp;cert_path).unwrap();</span>
 <span id="L319"><span class="lineNum">     319</span>              :         </span>
 <span id="L320"><span class="lineNum">     320</span>              :         let engine = PrivateKeyAndCertificate::new(private, certificate).unwrap();</span>
@@ -397,7 +397,7 @@
 <span id="L335"><span class="lineNum">     335</span>              :         let ca = load_ca(&amp;ca_path).unwrap();</span>
 <span id="L336"><span class="lineNum">     336</span>              :         let fingerprint = ca.fingerprint(Default::default());</span>
 <span id="L337"><span class="lineNum">     337</span>              : </span>
-<span id="L338"><span class="lineNum">     338</span>              :         let private_false = load_private_key(&amp;private_path_false).unwrap();</span>
+<span id="L338"><span class="lineNum">     338</span>              :         let private_false = load_private_key(&amp;private_path_false, None::&lt;&amp;[u8]&gt;).unwrap();</span>
 <span id="L339"><span class="lineNum">     339</span>              :         let certificate_false = load_certificate(&amp;cert_path_false).unwrap();</span>
 <span id="L340"><span class="lineNum">     340</span>              : </span>
 <span id="L341"><span class="lineNum">     341</span>              :         let engine_false = PrivateKeyAndCertificate::new(private_false, certificate_false).unwrap();</span>
@@ -418,7 +418,7 @@
 <span id="L356"><span class="lineNum">     356</span>              :         let ca = load_ca(&amp;ca_path).unwrap();</span>
 <span id="L357"><span class="lineNum">     357</span>              :         let fingerprint = ca.fingerprint(Default::default());</span>
 <span id="L358"><span class="lineNum">     358</span>              : </span>
-<span id="L359"><span class="lineNum">     359</span>              :         let private_false = load_private_key(&amp;private_path_false).unwrap();</span>
+<span id="L359"><span class="lineNum">     359</span>              :         let private_false = load_private_key(&amp;private_path_false, None::&lt;&amp;[u8]&gt;).unwrap();</span>
 <span id="L360"><span class="lineNum">     360</span>              :         let certificate = load_certificate(&amp;cert_path).unwrap();</span>
 <span id="L361"><span class="lineNum">     361</span>              :         let certificate_false = load_certificate(&amp;cert_path_false).unwrap();</span>
 <span id="L362"><span class="lineNum">     362</span>              : </span>
@@ -473,99 +473,116 @@
 <span id="L411"><span class="lineNum">     411</span>              :         let private_path_false = PathBuf::from_str(&quot;../tests/signed_false&quot;).unwrap();</span>
 <span id="L412"><span class="lineNum">     412</span>              :         let cert_path = PathBuf::from_str(&quot;../tests/signed-cert.pub&quot;).unwrap();</span>
 <span id="L413"><span class="lineNum">     413</span>              : </span>
-<span id="L414"><span class="lineNum">     414</span>              :         let private_false = load_private_key(&amp;private_path_false).unwrap();</span>
+<span id="L414"><span class="lineNum">     414</span>              :         let private_false = load_private_key(&amp;private_path_false, None::&lt;&amp;[u8]&gt;).unwrap();</span>
 <span id="L415"><span class="lineNum">     415</span>              :         let certificate = load_certificate(&amp;cert_path).unwrap();</span>
 <span id="L416"><span class="lineNum">     416</span>              :         assert!(private_false.matches(&amp;certificate).is_err());</span>
 <span id="L417"><span class="lineNum">     417</span>              :     }</span>
 <span id="L418"><span class="lineNum">     418</span>              : </span>
-<span id="L419"><span class="lineNum">     419</span>              : </span>
-<span id="L420"><span class="lineNum">     420</span>              :     macro_rules! signer_signee_combination {</span>
-<span id="L421"><span class="lineNum">     421</span>              :         ($($signee:ident, $signed:ident);* $(;)?) =&gt; {</span>
-<span id="L422"><span class="lineNum">     422</span>              :             paste!{</span>
-<span id="L423"><span class="lineNum">     423</span>              :                 $(</span>
-<span id="L424"><span class="lineNum">     424</span>              :                     #[test]</span>
-<span id="L425"><span class="lineNum">     425</span>              :                     fn [&lt;$signee _ $signed&gt;]() {</span>
-<span id="L426"><span class="lineNum">     426</span>              :                         let key_folder = PathBuf::from_str(&quot;../tests/keys_unlimited/&quot;).expect(&quot;Folder should be there&quot;);</span>
-<span id="L427"><span class="lineNum">     427</span>              :                         let signed_private_path = key_folder.clone().join(stringify!($signed));</span>
-<span id="L428"><span class="lineNum">     428</span>              :                         let _signee_public_path = key_folder.clone().join(format!(&quot;{}.pub&quot;, stringify!($signee)));</span>
-<span id="L429"><span class="lineNum">     429</span>              :                         let cert_path = key_folder.clone().join(format!(&quot;{}-{}.cert&quot;, stringify!($signee), stringify!($signed)));</span>
-<span id="L430"><span class="lineNum">     430</span>              : </span>
-<span id="L431"><span class="lineNum">     431</span>              :                         println!(&quot;Signed private path: {}&quot;, fs::canonicalize(&amp;signed_private_path).expect(&quot;Private Key should be there&quot;).display());</span>
-<span id="L432"><span class="lineNum">     432</span>              :                         println!(&quot;Certificate path: {}&quot;, fs::canonicalize(&amp;cert_path).expect(&quot;Certificate should be there&quot;).display());</span>
-<span id="L433"><span class="lineNum">     433</span>              :                         let private_key = load_private_key(&amp;signed_private_path).expect(&quot;We already have tests covering the loading of these key, this should work&quot;);</span>
-<span id="L434"><span class="lineNum">     434</span>              :                         let cert = load_certificate(&amp;cert_path).expect(&quot;We already tested the loading of the key, this should work&quot;);</span>
-<span id="L435"><span class="lineNum">     435</span>              :                         println!(&quot;Key loading finished&quot;);</span>
-<span id="L436"><span class="lineNum">     436</span>              :                         let engine = PrivateKeyAndCertificate {</span>
-<span id="L437"><span class="lineNum">     437</span>              :                             private: private_key,</span>
-<span id="L438"><span class="lineNum">     438</span>              :                             intermediate: cert</span>
-<span id="L439"><span class="lineNum">     439</span>              :                         };</span>
-<span id="L440"><span class="lineNum">     440</span>              :                         println!(&quot;Engine created&quot;);</span>
-<span id="L441"><span class="lineNum">     441</span>              : </span>
-<span id="L442"><span class="lineNum">     442</span>              :                         let challenge = Challenge::new();</span>
-<span id="L443"><span class="lineNum">     443</span>              :                         println!(&quot;Challenge created&quot;);</span>
-<span id="L444"><span class="lineNum">     444</span>              : </span>
-<span id="L445"><span class="lineNum">     445</span>              :                         let answer = engine.generate_answer(&amp;challenge).expect(&quot;A answer should always be generated&quot;);</span>
-<span id="L446"><span class="lineNum">     446</span>              :                         println!(&quot;Answer created&quot;);</span>
+<span id="L419"><span class="lineNum">     419</span>              :     #[test]</span>
+<span id="L420"><span class="lineNum">     420</span>              :     fn test_encrypted_key(){</span>
+<span id="L421"><span class="lineNum">     421</span>              :         let private_path_false = PathBuf::from_str(&quot;../tests/signed_encrypted&quot;).unwrap();</span>
+<span id="L422"><span class="lineNum">     422</span>              :         let cert_path = PathBuf::from_str(&quot;../tests/signed-cert.pub&quot;).unwrap();</span>
+<span id="L423"><span class="lineNum">     423</span>              : </span>
+<span id="L424"><span class="lineNum">     424</span>              :         let private_false = load_private_key(&amp;private_path_false, Some(&quot;test&quot;)).unwrap();</span>
+<span id="L425"><span class="lineNum">     425</span>              :         let certificate = load_certificate(&amp;cert_path).unwrap();</span>
+<span id="L426"><span class="lineNum">     426</span>              :         assert!(private_false.matches(&amp;certificate).is_ok());</span>
+<span id="L427"><span class="lineNum">     427</span>              :     }</span>
+<span id="L428"><span class="lineNum">     428</span>              : </span>
+<span id="L429"><span class="lineNum">     429</span>              :     #[test]</span>
+<span id="L430"><span class="lineNum">     430</span>              :     fn test_encrypted_key_wrong_password(){</span>
+<span id="L431"><span class="lineNum">     431</span>              :         let private_path_false = PathBuf::from_str(&quot;../tests/signed_encrypted&quot;).unwrap();</span>
+<span id="L432"><span class="lineNum">     432</span>              :         let failed_privatekey = load_private_key(&amp;private_path_false, Some(&quot;test2&quot;));</span>
+<span id="L433"><span class="lineNum">     433</span>              :         assert!(failed_privatekey.is_err());</span>
+<span id="L434"><span class="lineNum">     434</span>              :         assert_eq!(failed_privatekey.is_err_and(|x| x.contains(&quot;Private key is encrypted but decryption failed&quot;)), true);</span>
+<span id="L435"><span class="lineNum">     435</span>              :     }</span>
+<span id="L436"><span class="lineNum">     436</span>              : </span>
+<span id="L437"><span class="lineNum">     437</span>              :     macro_rules! signer_signee_combination {</span>
+<span id="L438"><span class="lineNum">     438</span>              :         ($($signee:ident, $signed:ident);* $(;)?) =&gt; {</span>
+<span id="L439"><span class="lineNum">     439</span>              :             paste!{</span>
+<span id="L440"><span class="lineNum">     440</span>              :                 $(</span>
+<span id="L441"><span class="lineNum">     441</span>              :                     #[test]</span>
+<span id="L442"><span class="lineNum">     442</span>              :                     fn [&lt;$signee _ $signed&gt;]() {</span>
+<span id="L443"><span class="lineNum">     443</span>              :                         let key_folder = PathBuf::from_str(&quot;../tests/keys_unlimited/&quot;).expect(&quot;Folder should be there&quot;);</span>
+<span id="L444"><span class="lineNum">     444</span>              :                         let signed_private_path = key_folder.clone().join(stringify!($signed));</span>
+<span id="L445"><span class="lineNum">     445</span>              :                         let _signee_public_path = key_folder.clone().join(format!(&quot;{}.pub&quot;, stringify!($signee)));</span>
+<span id="L446"><span class="lineNum">     446</span>              :                         let cert_path = key_folder.clone().join(format!(&quot;{}-{}.cert&quot;, stringify!($signee), stringify!($signed)));</span>
 <span id="L447"><span class="lineNum">     447</span>              : </span>
-<span id="L448"><span class="lineNum">     448</span>              :                         let tmp = answer.to_string();</span>
-<span id="L449"><span class="lineNum">     449</span>              :                         println!(&quot;Into string worked&quot;);</span>
-<span id="L450"><span class="lineNum">     450</span>              :                         let back = Answer::try_from(tmp);</span>
-<span id="L451"><span class="lineNum">     451</span>              : </span>
-<span id="L452"><span class="lineNum">     452</span>              :                         println!(&quot;Back and forth also worked&quot;);</span>
-<span id="L453"><span class="lineNum">     453</span>              :                         match back{</span>
-<span id="L454"><span class="lineNum">     454</span>              :                             Ok(t) =&gt; {</span>
-<span id="L455"><span class="lineNum">     455</span>              :                                 //assert_eq!(t.signature.algorithm(), answer.signature.algorithm());</span>
-<span id="L456"><span class="lineNum">     456</span>              :                                 assert!(t.signature.as_bytes() == answer.signature.as_bytes());</span>
-<span id="L457"><span class="lineNum">     457</span>              :                                 assert!(t.intermediate.algorithm() == answer.intermediate.algorithm());</span>
-<span id="L458"><span class="lineNum">     458</span>              :                                 assert!(t.intermediate.signature() == answer.intermediate.signature());</span>
-<span id="L459"><span class="lineNum">     459</span>              :                             }</span>
-<span id="L460"><span class="lineNum">     460</span>              :                             Err(e) =&gt; {</span>
-<span id="L461"><span class="lineNum">     461</span>              :                                 println!(&quot;{} {}: {}&quot;, stringify!($signee), stringify!($signed), e);</span>
-<span id="L462"><span class="lineNum">     462</span>              :                                 assert!(false);</span>
-<span id="L463"><span class="lineNum">     463</span>              :                             }</span>
-<span id="L464"><span class="lineNum">     464</span>              :                         };</span>
-<span id="L465"><span class="lineNum">     465</span>              :                     }</span>
-<span id="L466"><span class="lineNum">     466</span>              :                 )*</span>
-<span id="L467"><span class="lineNum">     467</span>              :             }</span>
-<span id="L468"><span class="lineNum">     468</span>              :         }</span>
-<span id="L469"><span class="lineNum">     469</span>              :     }</span>
-<span id="L470"><span class="lineNum">     470</span>              : </span>
-<span id="L471"><span class="lineNum">     471</span>              :     signer_signee_combination!(ecdsa_nistp256, ecdsa_nistp384);</span>
-<span id="L472"><span class="lineNum">     472</span>              :     signer_signee_combination!(ecdsa_nistp256, ecdsa_nistp521);</span>
-<span id="L473"><span class="lineNum">     473</span>              :     signer_signee_combination!(ecdsa_nistp256, ed25519);</span>
-<span id="L474"><span class="lineNum">     474</span>              :     signer_signee_combination!(ecdsa_nistp256, rsa_sha256);</span>
-<span id="L475"><span class="lineNum">     475</span>              :     signer_signee_combination!(ecdsa_nistp256, rsa_sha512);</span>
-<span id="L476"><span class="lineNum">     476</span>              : </span>
-<span id="L477"><span class="lineNum">     477</span>              :     signer_signee_combination!(ecdsa_nistp384, ecdsa_nistp256);</span>
-<span id="L478"><span class="lineNum">     478</span>              :     signer_signee_combination!(ecdsa_nistp384, ecdsa_nistp521);</span>
-<span id="L479"><span class="lineNum">     479</span>              :     signer_signee_combination!(ecdsa_nistp384, ed25519);</span>
-<span id="L480"><span class="lineNum">     480</span>              :     signer_signee_combination!(ecdsa_nistp384, rsa_sha256);</span>
-<span id="L481"><span class="lineNum">     481</span>              :     signer_signee_combination!(ecdsa_nistp384, rsa_sha512);</span>
-<span id="L482"><span class="lineNum">     482</span>              : </span>
-<span id="L483"><span class="lineNum">     483</span>              :     signer_signee_combination!(ecdsa_nistp521, ecdsa_nistp256);</span>
-<span id="L484"><span class="lineNum">     484</span>              :     signer_signee_combination!(ecdsa_nistp521, ecdsa_nistp384);</span>
-<span id="L485"><span class="lineNum">     485</span>              :     signer_signee_combination!(ecdsa_nistp521, ed25519);</span>
-<span id="L486"><span class="lineNum">     486</span>              :     signer_signee_combination!(ecdsa_nistp521, rsa_sha256);</span>
-<span id="L487"><span class="lineNum">     487</span>              :     signer_signee_combination!(ecdsa_nistp521, rsa_sha512);</span>
-<span id="L488"><span class="lineNum">     488</span>              : </span>
-<span id="L489"><span class="lineNum">     489</span>              :     signer_signee_combination!(ed25519, ecdsa_nistp256);</span>
-<span id="L490"><span class="lineNum">     490</span>              :     signer_signee_combination!(ed25519, ecdsa_nistp384);</span>
-<span id="L491"><span class="lineNum">     491</span>              :     signer_signee_combination!(ed25519, ecdsa_nistp521);</span>
-<span id="L492"><span class="lineNum">     492</span>              :     signer_signee_combination!(ed25519, rsa_sha256);</span>
-<span id="L493"><span class="lineNum">     493</span>              :     signer_signee_combination!(ed25519, rsa_sha512);</span>
-<span id="L494"><span class="lineNum">     494</span>              : </span>
-<span id="L495"><span class="lineNum">     495</span>              :     signer_signee_combination!(rsa_sha256, ecdsa_nistp256);</span>
-<span id="L496"><span class="lineNum">     496</span>              :     signer_signee_combination!(rsa_sha256, ecdsa_nistp384);</span>
-<span id="L497"><span class="lineNum">     497</span>              :     signer_signee_combination!(rsa_sha256, ecdsa_nistp521);</span>
-<span id="L498"><span class="lineNum">     498</span>              :     signer_signee_combination!(rsa_sha256, ed25519);</span>
-<span id="L499"><span class="lineNum">     499</span>              :     signer_signee_combination!(rsa_sha256, rsa_sha512);</span>
-<span id="L500"><span class="lineNum">     500</span>              : </span>
-<span id="L501"><span class="lineNum">     501</span>              :     signer_signee_combination!(rsa_sha512, ecdsa_nistp256);</span>
-<span id="L502"><span class="lineNum">     502</span>              :     signer_signee_combination!(rsa_sha512, ecdsa_nistp384);</span>
-<span id="L503"><span class="lineNum">     503</span>              :     signer_signee_combination!(rsa_sha512, ecdsa_nistp521);</span>
-<span id="L504"><span class="lineNum">     504</span>              :     signer_signee_combination!(rsa_sha512, ed25519);</span>
-<span id="L505"><span class="lineNum">     505</span>              :     signer_signee_combination!(rsa_sha512, rsa_sha256);</span>
-<span id="L506"><span class="lineNum">     506</span>              : }</span>
+<span id="L448"><span class="lineNum">     448</span>              :                         println!(&quot;Signed private path: {}&quot;, fs::canonicalize(&amp;signed_private_path).expect(&quot;Private Key should be there&quot;).display());</span>
+<span id="L449"><span class="lineNum">     449</span>              :                         println!(&quot;Certificate path: {}&quot;, fs::canonicalize(&amp;cert_path).expect(&quot;Certificate should be there&quot;).display());</span>
+<span id="L450"><span class="lineNum">     450</span>              :                         let private_key = load_private_key(&amp;signed_private_path, None::&lt;&amp;[u8]&gt;).expect(&quot;We already have tests covering the loading of these key, this should work&quot;);</span>
+<span id="L451"><span class="lineNum">     451</span>              :                         let cert = load_certificate(&amp;cert_path).expect(&quot;We already tested the loading of the key, this should work&quot;);</span>
+<span id="L452"><span class="lineNum">     452</span>              :                         println!(&quot;Key loading finished&quot;);</span>
+<span id="L453"><span class="lineNum">     453</span>              :                         let engine = PrivateKeyAndCertificate {</span>
+<span id="L454"><span class="lineNum">     454</span>              :                             private: private_key,</span>
+<span id="L455"><span class="lineNum">     455</span>              :                             intermediate: cert</span>
+<span id="L456"><span class="lineNum">     456</span>              :                         };</span>
+<span id="L457"><span class="lineNum">     457</span>              :                         println!(&quot;Engine created&quot;);</span>
+<span id="L458"><span class="lineNum">     458</span>              : </span>
+<span id="L459"><span class="lineNum">     459</span>              :                         let challenge = Challenge::new();</span>
+<span id="L460"><span class="lineNum">     460</span>              :                         println!(&quot;Challenge created&quot;);</span>
+<span id="L461"><span class="lineNum">     461</span>              : </span>
+<span id="L462"><span class="lineNum">     462</span>              :                         let answer = engine.generate_answer(&amp;challenge).expect(&quot;A answer should always be generated&quot;);</span>
+<span id="L463"><span class="lineNum">     463</span>              :                         println!(&quot;Answer created&quot;);</span>
+<span id="L464"><span class="lineNum">     464</span>              : </span>
+<span id="L465"><span class="lineNum">     465</span>              :                         let tmp = answer.to_string();</span>
+<span id="L466"><span class="lineNum">     466</span>              :                         println!(&quot;Into string worked&quot;);</span>
+<span id="L467"><span class="lineNum">     467</span>              :                         let back = Answer::try_from(tmp);</span>
+<span id="L468"><span class="lineNum">     468</span>              : </span>
+<span id="L469"><span class="lineNum">     469</span>              :                         println!(&quot;Back and forth also worked&quot;);</span>
+<span id="L470"><span class="lineNum">     470</span>              :                         match back{</span>
+<span id="L471"><span class="lineNum">     471</span>              :                             Ok(t) =&gt; {</span>
+<span id="L472"><span class="lineNum">     472</span>              :                                 //assert_eq!(t.signature.algorithm(), answer.signature.algorithm());</span>
+<span id="L473"><span class="lineNum">     473</span>              :                                 assert!(t.signature.as_bytes() == answer.signature.as_bytes());</span>
+<span id="L474"><span class="lineNum">     474</span>              :                                 assert!(t.intermediate.algorithm() == answer.intermediate.algorithm());</span>
+<span id="L475"><span class="lineNum">     475</span>              :                                 assert!(t.intermediate.signature() == answer.intermediate.signature());</span>
+<span id="L476"><span class="lineNum">     476</span>              :                             }</span>
+<span id="L477"><span class="lineNum">     477</span>              :                             Err(e) =&gt; {</span>
+<span id="L478"><span class="lineNum">     478</span>              :                                 println!(&quot;{} {}: {}&quot;, stringify!($signee), stringify!($signed), e);</span>
+<span id="L479"><span class="lineNum">     479</span>              :                                 assert!(false);</span>
+<span id="L480"><span class="lineNum">     480</span>              :                             }</span>
+<span id="L481"><span class="lineNum">     481</span>              :                         };</span>
+<span id="L482"><span class="lineNum">     482</span>              :                     }</span>
+<span id="L483"><span class="lineNum">     483</span>              :                 )*</span>
+<span id="L484"><span class="lineNum">     484</span>              :             }</span>
+<span id="L485"><span class="lineNum">     485</span>              :         }</span>
+<span id="L486"><span class="lineNum">     486</span>              :     }</span>
+<span id="L487"><span class="lineNum">     487</span>              : </span>
+<span id="L488"><span class="lineNum">     488</span>              :     signer_signee_combination!(ecdsa_nistp256, ecdsa_nistp384);</span>
+<span id="L489"><span class="lineNum">     489</span>              :     signer_signee_combination!(ecdsa_nistp256, ecdsa_nistp521);</span>
+<span id="L490"><span class="lineNum">     490</span>              :     signer_signee_combination!(ecdsa_nistp256, ed25519);</span>
+<span id="L491"><span class="lineNum">     491</span>              :     signer_signee_combination!(ecdsa_nistp256, rsa_sha256);</span>
+<span id="L492"><span class="lineNum">     492</span>              :     signer_signee_combination!(ecdsa_nistp256, rsa_sha512);</span>
+<span id="L493"><span class="lineNum">     493</span>              : </span>
+<span id="L494"><span class="lineNum">     494</span>              :     signer_signee_combination!(ecdsa_nistp384, ecdsa_nistp256);</span>
+<span id="L495"><span class="lineNum">     495</span>              :     signer_signee_combination!(ecdsa_nistp384, ecdsa_nistp521);</span>
+<span id="L496"><span class="lineNum">     496</span>              :     signer_signee_combination!(ecdsa_nistp384, ed25519);</span>
+<span id="L497"><span class="lineNum">     497</span>              :     signer_signee_combination!(ecdsa_nistp384, rsa_sha256);</span>
+<span id="L498"><span class="lineNum">     498</span>              :     signer_signee_combination!(ecdsa_nistp384, rsa_sha512);</span>
+<span id="L499"><span class="lineNum">     499</span>              : </span>
+<span id="L500"><span class="lineNum">     500</span>              :     signer_signee_combination!(ecdsa_nistp521, ecdsa_nistp256);</span>
+<span id="L501"><span class="lineNum">     501</span>              :     signer_signee_combination!(ecdsa_nistp521, ecdsa_nistp384);</span>
+<span id="L502"><span class="lineNum">     502</span>              :     signer_signee_combination!(ecdsa_nistp521, ed25519);</span>
+<span id="L503"><span class="lineNum">     503</span>              :     signer_signee_combination!(ecdsa_nistp521, rsa_sha256);</span>
+<span id="L504"><span class="lineNum">     504</span>              :     signer_signee_combination!(ecdsa_nistp521, rsa_sha512);</span>
+<span id="L505"><span class="lineNum">     505</span>              : </span>
+<span id="L506"><span class="lineNum">     506</span>              :     signer_signee_combination!(ed25519, ecdsa_nistp256);</span>
+<span id="L507"><span class="lineNum">     507</span>              :     signer_signee_combination!(ed25519, ecdsa_nistp384);</span>
+<span id="L508"><span class="lineNum">     508</span>              :     signer_signee_combination!(ed25519, ecdsa_nistp521);</span>
+<span id="L509"><span class="lineNum">     509</span>              :     signer_signee_combination!(ed25519, rsa_sha256);</span>
+<span id="L510"><span class="lineNum">     510</span>              :     signer_signee_combination!(ed25519, rsa_sha512);</span>
+<span id="L511"><span class="lineNum">     511</span>              : </span>
+<span id="L512"><span class="lineNum">     512</span>              :     signer_signee_combination!(rsa_sha256, ecdsa_nistp256);</span>
+<span id="L513"><span class="lineNum">     513</span>              :     signer_signee_combination!(rsa_sha256, ecdsa_nistp384);</span>
+<span id="L514"><span class="lineNum">     514</span>              :     signer_signee_combination!(rsa_sha256, ecdsa_nistp521);</span>
+<span id="L515"><span class="lineNum">     515</span>              :     signer_signee_combination!(rsa_sha256, ed25519);</span>
+<span id="L516"><span class="lineNum">     516</span>              :     signer_signee_combination!(rsa_sha256, rsa_sha512);</span>
+<span id="L517"><span class="lineNum">     517</span>              : </span>
+<span id="L518"><span class="lineNum">     518</span>              :     signer_signee_combination!(rsa_sha512, ecdsa_nistp256);</span>
+<span id="L519"><span class="lineNum">     519</span>              :     signer_signee_combination!(rsa_sha512, ecdsa_nistp384);</span>
+<span id="L520"><span class="lineNum">     520</span>              :     signer_signee_combination!(rsa_sha512, ecdsa_nistp521);</span>
+<span id="L521"><span class="lineNum">     521</span>              :     signer_signee_combination!(rsa_sha512, ed25519);</span>
+<span id="L522"><span class="lineNum">     522</span>              :     signer_signee_combination!(rsa_sha512, rsa_sha256);</span>
+<span id="L523"><span class="lineNum">     523</span>              : }</span>
         </pre>
               </td>
             </tr>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-03-16 15:46:10</td>
+            <td class="headerValue">2026-03-28 23:24:41</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryLo">0.0&nbsp;%</td>
@@ -162,7 +162,7 @@
 <span id="L100"><span class="lineNum">     100</span> <span class="tlaUNC">           0 :     let private_path = PathBuf::from_str(&quot;./tests/signed&quot;).unwrap();</span></span>
 <span id="L101"><span class="lineNum">     101</span> <span class="tlaUNC">           0 :     let cert_path = PathBuf::from_str(&quot;./tests/signed-cert.pub&quot;).unwrap();</span></span>
 <span id="L102"><span class="lineNum">     102</span>              : </span>
-<span id="L103"><span class="lineNum">     103</span> <span class="tlaUNC">           0 :     let private = load_private_key(&amp;private_path).unwrap();</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaUNC">           0 :     let private = load_private_key(&amp;private_path, None::&lt;&amp;[u8]&gt;).unwrap();</span></span>
 <span id="L104"><span class="lineNum">     104</span> <span class="tlaUNC">           0 :     let certificate = load_certificate(&amp;cert_path).unwrap();</span></span>
 <span id="L105"><span class="lineNum">     105</span>              : </span>
 <span id="L106"><span class="lineNum">     106</span> <span class="tlaUNC">           0 :     let engine = PrivateKeyAndCertificate::new(private, certificate).unwrap();</span></span>
