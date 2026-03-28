@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-03-28 23:36:37</td>
+            <td class="headerValue">2026-03-28 23:48:42</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
@@ -96,8 +96,8 @@
 <span id="L34"><span class="lineNum">      34</span>              : </span>
 <span id="L35"><span class="lineNum">      35</span>              : impl IntoBinary for String {</span>
 <span id="L36"><span class="lineNum">      36</span>              :     type Error = &amp;'static str;</span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC"> >2522*10^15 :     fn into_binary(self) -&gt; Result&lt;Binary, Self::Error&gt; {</span></span>
-<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC"> >5044*10^15 :         Binary::try_from(self)</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC"> >2594*10^15 :     fn into_binary(self) -&gt; Result&lt;Binary, Self::Error&gt; {</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC"> >5188*10^15 :         Binary::try_from(self)</span></span>
 <span id="L39"><span class="lineNum">      39</span>              :     }</span>
 <span id="L40"><span class="lineNum">      40</span>              : }</span>
 <span id="L41"><span class="lineNum">      41</span>              : </span>
@@ -110,14 +110,14 @@
 <span id="L48"><span class="lineNum">      48</span>              : </span>
 <span id="L49"><span class="lineNum">      49</span>              : impl TryFrom&lt;&amp;str&gt; for Binary {</span>
 <span id="L50"><span class="lineNum">      50</span>              :     type Error = &amp;'static str;</span>
-<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC"> >3314*10^15 :     fn try_from(s: &amp;str) -&gt; Result&lt;Self, Self::Error&gt; {</span></span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC"> >9943*10^15 :         let caps = MARKER_RE</span></span>
-<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC"> >3314*10^15 :             .captures(s)</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC"> >3386*10^15 :     fn try_from(s: &amp;str) -&gt; Result&lt;Self, Self::Error&gt; {</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC"> >1016*10^16 :         let caps = MARKER_RE</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC"> >3386*10^15 :             .captures(s)</span></span>
 <span id="L54"><span class="lineNum">      54</span>              :             .ok_or(&quot;No match found&quot;)?;</span>
-<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC"> >4755*10^15 :         let capture = caps.get(1).map(|m| m.as_str()).ok_or(&quot;Missing capture group&quot;)?;</span></span>
-<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC"> >6629*10^15 :         let mut tmp = Vec::new();</span></span>
-<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC"> >1232*10^16 :         for part in capture.split(&quot;:&quot;) {</span></span>
-<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC"> >1001*10^16 :             tmp.push(base85::decode(part).map_err(|_| &quot;Base85 decoding failed&quot;)?)</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC"> >5260*10^15 :         let capture = caps.get(1).map(|m| m.as_str()).ok_or(&quot;Missing capture group&quot;)?;</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC"> >6773*10^15 :         let mut tmp = Vec::new();</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC"> >1253*10^16 :         for part in capture.split(&quot;:&quot;) {</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC"> >1037*10^16 :             tmp.push(base85::decode(part).map_err(|_| &quot;Base85 decoding failed&quot;)?)</span></span>
 <span id="L59"><span class="lineNum">      59</span>              :         }</span>
 <span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC"> >3314*10^15 :         Ok(Binary(tmp))</span></span>
 <span id="L61"><span class="lineNum">      61</span>              :     }</span>
@@ -125,8 +125,8 @@
 <span id="L63"><span class="lineNum">      63</span>              : </span>
 <span id="L64"><span class="lineNum">      64</span>              : impl TryFrom&lt;String&gt; for Binary {</span>
 <span id="L65"><span class="lineNum">      65</span>              :     type Error = &amp;'static str;</span>
-<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC"> >2522*10^15 :     fn try_from(s: String) -&gt; Result&lt;Self, Self::Error&gt; {</span></span>
-<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC"> >7566*10^15 :         Binary::try_from(s.as_str())</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC"> >2594*10^15 :     fn try_from(s: String) -&gt; Result&lt;Self, Self::Error&gt; {</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC"> >7782*10^15 :         Binary::try_from(s.as_str())</span></span>
 <span id="L68"><span class="lineNum">      68</span>              :     }</span>
 <span id="L69"><span class="lineNum">      69</span>              : }</span>
 <span id="L70"><span class="lineNum">      70</span>              : </span>

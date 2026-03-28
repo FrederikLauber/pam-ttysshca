@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-03-28 23:36:37</td>
+            <td class="headerValue">2026-03-28 23:48:42</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
@@ -74,13 +74,13 @@
 <span id="L12"><span class="lineNum">      12</span>              : }</span>
 <span id="L13"><span class="lineNum">      13</span>              : </span>
 <span id="L14"><span class="lineNum">      14</span>              : </span>
-<span id="L15"><span class="lineNum">      15</span> <span class="tlaGNC"> >4395*10^15 : pub fn load_private_key(path: &amp;PathBuf, password_option: Option&lt;impl AsRef&lt;[u8]&gt;&gt;) -&gt; Result&lt;PrivateKey, String&gt; {</span></span>
-<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC"> >1758*10^16 :     let mut private_key = PrivateKey::read_openssh_file(path).map_err(|e| format!(&quot;Could not load private keys file: {}&quot;, e))?;</span></span>
-<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC"> >8791*10^15 :     if private_key.is_encrypted() {</span></span>
-<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC"> >7205*10^14 :         if let Some(password) = password_option {</span></span>
-<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC"> >1513*10^15 :             private_key = private_key.decrypt(password).map_err(|e| format!(&quot;Private key is encrypted but decryption failed: {}&quot;, e))?;</span></span>
+<span id="L15"><span class="lineNum">      15</span> <span class="tlaGNC"> >4539*10^15 : pub fn load_private_key(path: &amp;PathBuf, password_option: Option&lt;impl AsRef&lt;[u8]&gt;&gt;) -&gt; Result&lt;PrivateKey, String&gt; {</span></span>
+<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC"> >1815*10^16 :     let mut private_key = PrivateKey::read_openssh_file(path).map_err(|e| format!(&quot;Could not load private keys file: {}&quot;, e))?;</span></span>
+<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC"> >9079*10^15 :     if private_key.is_encrypted() {</span></span>
+<span id="L18"><span class="lineNum">      18</span> <span class="tlaGNC"> >9367*10^14 :         if let Some(password) = password_option {</span></span>
+<span id="L19"><span class="lineNum">      19</span> <span class="tlaGNC"> >1945*10^15 :             private_key = private_key.decrypt(password).map_err(|e| format!(&quot;Private key is encrypted but decryption failed: {}&quot;, e))?;</span></span>
 <span id="L20"><span class="lineNum">      20</span>              :         } else {</span>
-<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC"> >1441*10^14 :             return Err(&quot;Private key is encrypted. No password for decryption was given.&quot;.to_string());</span></span>
+<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC"> >2161*10^14 :             return Err(&quot;Private key is encrypted. No password for decryption was given.&quot;.to_string());</span></span>
 <span id="L22"><span class="lineNum">      22</span>              :         }</span>
 <span id="L23"><span class="lineNum">      23</span>              :     }</span>
 <span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC"> >4179*10^15 :     Ok(private_key)</span></span>
