@@ -80,6 +80,14 @@ mod tests {
         }
     }
 
+    struct MockPasswordReaderFail;
+    impl PasswordReader for MockPasswordReaderFail {
+        fn read(&self) -> std::io::Result<String> {
+            Ok("test2".to_owned())
+        }
+    }
+
+
     #[test]
     fn cli_inner_logic() {
         let priv_path = PathBuf::from("../tests/signed");
@@ -111,7 +119,7 @@ mod tests {
         let priv_path = PathBuf::from("../tests/signed_encrypted");
         let cert_path = PathBuf::from("../tests/signed-cert.pub");
 
-        let challenge_str = "[[[dUHu!9csD2^MlD3Yf_|-sUU}Ut8s25A5Ry6j}}w%]]]\nq\n";
+        let challenge_str = "not a challenge\n[[[dUHu!9csD2^MlD3Yf_|-sUU}Ut8s25A5Ry6j}}w%]]]\nq\n";
         let answer_str = "[[[0000Bb8~1dWn?lnH8D8=002N2xt+me{vODgc%5jJ)R@G!rue<SMt8K~^7D6B!!3((<c4R)f+G+{xzxuK3ZIDCn*4W%p_iA({?Tb1CP4@:0000Wb8~1dWn?lnH8D9YV`Xx5Ep{+5KyPqmZgX>JE@N+P0000W@6eqn1dj9(Z0ZI-kiyUZ!YHR*k)zAYKgNv`W=8ME0000WAl)rJ)FEJ|d@Zy`jdI?<;)*c^slX9E!17Y>aB$}`0000000000000010000KbY*jNb#rBMKxKGgZE$R5E@N+P0000C00008bY*jNb#rBM00000X#&1500000d%=>W000000001j0000LaAk6BX>=`EF)=M>Z*q5Ga%5?4X8-^I000007jR{AZE18ZVP|D-bS-9Ya(7{JWNB_^000000000MaAk6BX>=`cZ*p`kW^ZzLVRB??Zf5`h00000019wra&2jJEpT*s000000000EaAk6BX>=`hb7gWZa$^7h000000000005bpp01I<-Xf0)AGBq_ZIRF3vAZhB==tO2#AUh_rMLGzKsz6=J#5NtAYAqde990lr-2eapQvd(}3v+X5EoEdfH8n9g0000$74Z7x9c{A9ozu0KKI&lKppMRYt|S_7K}UQ0Bf?aw-06hRfox*&=H!Czutqff40`KrycD3oZ>j(&bdhuo]]]";
         let cli = Cli {
             private_key: priv_path,
@@ -129,5 +137,22 @@ mod tests {
         let reader = BufReader::new(Cursor::new(Vec::<u8>::new()));
         let mut output = Vec::new();
         inner_logic(&cli, reader, &mut output, MockPasswordReader);
+    }
+
+    #[test]
+    #[should_panic]
+    fn cli_inner_logic_encrypted_failed_password() {
+        let priv_path = PathBuf::from("../tests/signed_encrypted");
+        let cert_path = PathBuf::from("../tests/signed-cert.pub");
+
+        let challenge_str = "not a challenge\n[[[dUHu!9csD2^MlD3Yf_|-sUU}Ut8s25A5Ry6j}}w%]]]\nq\n";
+        let cli = Cli {
+            private_key: priv_path,
+            certificate: cert_path
+        };
+
+        let reader = BufReader::new(&challenge_str.as_bytes()[..]);
+        let mut output = Vec::new();
+        inner_logic(&cli, reader, &mut output, MockPasswordReaderFail);
     }
 }
