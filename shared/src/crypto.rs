@@ -314,7 +314,7 @@ mod tests {
 
         let ca = load_ca(&ca_path).unwrap();
         let fingerprint = ca.fingerprint(Default::default());
-        let private = load_private_key(&private_path).unwrap();
+        let private = load_private_key(&private_path, None::<&[u8]>).unwrap();
         let certificate = load_certificate(&cert_path).unwrap();
         
         let engine = PrivateKeyAndCertificate::new(private, certificate).unwrap();
@@ -335,7 +335,7 @@ mod tests {
         let ca = load_ca(&ca_path).unwrap();
         let fingerprint = ca.fingerprint(Default::default());
 
-        let private_false = load_private_key(&private_path_false).unwrap();
+        let private_false = load_private_key(&private_path_false, None::<&[u8]>).unwrap();
         let certificate_false = load_certificate(&cert_path_false).unwrap();
 
         let engine_false = PrivateKeyAndCertificate::new(private_false, certificate_false).unwrap();
@@ -356,7 +356,7 @@ mod tests {
         let ca = load_ca(&ca_path).unwrap();
         let fingerprint = ca.fingerprint(Default::default());
 
-        let private_false = load_private_key(&private_path_false).unwrap();
+        let private_false = load_private_key(&private_path_false, None::<&[u8]>).unwrap();
         let certificate = load_certificate(&cert_path).unwrap();
         let certificate_false = load_certificate(&cert_path_false).unwrap();
 
@@ -411,11 +411,28 @@ mod tests {
         let private_path_false = PathBuf::from_str("../tests/signed_false").unwrap();
         let cert_path = PathBuf::from_str("../tests/signed-cert.pub").unwrap();
 
-        let private_false = load_private_key(&private_path_false).unwrap();
+        let private_false = load_private_key(&private_path_false, None::<&[u8]>).unwrap();
         let certificate = load_certificate(&cert_path).unwrap();
         assert!(private_false.matches(&certificate).is_err());
     }
 
+    #[test]
+    fn test_encrypted_key(){
+        let private_path_false = PathBuf::from_str("../tests/signed_encrypted").unwrap();
+        let cert_path = PathBuf::from_str("../tests/signed-cert.pub").unwrap();
+
+        let private_false = load_private_key(&private_path_false, Some("test")).unwrap();
+        let certificate = load_certificate(&cert_path).unwrap();
+        assert!(private_false.matches(&certificate).is_ok());
+    }
+
+    #[test]
+    fn test_encrypted_key_wrong_password(){
+        let private_path_false = PathBuf::from_str("../tests/signed_encrypted").unwrap();
+        let failed_privatekey = load_private_key(&private_path_false, Some("test2"));
+        assert!(failed_privatekey.is_err());
+        assert_eq!(failed_privatekey.is_err_and(|x| x.contains("Private key is encrypted but decryption failed")), true);
+    }
 
     macro_rules! signer_signee_combination {
         ($($signee:ident, $signed:ident);* $(;)?) => {
@@ -430,7 +447,7 @@ mod tests {
 
                         println!("Signed private path: {}", fs::canonicalize(&signed_private_path).expect("Private Key should be there").display());
                         println!("Certificate path: {}", fs::canonicalize(&cert_path).expect("Certificate should be there").display());
-                        let private_key = load_private_key(&signed_private_path).expect("We already have tests covering the loading of these key, this should work");
+                        let private_key = load_private_key(&signed_private_path, None::<&[u8]>).expect("We already have tests covering the loading of these key, this should work");
                         let cert = load_certificate(&cert_path).expect("We already tested the loading of the key, this should work");
                         println!("Key loading finished");
                         let engine = PrivateKeyAndCertificate {
