@@ -147,7 +147,7 @@ impl AppState {
     }
 
     fn set_private_key(&mut self, private_key_path: PathBuf) -> Result<(), String>{
-        let private = load_private_key(&private_key_path, None::<&[u8]>)?;
+        let private = load_private_key(&private_key_path, None::<&[u8]>).map_err(|e| format!("Could not load private key: {}", e))?;
         
         if let Some(certificate) = self.certificate.as_ref(){
             if let Err(_) = private.matches(certificate){
@@ -162,7 +162,7 @@ impl AppState {
 
     fn set_certificate(&mut self, certificate_path: PathBuf) -> Result<(), String>{
         let private = self.private_key.as_ref().ok_or("Cannot set public keys if no private keys is set".to_owned())?;
-        let certificate = load_certificate(&certificate_path)?;
+        let certificate = load_certificate(&certificate_path).map_err(|e| format!("Could not load certificate: {}", e))?;
 
         if let Err(e) = private.matches(&certificate){
             return Err(format!("Public keys not compatible with set private keys: {}", e));
