@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2026-03-29 00:01:42</td>
+            <td class="headerValue">2026-03-29 11:37:38</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryMed">87.5&nbsp;%</td>
@@ -209,7 +209,7 @@
 <span id="L147"><span class="lineNum">     147</span>              :     }</span>
 <span id="L148"><span class="lineNum">     148</span>              : </span>
 <span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC"> >2161*10^14 :     fn set_private_key(&amp;mut self, private_key_path: PathBuf) -&gt; Result&lt;(), String&gt;{</span></span>
-<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC"> >8646*10^14 :         let private = load_private_key(&amp;private_key_path, None::&lt;&amp;[u8]&gt;)?;</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC"> >1080*10^15 :         let private = load_private_key(&amp;private_key_path, None::&lt;&amp;[u8]&gt;).map_err(|e| format!(&quot;Could not load private key: {}&quot;, e))?;</span></span>
 <span id="L151"><span class="lineNum">     151</span>              :         </span>
 <span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC"> >2882*10^14 :         if let Some(certificate) = self.certificate.as_ref(){</span></span>
 <span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC"> >1441*10^14 :             if let Err(_) = private.matches(certificate){</span></span>
@@ -224,7 +224,7 @@
 <span id="L162"><span class="lineNum">     162</span>              : </span>
 <span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC"> >2161*10^14 :     fn set_certificate(&amp;mut self, certificate_path: PathBuf) -&gt; Result&lt;(), String&gt;{</span></span>
 <span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC"> >1297*10^15 :         let private = self.private_key.as_ref().ok_or(&quot;Cannot set public keys if no private keys is set&quot;.to_owned())?;</span></span>
-<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC"> >6485*10^14 :         let certificate = load_certificate(&amp;certificate_path)?;</span></span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC"> >8646*10^14 :         let certificate = load_certificate(&amp;certificate_path).map_err(|e| format!(&quot;Could not load certificate: {}&quot;, e))?;</span></span>
 <span id="L166"><span class="lineNum">     166</span>              : </span>
 <span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC"> >4323*10^14 :         if let Err(e) = private.matches(&amp;certificate){</span></span>
 <span id="L168"><span class="lineNum">     168</span> <span class="tlaUNC tlaBgUNC">           0 :             return Err(format!(&quot;Public keys not compatible with set private keys: {}&quot;, e));</span></span>
