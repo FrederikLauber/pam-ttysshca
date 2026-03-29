@@ -46,8 +46,6 @@ impl CertificateMatches for PublicKey{
     }
 }
 
-
-
 impl PrivateKeyAndCertificate {
     /**
     * Do some basic checks (does the private keys belong to the certificate? etc.)
