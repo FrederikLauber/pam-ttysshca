@@ -278,7 +278,7 @@ mod tests {
     use std::str::FromStr;
     use ssh_key::Algorithm;
     use crate::crypto::Signature;
-    use crate::{load_ca, load_certificate, load_private_key};
+    use crate::{load_ca, load_certificate, load_private_key, CryptoFileLoadError};
     use super::*;
     use paste::paste;
     use std::fs;
@@ -431,7 +431,7 @@ mod tests {
         let private_path_false = PathBuf::from_str("../tests/signed_encrypted").unwrap();
         let failed_privatekey = load_private_key(&private_path_false, Some("test2"));
         assert!(failed_privatekey.is_err());
-        assert_eq!(failed_privatekey.is_err_and(|x| x.contains("Private key is encrypted but decryption failed")), true);
+        assert!(failed_privatekey.is_err_and(|x| matches!(x, CryptoFileLoadError::CouldNotLoadPrivateFileWithPassword(_))));
     }
 
     macro_rules! signer_signee_combination {
