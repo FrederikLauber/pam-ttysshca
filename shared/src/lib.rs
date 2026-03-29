@@ -88,7 +88,7 @@ mod tests {
         };
     }
 
-    macro_rules! static_path_test_ok_with_None {
+    macro_rules! static_path_test_ok_with_none {
         ($var_name:meta, $func:expr) => {
             paste! {
                 #[test]
@@ -114,8 +114,8 @@ mod tests {
 
                 static_path_test_ok!([<$algo_name:upper _ PUB_TIME_LIMITED>], load_ca);
                 static_path_test_ok!([<$algo_name:upper _ PUB_TIME_UNLIMITED>], load_ca);
-                static_path_test_ok_with_None!([<$algo_name:upper _ PRIV_TIME_LIMITED>], load_private_key);
-                static_path_test_ok_with_None!([<$algo_name:upper _ PRIV_TIME_UNLIMITED>], load_private_key);
+                static_path_test_ok_with_none!([<$algo_name:upper _ PRIV_TIME_LIMITED>], load_private_key);
+                static_path_test_ok_with_none!([<$algo_name:upper _ PRIV_TIME_UNLIMITED>], load_private_key);
             }
         }
     }
@@ -132,10 +132,10 @@ mod tests {
     static_path!(SIGNED_FALSE_PRIV, "../tests/signed_false");
     static_path!(SIGNED_FALSE_CERT, "../tests/signed_false-cert.pub");
 
-    static_path_test_ok_with_None!(SIGNED_FALSE_PRIV, load_private_key);
-    static_path_test_ok_with_None!(SIGNED_PRIV, load_private_key);
-    static_path_test_ok_with_None!(CA1_PRIV, load_private_key);
-    static_path_test_ok_with_None!(CA2_PRIV, load_private_key);
+    static_path_test_ok_with_none!(SIGNED_FALSE_PRIV, load_private_key);
+    static_path_test_ok_with_none!(SIGNED_PRIV, load_private_key);
+    static_path_test_ok_with_none!(CA1_PRIV, load_private_key);
+    static_path_test_ok_with_none!(CA2_PRIV, load_private_key);
 
     static_path_test_ok!(CA1_PUB, load_ca);
     static_path_test_ok!(CA2_PUB, load_ca);
