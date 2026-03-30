@@ -60,7 +60,8 @@ trait PamContext {
     fn post_challenge_and_get_response(&self, challenge:  &Challenge) -> Result<Answer, PamResultCode>;
 }
 
-
+// this gets tested by the pamtester module during build, we cannot test it with tarpaulin
+#[cfg(not(tarpaulin))]
 impl PamContext for PamHandle {
     fn post_challenge_and_get_response(&self, challenge: &Challenge, ) -> Result<Answer, PamResultCode> {
         let conv = self
@@ -100,6 +101,8 @@ fn authenticate<T: PamContext>(ctx: &T, args: Vec<&CStr>, username: &str) -> Pam
     }
 }
 
+// this gets tested by the pamtester module during build, we cannot test it with tarpaulin
+#[cfg(not(tarpaulin))]
 impl PamHooks for Pamttysshca {
     fn sm_authenticate(pamh: &mut PamHandle, args: Vec<&CStr>, _flags: PamFlag) -> PamResultCode {
         if let Some(user) = pamh.get_item::<pam::items::User>().ok().flatten() {
