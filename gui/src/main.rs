@@ -102,7 +102,10 @@ struct AppState {
     private_key: Option<PrivateKey>,
     certificate: Option<Certificate>,
     config: Config,
-    answer_engine: Option<Box<dyn AnswerEngine>>
+    answer_engine: Option<Box<dyn AnswerEngine>>,
+    password_modal_open: bool,
+    password_input: String,
+    pending_private_key_path: Option<PathBuf>,
 }
 
 impl Default for AppState {
@@ -114,7 +117,10 @@ impl Default for AppState {
             private_key: None,
             certificate: None,
             config: Config::new(),
-            answer_engine: None
+            answer_engine: None,
+            password_modal_open: false,
+            password_input: String::new(),
+            pending_private_key_path: None,
         };
 
         if let Some(private_key_path) = config.private_key_path {
@@ -146,18 +152,39 @@ impl AppState {
         self.config.save();
     }
 
-    fn set_private_key(&mut self, private_key_path: PathBuf) -> Result<(), String>{
-        let private = load_private_key(&private_key_path, None::<&[u8]>).map_err(|e| format!("Could not load private key: {}", e))?;
-        
-        if let Some(certificate) = self.certificate.as_ref(){
-            if let Err(_) = private.matches(certificate){
+    fn try_load_private_key(&self, path: &PathBuf, password: Option<&[u8]>) -> Result<PrivateKey, String> {
+        load_private_key(path, password).map_err(|e| format!("{}", e))
+    }
+
+    fn set_private_key(&mut self, private_key_path: PathBuf) -> Result<(), String> {
+        match self.try_load_private_key(&private_key_path, None) {
+            Ok(private) => {
+                self.apply_private_key(private, private_key_path);
+                Ok(())
+            }
+            Err(e) => {
+                // detect password requirement (you may want a better error type)
+                if e.to_lowercase().contains("password") {
+                    self.password_modal_open = true;
+                    self.pending_private_key_path = Some(private_key_path);
+                    Err("Password required".into())
+                } else {
+                    Err(format!("Could not load private key: {}", e))
+                }
+            }
+        }
+    }
+
+    fn apply_private_key(&mut self, private: PrivateKey, path: PathBuf) {
+        if let Some(certificate) = self.certificate.as_ref() {
+            if private.matches(certificate).is_err() {
                 self.reset_certificate();
             }
         }
+
         self.private_key = Some(private);
-        self.config.private_key_path = Some(private_key_path);
+        self.config.private_key_path = Some(path);
         self.config.save();
-        Ok(())
     }
 
     fn set_certificate(&mut self, certificate_path: PathBuf) -> Result<(), String>{
@@ -282,16 +309,67 @@ impl AppState {
         };
         ui.label(job);
     }
+
+    pub fn ui_password_modal(&mut self, ctx: &egui::Context) {
+        if !self.password_modal_open {
+            return;
+        }
+
+        egui::Window::new("Private Key Password")
+            .collapsible(false)
+            .resizable(false)
+            .anchor(egui::Align2::CENTER_CENTER, [0.0, 0.0])
+            .show(ctx, |ui| {
+                ui.label("Enter password for private key:");
+
+                ui.add(
+                    TextEdit::singleline(&mut self.password_input)
+                        .password(true)
+                        .desired_width(200.0),
+                );
+
+                ui.horizontal(|ui| {
+                    if ui.button("Unlock").clicked() {
+                        if let Some(path) = self.pending_private_key_path.clone() {
+                            match self.try_load_private_key(
+                                &path,
+                                Some(self.password_input.as_bytes())
+                            ) {
+                                Ok(private) => {
+                                    self.apply_private_key(private, path);
+                                    self.password_modal_open = false;
+                                    self.password_input.clear();
+                                    self.pending_private_key_path = None;
+                                }
+                                Err(e) => {
+                                    self.answer = format!("Wrong password or error: {}", e);
+                                }
+                            }
+                        }
+                    }
+
+                    if ui.button("Cancel").clicked() {
+                        self.password_modal_open = false;
+                        self.password_input.clear();
+                        self.pending_private_key_path = None;
+                    }
+                });
+            });
+    }
 }
 
 impl eframe::App for AppState {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
+            if self.password_modal_open {
+                ui.disable();
+            }
             AppState::ui_private_key(self, ui, &mut || FileDialog::new().pick_file());
             AppState::ui_certificate(self, ui, &mut || FileDialog::new().pick_file());
             AppState::ui_answer_generator(self, ui, &mut |text| ctx.copy_text(text));
             AppState::ui_display(self, ui);
         });
+        self.ui_password_modal(ctx);
     }
 }
 
