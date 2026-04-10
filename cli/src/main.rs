@@ -2,7 +2,7 @@ use std::io;
 use std::io::{BufRead, Write};
 use std::path::PathBuf;
 use clap::{Parser};
-use shared::{load_private_key, load_certificate, Challenge, AnswerEngine, PrivateKeyAndCertificate};
+use shared::{load_private_key, load_certificate, Challenge, AnswerEngine, PrivateKeyAndCertificate, CryptoFileLoadError};
 use rpassword;
 
 #[derive(Parser)]
@@ -27,13 +27,8 @@ impl PasswordReader for TtyPasswordReader {
 fn inner_logic<R: BufRead, W: Write>(cli: &Cli, mut input: R, mut output: W, password_reader: impl PasswordReader) {
     let private_key = match load_private_key(&cli.private_key, None::<&[u8]>) {
         Ok(private_key) => private_key,
-        Err(e) => {
-            if e.contains("Private key is encrypted. No password for decryption") {
-                load_private_key(&cli.private_key, Some(password_reader.read().unwrap())).unwrap()
-            } else {
-                panic!("{}", e);
-            }
-        }
+        Err(CryptoFileLoadError::MissingPassword) => load_private_key(&cli.private_key, Some(password_reader.read().unwrap())).unwrap(),
+        Err(e) => panic!("{}", e),
     };
 
     let certificate = load_certificate(&cli.certificate).unwrap();

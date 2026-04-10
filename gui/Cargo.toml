@@ -8,7 +8,7 @@ license = "GPL-3.0-or-later"
 
 [dependencies]
 eframe = { version = "0.34.1", features = ["glow", "default_fonts"]}
-egui = { version = "0.33.3"}
+egui = { version = "0.34.1"}
 egui_kittest = {version = "0.33.3"}
 rfd = { version = "0.17.2" }
 directories = { version = "6.0.0" }

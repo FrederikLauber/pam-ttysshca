@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set Rust linker for Linux
         if: matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-24.04-arm'
@@ -32,7 +32,7 @@ jobs:
         run: cargo install cargo-tarpaulin --force
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -63,7 +63,7 @@ jobs:
           cargo tarpaulin --engine llvm --out Lcov --output-dir tarpaulin-report
 
       - name: Upload lcov coverage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: coverage-${{ matrix.os }}
           path: tarpaulin-report/
@@ -75,14 +75,14 @@ jobs:
     needs: build
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install LCOV
         run: sudo apt-get update && sudo apt-get install -y lcov
 
       - name: Download all coverage artifacts
         if: ${{! env.ACT }}
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           pattern: "coverage-*"
           merge-multiple: false
@@ -105,18 +105,19 @@ jobs:
           sed -i 's#D:\\a\\#\/home/runner/work/#g' cat_merged.lcov
           sed -i 's|\\|/|g' cat_merged.lcov
           lcov -a cat_merged.lcov -o merged.lcov
+          rm cat_merged.lcov
           mkdir -p merged-coverage
           genhtml merged.lcov -o merged-coverage/html
           zip -r coverage-html.zip merged-coverage/html
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: my-artifact
           path: coverage-html.zip
 
       - name: Upload to codecov.io
         if: ${{! env.ACT }}
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v6
         with:
           token: ${{secrets.CODECOV_TOKEN}}
           fail_ci_if_error: false
