@@ -25,6 +25,8 @@ jobs:
         run: |
           echo "Building on ${{ matrix.os }}"
           cargo build --release -p pypam_ttysshca -p Authenticator -p Authenticator_cli
+          cargo install cargo-about
+          cargo about generate about.hbs -o THIRD_PARTY_NOTICES_${{ matrix.os }}.html
 
       - name: Unify lib name on Linux
         if: matrix.os == 'ubuntu-latest'
@@ -41,5 +43,6 @@ jobs:
             target/release/Authenticator.exe
             target/release/Authenticator_cli.exe
             target/release/pypam_ttysshca.dll
+            THIRD_PARTY_NOTICES_*.html
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
