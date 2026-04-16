@@ -24,7 +24,7 @@ jobs:
       - name: Build workspace member
         run: |
           echo "Building on ${{ matrix.os }}"
-          cargo build --release -p pypam_ttysshca -p Authenticator -p Authenticator_cli
+          cargo build --release -p pypam_ttysshca -p Authenticator -p Authenticator_cli --locked
           cargo install cargo-about
           cargo about generate about.hbs -o THIRD_PARTY_NOTICES_${{ matrix.os }}.html
 

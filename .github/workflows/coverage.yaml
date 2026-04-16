@@ -55,12 +55,12 @@ jobs:
       - name: Run tests with coverage Windows
         if: matrix.os == 'windows-latest'
         run: |
-          cargo tarpaulin --out Lcov --output-dir tarpaulin-report
+          cargo tarpaulin --out Lcov --output-dir tarpaulin-report --locked
 
       - name: Run tests with coverage Linux
         if: matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-24.04-arm'
         run: |
-          cargo tarpaulin --engine llvm --out Lcov --output-dir tarpaulin-report
+          cargo tarpaulin --engine llvm --out Lcov --output-dir tarpaulin-report --locked
 
       - name: Upload lcov coverage
         uses: actions/upload-artifact@v6
