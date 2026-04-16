@@ -108,7 +108,7 @@ jobs:
           rm cat_merged.lcov
           mkdir -p merged-coverage
           genhtml merged.lcov -o merged-coverage/html
-          zip -r coverage-html.zip merged-coverage/html
+          zip -r coverage-html.zip merged-coverage/html merged.lcov
 
       - uses: actions/upload-artifact@v6
         with:
