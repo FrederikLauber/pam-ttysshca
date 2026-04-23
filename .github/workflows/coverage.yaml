@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: Set Rust linker for Linux
         if: matrix.os == 'ubuntu-latest' || matrix.os == 'ubuntu-24.04-arm'
