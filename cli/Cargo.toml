@@ -13,3 +13,10 @@ rpassword = "7.4.0"
 
 [target.'cfg(windows)'.build-dependencies]
 winresource = "0.1.22"
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1
+opt-level = 3
+panic = "abort"

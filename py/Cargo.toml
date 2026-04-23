@@ -14,3 +14,10 @@ pyo3 = { version = "0.28.0", features = ["extension-module", "abi3"] }
 
 [dev-dependencies]
 pyo3 = { version = "0.28.0", features = ["auto-initialize"] }
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1
+opt-level = 3
+panic = "abort"

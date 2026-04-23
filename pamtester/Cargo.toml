@@ -12,3 +12,10 @@ libc = "0.2"
 shared = { path = "../shared" }
 
 [target.'cfg(windows)'.dependencies]
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1
+opt-level = 3
+panic = "abort"
