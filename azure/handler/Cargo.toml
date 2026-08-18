@@ -1,0 +1,21 @@
+[package]
+name = "azure_handler"
+version = "1.0.0"
+edition = "2024"
+
+[dependencies]
+axum = "0.8.9"
+tokio = { version = "1.53.1", features = ["macros", "rt-multi-thread", "net"] }
+serde = { version = "1.0.229", features = ["derive"] }
+shared = { path = "../../shared" }
+
+[dev-dependencies]
+tower = { version = "0.5.3", features = ["util"] }
+serde_urlencoded = "0.7.1"
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1
+opt-level = 3
+panic = "abort"
