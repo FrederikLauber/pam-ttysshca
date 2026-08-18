@@ -9,7 +9,7 @@ name = "pam_ttysshca"
 crate-type = ["cdylib"]
 
 [target.'cfg(unix)'.dependencies]
-pam-bindings = "0.1.1"
+pam-bindings = "0.1.2"
 shared = { path = "../shared" }
 syslog = {version = "7.0.0"}
 

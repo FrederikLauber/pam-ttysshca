@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Azure Token generator</title>
+
+</head>
+
+<body>
+<div class="container">
+    <h1>Login</h1>
+
+    <form method="post" action="/api/">
+        <label for="value">Challenge:</label>
+        <input id="value" type="text" name="value">
+
+        <button type="submit">
+            Generate
+        </button>
+    </form>
+
+    <div id="output">
+        {{OUTPUT}}
+    </div>
+</div>
+</body>
+</html>

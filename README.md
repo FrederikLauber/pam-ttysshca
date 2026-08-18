@@ -75,6 +75,11 @@ Then import the module, construct the answer machine to finally create a respons
     tmp = m.PyPrivateKeyAndCertificate(priv_str, cert_str)\n\
     answer = tmp.generate_answer(challenge_str)\n").unwrap();
 
+## Azure function
+
+To deploy an authentication function to Azure, you can use the provided `azure_function` directory. This function will handle the challenge-response authentication process.
+To customize the html page, you can modify the `index.html` file located in the `azure_function` directory. This allows you to tailor the user interface to your specific needs at compile time.
+To test these locally, build the handler with `cargo build --release -p azure_function`, copy the binary to the azure folder, and run the function with `func start` in the `azure_function` directory.
 ## ⚖️ License
 
 All parts of this project are licensed under the GPL3.0.
