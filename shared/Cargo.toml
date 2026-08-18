@@ -5,11 +5,11 @@ edition = "2024"
 license = "GPL-3.0-or-later"
 
 [dependencies]
-regex = { version = "1.12.3"}
+regex = { version = "1.13.1"}
 base85 = { version = "2.0.0" }
-once_cell = "1.21.3"
-ssh-key = {version = "0.7.0-rc.9", features = ["std", "default", "ed25519", "encryption", "p256", "p384", "rsa", "serde", "tdes", "alloc", "crypto"] }
-rand = {version = "0.10.0"}
+once_cell = "1.21.4"
+ssh-key = {version = "0.7.0-rc.11", features = ["std", "default", "ed25519", "encryption", "p256", "p384", "rsa", "serde", "tdes", "alloc", "crypto"] }
+rand = {version = "0.10.2"}
 
 [dev-dependencies]
 paste = "1.0.15"

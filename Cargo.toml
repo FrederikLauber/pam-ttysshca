@@ -5,7 +5,8 @@ members = [
     "gui",
     "cli",
     "shared",
-    "py"
+    "py",
+    "azure/handler",
 ]
 resolver = "3"
 
